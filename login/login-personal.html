@@ -1,38 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - Personal del Instituto</title>
-    
-    <link rel="stylesheet" href="../estilos/login-estilos.css">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
+
+    <link rel="stylesheet" href="../estilos/login-estilos.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
     <div class="login-wrapper">
-        <h1 class="page-title">PERSONAL DEL INSTITUTO</h1>
-        
-        <div class="login-card">
-            <div class="icon-container">
-                <i class="fa-solid fa-users"></i>
-            </div>
-            
-            <h2>ACCESO PARA EL<br>PERSONAL</h2>
-            
-            <form action="#">
-                <div class="input-group">
-                    <input type="text" placeholder="Nombre de Usuario" required>
-                </div>
-                <div class="input-group">
-                    <input type="password" placeholder="Contraseña de Acceso" required>
-                </div>
-                
-                <button type="submit" class="btn-login">Iniciar Sesión</button>
-            </form>
-            
-            <a href="#" class="forgot-password">Restablecer Contraseña</a>
+      <h1 class="page-title">PERSONAL DEL INSTITUTO</h1>
+
+      <div class="login-card">
+        <div class="icon-container">
+          <i class="fa-solid fa-users"></i>
         </div>
+
+        <h2>ACCESO PARA EL<br />PERSONAL</h2>
+
+        <form id="loginForm">
+          <div class="input-group">
+            <input
+              type="text"
+              id="username"
+              placeholder="Nombre de Usuario"
+              maxlength="15"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <input
+              type="password"
+              id="password"
+              placeholder="Contraseña de Acceso"
+              maxlength="15"
+              pattern="[a-zA-Z0-9]+"
+              title="La contraseña solo debe contener letras y números, sin caracteres especiales."
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn-login">Iniciar Sesión</button>
+        </form>
+
+        <a href="#" class="forgot-password">Restablecer Contraseña</a>
+      </div>
     </div>
-</body>
+  </body>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+        const regexAlfanumerico = /^[a-zA-Z0-9]+$/;
+
+        if (username.length > 15) {
+            alert("El nombre de usuario no puede exceder los 15 caracteres.");
+            return;
+        }
+
+        if (password.length > 15) {
+            alert("La contraseña no puede exceder los 15 caracteres.");
+            return;
+        }
+
+        if (!regexAlfanumerico.test(password)) {
+            alert("La contraseña no admite caracteres especiales (solo letras y números).");
+            return;
+        }
+
+        alert("Iniciando sesión...");
+        window.location.href = 'bienvenida.html';
+    });
+
+    passwordInput.addEventListener('keypress', (e) => {
+        const char = String.fromCharCode(e.which);
+        if (!/[a-zA-Z0-9]/.test(char)) {
+            e.preventDefault();
+        }
+    });
+</script>
 </html>
