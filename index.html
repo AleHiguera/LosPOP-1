@@ -43,3 +43,17 @@
     </div>
   </body>
 </html>
+<script>
+    // Asignar eventos a tus botones existentes
+    const rutas = {
+        'btn-personal': 'login/personal.html',
+        'btn-alumnos': 'login/alumnos.html',
+        'btn-aspirantes': 'login/aspirantes.html'
+    };
+
+    Object.keys(rutas).forEach(id => {
+        document.getElementById(id).addEventListener('click', () => {
+            window.location.href = rutas[id];
+        });
+    });
+</script>

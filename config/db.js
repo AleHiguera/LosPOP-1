@@ -1,20 +1,22 @@
 const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+const db = new sqlite3.Database('./instituto.db');
 
-// Crea archivo de base de datos 
-const dbPath = path.resolve(__dirname, '../instituto.db');
-const db = new sqlite3.Database(dbPath);
-
-// Crear la tabla para el personal
 db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS personal (
-        id_personal INTEGER PRIMARY KEY AUTOINCREMENT,
-        numero_empleado TEXT UNIQUE NOT NULL,
+    // Tabla central de usuarios para login (Personal, Alumnos, Aspirantes)
+    db.run(`CREATE TABLE IF NOT EXISTS usuarios (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        identificador TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
-        nombre TEXT NOT NULL,
-        rol TEXT DEFAULT 'staff',
-        activo INTEGER DEFAULT 1
+        tipo TEXT NOT NULL
+    )`);
+
+    // Tabla específica para registros de aspirantes
+    db.run(`CREATE TABLE IF NOT EXISTS registros_aspirantes (
+        id_aspirante INTEGER PRIMARY KEY AUTOINCREMENT,
+        curp TEXT UNIQUE NOT NULL,
+        nombre_completo TEXT NOT NULL,
+        carrera_interes TEXT NOT NULL,
+        email TEXT NOT NULL
     )`);
 });
-
 module.exports = db;
