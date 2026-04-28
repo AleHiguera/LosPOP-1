@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Alumno - ITLM</title>
+    <link rel="stylesheet" href="tramites-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="tramite-card">
+            <div class="icon-container">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            
+            <h2>FORMULARIO DE ALUMNO</h2>
+            
+            <form action="#">
+                <div class="form-row">
+                    <label>Nombre Completo</label>
+                    <input type="text" required>
+                </div>
+                
+                <div class="form-row">
+                    <label>CURP</label>
+                    <input type="text" maxlength="18" style="text-transform: uppercase;" required>
+                </div>
+                
+                <div class="form-row">
+                    <label>No. de Control</label>
+                    <input type="text" required>
+                </div>
+                
+                <div class="form-row">
+                    <label>NIP</label>
+                    <input type="password" required>
+                </div>
+                
+                <div class="form-row">
+                    <label>Fecha de Nacimiento</label>
+                    <input type="date" required>
+                </div>
+                
+                <div class="form-row">
+                    <label>Carrera</label>
+                    <input type="text" required>
+                </div>
+
+                <button type="submit" class="btn-main">Enviar Solicitud</button>
+            </form>
+
+            <div style="text-align: center;">
+                <button type="reset" class="link-reset">Restablecer Formulario</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
