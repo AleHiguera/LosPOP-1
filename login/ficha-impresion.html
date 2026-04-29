@@ -139,40 +139,34 @@
       </div>
     </div>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
+<script>
+
         function imprimirFicha() {
-          const originalTitle = document.title;
-          const folio = localStorage.getItem("asp_folio") || "Ficha";
-          document.title = "Ficha_" + folio;
-          window.print();
-          document.title = originalTitle;
-        }
-        // Recuperar datos
-        document.getElementById("out_nombre").textContent =
-          localStorage.getItem("asp_nombre") || "No registrado";
-        document.getElementById("out_curp").textContent =
-          localStorage.getItem("asp_curp") || "No registrado";
-        document.getElementById("out_correo").textContent =
-          localStorage.getItem("asp_correo") || "No registrado";
-        document.getElementById("out_carrera").textContent =
-          localStorage.getItem("asp_carrera") || "No registrado";
-        document.getElementById("out_folio").textContent =
-          localStorage.getItem("asp_folio") || "ASP-000000";
-
-        // Formatear la fecha
-        const fechaInput = localStorage.getItem("asp_fecha");
-        if (fechaInput) {
-          const partes = fechaInput.split("-");
-          document.getElementById("out_fecha").textContent =
-            `${partes[2]}/${partes[1]}/${partes[0]}`;
+            const originalTitle = document.title;
+            const folio = localStorage.getItem('asp_folio') || 'Ficha';            
+            document.title = "Ficha_" + folio; 
+            window.print();
+            document.title = originalTitle; 
         }
 
-        // Poner la fecha de hoy como fecha de registro
-        const hoy = new Date();
-        document.getElementById("out_fecha_registro").textContent =
-          hoy.toLocaleDateString("es-MX");
-      });
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('out_nombre').textContent = localStorage.getItem('asp_nombre') || 'No registrado';
+            document.getElementById('out_curp').textContent = localStorage.getItem('asp_curp') || 'No registrado';
+            document.getElementById('out_correo').textContent = localStorage.getItem('asp_correo') || 'No registrado';
+            document.getElementById('out_carrera').textContent = localStorage.getItem('asp_carrera') || 'No registrado';
+            document.getElementById('out_folio').textContent = localStorage.getItem('asp_folio') || 'ASP-000000';
+            
+            const fechaInput = localStorage.getItem('asp_fecha');
+            if(fechaInput) {
+                const partes = fechaInput.split('-');
+                document.getElementById('out_fecha').textContent = `${partes[2]}/${partes[1]}/${partes[0]}`;
+            }
+
+            const hoy = new Date();
+            document.getElementById('out_fecha_registro').textContent = hoy.toLocaleDateString('es-MX');
+        });
     </script>
+</body>
+</html>
   </body>
 </html>
