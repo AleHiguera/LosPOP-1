@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha de Aspirante - ITLM</title>
-    <link rel="stylesheet" href="ficha-style.css">
+    <link rel="stylesheet" href="../estilos/ficha-estilos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -65,15 +65,12 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. CARGAR DATOS DESDE LOCALSTORAGE
-            // Usamos los mismos nombres de variables que definimos en el formulario
             const nombre = localStorage.getItem('asp_nombre') || 'No registrado';
             const curp = localStorage.getItem('asp_curp') || 'No registrado';
             const correo = localStorage.getItem('asp_correo') || 'No registrado';
             const carrera = localStorage.getItem('asp_carrera') || 'No registrado';
             const folio = localStorage.getItem('asp_folio') || 'ASP-000-000';
 
-            // 2. INSERTAR DATOS EN EL HTML
             document.getElementById('prev_nombre').textContent = nombre;
             document.getElementById('prev_curp').textContent = curp;
             document.getElementById('prev_correo').textContent = correo;
@@ -81,7 +78,6 @@
             document.getElementById('prev_folio').textContent = folio;
             document.getElementById('alertFolio').textContent = folio;
 
-            // 3. LÓGICA PARA OCULTAR LA ALERTA (Tu código original)
             const alertBox = document.getElementById('successAlert');
             setTimeout(() => {
                 alertBox.classList.add('fade-out');

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Aspirante</title>
+    <link rel="stylesheet" href="../estilos/impresion-estilos.css">
+</head>
+<body>
+
+    <div class="no-print" style="text-align: center; margin: 20px;">
+        <button onclick="window.print()" style="padding: 10px 20px; background: #162444; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+            🖨️ Imprimir Documento
+        </button>
+        <button onclick="window.history.back()" style="padding: 10px 20px; background: #64748b; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-left: 10px;">
+            Volver
+        </button>
+    </div>
+
+    <div class="hoja-impresion">
+        
+        <div class="header-institucion">
+            <div>
+                <p style="color: #64748b; font-size: 11px;">SECRETARÍA DE EDUCACIÓN PÚBLICA</p>
+                <h1 style="color: #1a2b4c; font-size: 22px; margin: 5px 0;">Instituto Tecnológico de Los Mochis</h1>
+                <p style="color: #475569; font-size: 14px;">Proceso de Admisión 2026</p>
+            </div>
+            <div style="text-align: right;">
+                <p style="color: #64748b; font-size: 12px;">FOLIO</p>
+                <h2 style="color: #1a2b4c; font-size: 24px; margin: 0;" id="out_folio">ASP-000000</h2>
+            </div>
+        </div>
+
+        <div class="titulo-ficha">
+            FICHA DE ASPIRANTE
+        </div>
+
+        <h3 class="seccion-titulo">DATOS PERSONALES</h3>
+        <div class="grid-2-col">
+            <div class="dato-grupo">
+                <span class="label">CURP:</span>
+                <span class="valor" id="out_curp"></span>
+            </div>
+            <div class="dato-grupo">
+                <span class="label">Fecha de Nacimiento:</span>
+                <span class="valor" id="out_fecha"></span>
+            </div>
+            <div class="dato-grupo">
+                <span class="label">Nombre Completo:</span>
+                <span class="valor" id="out_nombre"></span>
+            </div>
+            <div class="dato-grupo">
+                <span class="label">Sexo:</span>
+                <span class="valor">Por definir</span>
+            </div>
+            <div class="dato-grupo">
+                <span class="label">Teléfono:</span>
+                <span class="valor">(668) 000-0000</span>
+            </div>
+            <div class="dato-grupo">
+                <span class="label">Correo Electrónico:</span>
+                <span class="valor" id="out_correo"></span>
+            </div>
+        </div>
+
+        <h3 class="seccion-titulo">DATOS ACADÉMICOS</h3>
+        <div class="grid-2-col">
+            <div class="dato-grupo">
+                <span class="label">Escuela de Procedencia:</span>
+                <span class="valor">CBTIS 43 (Ejemplo)</span>
+            </div>
+            <div class="dato-grupo">
+                <span class="label">Fecha de Registro:</span>
+                <span class="valor" id="out_fecha_registro"></span>
+            </div>
+            <div class="dato-grupo">
+                <span class="label">Promedio:</span>
+                <span class="valor">0.0</span>
+            </div>
+            <div class="dato-grupo" style="grid-column: 1 / -1;">
+                <span class="label">Carrera Solicitada:</span>
+                <span class="valor" id="out_carrera"></span>
+            </div>
+        </div>
+
+        <h3 class="seccion-titulo">INFORMACIÓN DEL EXAMEN DE ADMISIÓN</h3>
+        <div class="grid-3-col">
+            <div class="dato-grupo">
+                <span class="label">Fecha del Examen:</span>
+                <span class="valor">15/06/2026</span>
+            </div>
+            <div class="dato-grupo">
+                <span class="label">Hora:</span>
+                <span class="valor">9:00 AM</span>
+            </div>
+            <div class="dato-grupo">
+                <span class="label">Lugar:</span>
+                <span class="valor">Edificio A, Aula 201</span>
+            </div>
+        </div>
+
+        <div class="instrucciones-caja">
+            <h4>INSTRUCCIONES IMPORTANTES:</h4>
+            <ul>
+                <li>Presentarse 30 minutos antes de la hora del examen</li>
+                <li>Traer identificación oficial vigente (credencial de estudiante o INE)</li>
+                <li>Llevar lápiz del número 2, goma y sacapuntas</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Recuperar datos
+            document.getElementById('out_nombre').textContent = localStorage.getItem('asp_nombre') || 'No registrado';
+            document.getElementById('out_curp').textContent = localStorage.getItem('asp_curp') || 'No registrado';
+            document.getElementById('out_correo').textContent = localStorage.getItem('asp_correo') || 'No registrado';
+            document.getElementById('out_carrera').textContent = localStorage.getItem('asp_carrera') || 'No registrado';
+            document.getElementById('out_folio').textContent = localStorage.getItem('asp_folio') || 'ASP-000000';
+            
+            // Formatear la fecha
+            const fechaInput = localStorage.getItem('asp_fecha');
+            if(fechaInput) {
+                const partes = fechaInput.split('-');
+                document.getElementById('out_fecha').textContent = `${partes[2]}/${partes[1]}/${partes[0]}`;
+            }
+
+            // Poner la fecha de hoy como fecha de registro
+            const hoy = new Date();
+            document.getElementById('out_fecha_registro').textContent = hoy.toLocaleDateString('es-MX');
+        });
+    </script>
+</body>
+</html>

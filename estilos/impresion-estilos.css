@@ -1,0 +1,114 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #525659;
+    padding-top: 20px;
+}
+
+.hoja-impresion {
+    background: white;
+    width: 21.5cm; 
+    min-height: 27.9cm; 
+    margin: 0 auto 30px auto; 
+    padding: 2cm; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+}
+
+.header-institucion {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 3px solid #1a2b4c;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.titulo-ficha {
+    text-align: center;
+    color: #1a2b4c;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 35px;
+}
+
+.seccion-titulo {
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: normal;
+    margin-bottom: 15px;
+    margin-top: 30px;
+    letter-spacing: 1px;
+}
+
+.grid-2-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    row-gap: 20px;
+    column-gap: 40px;
+}
+
+.grid-3-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; 
+    gap: 20px;
+}
+
+.dato-grupo {
+    display: flex;
+    flex-direction: column;
+}
+
+.dato-grupo .label {
+    font-size: 12px;
+    color: #475569; 
+    margin-bottom: 4px;
+}
+
+.dato-grupo .valor {
+    font-size: 15px;
+    color: #000; 
+}
+
+.instrucciones-caja {
+    margin-top: 50px;
+    border: 1px solid #cbd5e0;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.instrucciones-caja h4 {
+    color: #1a2b4c;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.instrucciones-caja ul {
+    padding-left: 20px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #334155;
+}
+
+@media print {
+    body {
+        background-color: white; 
+        padding-top: 0;
+    }
+    
+    .no-print {
+        display: none !important;  
+    }
+    
+    .hoja-impresion {
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        width: 100%;
+        min-height: auto;
+    }
+}
