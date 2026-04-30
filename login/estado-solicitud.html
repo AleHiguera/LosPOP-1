@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado de Solicitud - ITLM</title>
+    <link rel="stylesheet" href="../estilos/estado-estilos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="top-nav">
+        <h2>Estado de Solicitud</h2>
+        <button class="btn-logout" onclick="window.location.href='login-aspirantes.html'">Cerrar Sesión</button>
+    </header>
+
+    <main class="dashboard-container">
+        
+        <div class="card card-warning">
+            <div class="card-icon">
+                <i class="fa-regular fa-clock"></i>
+            </div>
+            <div class="card-content">
+                <h3>Solicitud en Revisión</h3>
+                <p>Tu solicitud está siendo revisada por el Departamento de Admisiones. Los resultados estarán disponibles el día del examen.</p>
+                <div class="status-badge">
+                    <span>Estado:</span>
+                    <span class="badge badge-yellow">PENDIENTE</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="section-title">Información de tu Solicitud</h3>
+            
+            <div class="info-grid">
+                <div class="info-column">
+                    <h4 class="column-header">DATOS DEL ASPIRANTE</h4>
+                    <div class="data-row">
+                        <span class="label">Folio:</span>
+                        <strong class="value" id="est_folio">ASP-000000</strong>
+                    </div>
+                    <div class="data-row">
+                        <span class="label">CURP:</span>
+                        <strong class="value" id="est_curp">Cargando...</strong>
+                    </div>
+                    <div class="data-row">
+                        <span class="label">Nombre:</span>
+                        <span class="value" id="est_nombre">Cargando...</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="label">Carrera Solicitada:</span>
+                        <span class="value" id="est_carrera">Cargando...</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="label">Promedio:</span>
+                        <span class="value" id="est_promedio">0.0</span>
+                    </div>
+                </div>
+
+                <div class="info-column">
+                    <h4 class="column-header">FECHAS IMPORTANTES</h4>
+                    <div class="data-row">
+                        <span class="label">Fecha de Registro:</span>
+                        <span class="value" id="est_fecha_reg">--/--/----</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="label">Fecha del Examen:</span>
+                        <span class="value">15/06/2026</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="label">Hora del Examen:</span>
+                        <span class="value">9:00 AM</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="label">Lugar:</span>
+                        <span class="value">Edificio A, Aula 201</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="label">Publicación de Resultados:</span>
+                        <span class="value">25/06/2026</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-info">
+            <div class="card-content">
+                <h4 class="steps-title"><i class="fa-solid fa-circle-info"></i> Próximos Pasos</h4>
+                <ul class="steps-list">
+                    <li>Asegúrate de haber descargado e impreso tu ficha de aspirante</li>
+                    <li>Presenta tu examen de admisión en la fecha y hora indicada</li>
+                    <li>Los resultados se publicarán el 25/06/2026</li>
+                    <li>Mantén actualizado tu correo electrónico para recibir notificaciones</li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('est_folio').textContent = localStorage.getItem('asp_folio') || 'ASP-000000';
+            document.getElementById('est_curp').textContent = localStorage.getItem('asp_curp') || 'No registrado';
+            document.getElementById('est_nombre').textContent = localStorage.getItem('asp_nombre') || 'No registrado';
+            document.getElementById('est_carrera').textContent = localStorage.getItem('asp_carrera') || 'No registrado';
+            document.getElementById('est_promedio').textContent = localStorage.getItem('asp_promedio') || '0.0';
+
+            const hoy = new Date();
+            document.getElementById('est_fecha_reg').textContent = hoy.toLocaleDateString('es-MX');
+        });
+    </script>
+
+</body>
+</html>
