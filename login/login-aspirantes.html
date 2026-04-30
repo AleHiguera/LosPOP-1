@@ -41,5 +41,15 @@
         </div>
     </div>
 
+    <script>
+    const formLoginAspirantes = document.getElementById('loginAspirantesForm');
+    if(formLoginAspirantes) {
+        formLoginAspirantes.addEventListener('submit', function(e) {
+            e.preventDefault();
+            window.location.href = './estado-solicitud.html'; 
+        });
+    }
+</script>
+
 </body>
 </html>

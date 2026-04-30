@@ -1,0 +1,194 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #e5e7eb; /* Fondo gris claro */
+    min-height: 100vh;
+}
+
+/* --- BARRA DE NAVEGACIÓN --- */
+.top-nav {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid #d1d5db;
+}
+
+.top-nav h2 {
+    color: #374151;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.btn-logout {
+    background-color: #6b7280;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-logout:hover {
+    background-color: #4b5563;
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.dashboard-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* --- TARJETAS GLOBALES --- */
+.card {
+    background-color: #ffffff;
+    border-radius: 4px;
+    padding: 25px 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    gap: 20px;
+}
+
+/* Tarjeta Amarilla (Estado) */
+.card-warning {
+    border-left: 8px solid #eab308;
+    background-color: #fefce8;
+    align-items: flex-start;
+}
+
+.card-warning .card-icon {
+    font-size: 40px;
+    color: #eab308;
+    margin-top: 5px;
+}
+
+.card-warning h3 {
+    color: #854d0e;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.card-warning p {
+    color: #a16207;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.status-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #713f12;
+}
+
+.badge-yellow {
+    background-color: #eab308;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+/* Tarjeta Azul (Próximos Pasos) */
+.card-info {
+    border-left: 8px solid #3b82f6;
+    background-color: #eff6ff;
+}
+
+.steps-title {
+    color: #1e40af;
+    font-size: 16px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.steps-list {
+    list-style-type: disc;
+    padding-left: 20px;
+    color: #1e3a8a;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* --- TARJETA DE INFORMACIÓN --- */
+.section-title {
+    color: #1e3a8a;
+    font-size: 18px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 10px;
+    width: 100%;
+}
+
+.card:nth-child(2) {
+    flex-direction: column; /* Cambia a columna para esta tarjeta específica */
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.column-header {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+
+.data-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 5px;
+}
+
+.data-row:last-child {
+    border-bottom: none;
+}
+
+.data-row .label {
+    color: #4b5563;
+    font-size: 14px;
+}
+
+.data-row .value {
+    color: #111827;
+    font-size: 14px;
+    text-align: right;
+    max-width: 60%; 
+}
+
+@media (max-width: 768px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .top-nav {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+}
