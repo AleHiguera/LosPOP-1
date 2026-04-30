@@ -1,130 +1,188 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Formulario de Alumno - ITLM</title>
-    <link rel="stylesheet" href="../estilos/tramites-estilos.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-
+    <link rel="stylesheet" href="../estilos/tramites-estilos.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
     <div class="wrapper">
-        <div class="tramite-card">
-            <div class="icon-container">
-                <i class="fa-solid fa-graduation-cap"></i>
-            </div>
-            
-            <h2>FORMULARIO DE ALUMNO</h2>
-            
-<form id="registroForm">
-    <div class="form-row">
-        <label>Nombre Completo</label>
-        <input type="text" id="in_nombre" required>
-        <i class="fa-solid fa-check check-icon"></i>
-    </div>
-    
-    <div class="form-row">
-        <label>CURP</label>
-        <input type="text" id="in_curp" maxlength="18" style="text-transform: uppercase;" required>
-        <i class="fa-solid fa-check check-icon"></i>
-    </div>
-
-    <div class="form-row">
-        <label>Sexo</label>
-        <select id="in_sexo" required style="flex: 1.5; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e0;">
-            <option value="">Seleccione...</option>
-            <option value="Masculino">Masculino</option>
-            <option value="Femenino">Femenino</option>
-        </select>
-        <i class="fa-solid fa-check check-icon"></i>
-    </div>
-    
-    <div class="form-row">
-        <label>Correo</label>
-        <input type="email" id="in_correo" required>
-        <i class="fa-solid fa-check check-icon"></i>
-    </div>
-    
-    <div class="form-row">
-        <label>Fecha de Nacimiento</label>
-        <input type="date" id="in_fecha" required>
-        <i class="fa-solid fa-check check-icon"></i>
-    </div>
-
-    <div class="form-row">
-        <label>Escuela de Procedencia</label>
-        <input type="text" id="in_escuela" placeholder="Ej. CBTIS 123" required>
-        <i class="fa-solid fa-check check-icon"></i>
-    </div>
-
-    <div class="form-row">
-        <label>Promedio</label>
-        <input type="number" id="in_promedio" step="0.1" min="6" max="10" placeholder="0.0" required>
-        <i class="fa-solid fa-check check-icon"></i>
-    </div>
-    
-    <div class="form-row">
-        <label>Carrera</label>
-        <input type="text" id="in_carrera" required>
-        <i class="fa-solid fa-check check-icon"></i>
-    </div>
-
-    <button type="submit" class="btn-main">Enviar Solicitud</button>
-</form>
-
-<script>
-    const camposFormulario = document.querySelectorAll('#registroForm input, #registroForm select');
-
-    camposFormulario.forEach(campo => {
-        campo.addEventListener('input', function() {
-            const iconoCheck = this.parentElement.querySelector('.check-icon');
-            let esValido = false;
-            if (this.id === 'in_curp') {
-                esValido = this.value.trim().length === 18;
-            } 
-            else if (this.id === 'in_promedio') {
-                const promedio = parseFloat(this.value);
-                esValido = (promedio >= 6 && promedio <= 10);
-            } 
-            else if (this.type === 'email') {
-                esValido = this.value.includes('@') && this.value.includes('.');
-            }
-            else {
-                esValido = this.value.trim() !== '';
-            }
-            if (esValido) {
-                iconoCheck.classList.add('visible');
-            } else {
-                iconoCheck.classList.remove('visible');
-            }
-        });
-    });
-    
-    document.getElementById('registroForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        localStorage.setItem('asp_nombre', document.getElementById('in_nombre').value.toUpperCase());
-        localStorage.setItem('asp_curp', document.getElementById('in_curp').value.toUpperCase());
-        localStorage.setItem('asp_sexo', document.getElementById('in_sexo').value);
-        localStorage.setItem('asp_correo', document.getElementById('in_correo').value);
-        localStorage.setItem('asp_fecha', document.getElementById('in_fecha').value);
-        localStorage.setItem('asp_escuela', document.getElementById('in_escuela').value.toUpperCase());
-        localStorage.setItem('asp_promedio', document.getElementById('in_promedio').value);
-        localStorage.setItem('asp_carrera', document.getElementById('in_carrera').value);
-
-        const folio = "ASP-2026-" + Math.floor(Math.random() * 90000 + 10000);
-        localStorage.setItem('asp_folio', folio);
-
-        window.location.href = 'ficha.html';
-    });
-</script>
-
-            <div style="text-align: center;">
-                <button type="reset" class="link-reset">Restablecer Formulario</button>
-            </div>
+      <div class="tramite-card">
+        <div class="icon-container">
+          <i class="fa-solid fa-graduation-cap"></i>
         </div>
-    </div>
 
-</body>
+        <h2>FORMULARIO DE ALUMNO</h2>
+
+        <form id="registroForm">
+          <div class="form-row">
+            <label>Nombre Completo</label>
+            <input type="text" id="in_nombre" required />
+            <i class="fa-solid fa-check check-icon"></i>
+          </div>
+
+          <div class="form-row">
+            <label>CURP</label>
+            <input
+              type="text"
+              id="in_curp"
+              maxlength="18"
+              style="text-transform: uppercase"
+              required
+            />
+            <i class="fa-solid fa-check check-icon"></i>
+          </div>
+
+          <div class="form-row">
+            <label>Sexo</label>
+            <select
+              id="in_sexo"
+              required
+              style="
+                flex: 1.5;
+                padding: 8px;
+                border-radius: 6px;
+                border: 1px solid #cbd5e0;
+              "
+            >
+              <option value="">Seleccione...</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+            </select>
+            <i class="fa-solid fa-check check-icon"></i>
+          </div>
+
+          <div class="form-row">
+            <label>Correo</label>
+            <input type="email" id="in_correo" required />
+            <i class="fa-solid fa-check check-icon"></i>
+          </div>
+
+          <div class="form-row">
+            <label>Fecha de Nacimiento</label>
+            <input type="date" id="in_fecha" required />
+            <i class="fa-solid fa-check check-icon"></i>
+          </div>
+
+          <div class="form-row">
+            <label>Escuela de Procedencia</label>
+            <input
+              type="text"
+              id="in_escuela"
+              placeholder="Ej. CBTIS 123"
+              required
+            />
+            <i class="fa-solid fa-check check-icon"></i>
+          </div>
+
+          <div class="form-row">
+            <label>Promedio</label>
+            <input
+              type="number"
+              id="in_promedio"
+              step="0.1"
+              min="6"
+              max="10"
+              placeholder="0.0"
+              required
+            />
+            <i class="fa-solid fa-check check-icon"></i>
+          </div>
+
+          <div class="form-row">
+            <label>Carrera</label>
+            <input type="text" id="in_carrera" required />
+            <i class="fa-solid fa-check check-icon"></i>
+          </div>
+
+          <button type="submit" class="btn-main">Enviar Solicitud</button>
+        </form>
+
+        <script>
+          const camposFormulario = document.querySelectorAll(
+            "#registroForm input, #registroForm select",
+          );
+
+          camposFormulario.forEach((campo) => {
+            campo.addEventListener("input", function () {
+              const iconoCheck =
+                this.parentElement.querySelector(".check-icon");
+              let esValido = false;
+              if (this.id === "in_curp") {
+                esValido = this.value.trim().length === 18;
+              } else if (this.id === "in_promedio") {
+                const promedio = parseFloat(this.value);
+                esValido = promedio >= 6 && promedio <= 10;
+              } else if (this.type === "email") {
+                esValido = this.value.includes("@") && this.value.includes(".");
+              } else {
+                esValido = this.value.trim() !== "";
+              }
+              if (esValido) {
+                iconoCheck.classList.add("visible");
+              } else {
+                iconoCheck.classList.remove("visible");
+              }
+            });
+          });
+
+          document
+            .getElementById("registroForm")
+            .addEventListener("submit", function (e) {
+              e.preventDefault();
+
+              localStorage.setItem(
+                "asp_nombre",
+                document.getElementById("in_nombre").value.toUpperCase(),
+              );
+              localStorage.setItem(
+                "asp_curp",
+                document.getElementById("in_curp").value.toUpperCase(),
+              );
+              localStorage.setItem(
+                "asp_sexo",
+                document.getElementById("in_sexo").value,
+              );
+              localStorage.setItem(
+                "asp_correo",
+                document.getElementById("in_correo").value,
+              );
+              localStorage.setItem(
+                "asp_fecha",
+                document.getElementById("in_fecha").value,
+              );
+              localStorage.setItem(
+                "asp_escuela",
+                document.getElementById("in_escuela").value.toUpperCase(),
+              );
+              localStorage.setItem(
+                "asp_promedio",
+                document.getElementById("in_promedio").value,
+              );
+              localStorage.setItem(
+                "asp_carrera",
+                document.getElementById("in_carrera").value,
+              );
+
+              const folio =
+                "ASP-2026-" + Math.floor(Math.random() * 90000 + 10000);
+              localStorage.setItem("asp_folio", folio);
+
+              window.location.href = "ficha.html";
+            });
+        </script>
+
+        <div style="text-align: center">
+          <button type="reset" class="link-reset">
+            Restablecer Formulario
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

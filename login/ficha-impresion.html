@@ -78,7 +78,7 @@
         </div>
         <div class="dato-grupo">
           <span class="label">Sexo:</span>
-          <span class="valor">Por definir</span>
+          <span class="valor" id="out_sexo"></span>
         </div>
         <div class="dato-grupo">
           <span class="label">Teléfono:</span>
@@ -94,7 +94,7 @@
       <div class="grid-2-col">
         <div class="dato-grupo">
           <span class="label">Escuela de Procedencia:</span>
-          <span class="valor">CBTIS 43 (Ejemplo)</span>
+          <span class="valor" id="out_escuela"></span>
         </div>
         <div class="dato-grupo">
           <span class="label">Fecha de Registro:</span>
@@ -102,7 +102,7 @@
         </div>
         <div class="dato-grupo">
           <span class="label">Promedio:</span>
-          <span class="valor">0.0</span>
+          <span class="valor" id="out_promedio"></span>
         </div>
         <div class="dato-grupo" style="grid-column: 1 / -1">
           <span class="label">Carrera Solicitada:</span>
@@ -140,7 +140,6 @@
     </div>
 
 <script>
-
         function imprimirFicha() {
             const originalTitle = document.title;
             const folio = localStorage.getItem('asp_folio') || 'Ficha';            
@@ -148,23 +147,28 @@
             window.print();
             document.title = originalTitle; 
         }
+    document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById('out_nombre').textContent = localStorage.getItem('asp_nombre') || 'No registrado';
+    document.getElementById('out_curp').textContent = localStorage.getItem('asp_curp') || 'No registrado';
+    document.getElementById('out_correo').textContent = localStorage.getItem('asp_correo') || 'No registrado';
+        const outSexo = document.getElementById('out_sexo');
+    if(outSexo) outSexo.textContent = localStorage.getItem('asp_sexo') || 'No registrado';
+    const outEscuela = document.getElementById('out_escuela');
+    if(outEscuela) outEscuela.textContent = localStorage.getItem('asp_escuela') || 'No registrado';
+    
+    const outPromedio = document.getElementById('out_promedio');
+    if(outPromedio) outPromedio.textContent = localStorage.getItem('asp_promedio') || '0.0';
 
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById('out_nombre').textContent = localStorage.getItem('asp_nombre') || 'No registrado';
-            document.getElementById('out_curp').textContent = localStorage.getItem('asp_curp') || 'No registrado';
-            document.getElementById('out_correo').textContent = localStorage.getItem('asp_correo') || 'No registrado';
-            document.getElementById('out_carrera').textContent = localStorage.getItem('asp_carrera') || 'No registrado';
-            document.getElementById('out_folio').textContent = localStorage.getItem('asp_folio') || 'ASP-000000';
-            
-            const fechaInput = localStorage.getItem('asp_fecha');
-            if(fechaInput) {
-                const partes = fechaInput.split('-');
-                document.getElementById('out_fecha').textContent = `${partes[2]}/${partes[1]}/${partes[0]}`;
-            }
-
-            const hoy = new Date();
-            document.getElementById('out_fecha_registro').textContent = hoy.toLocaleDateString('es-MX');
-        });
+    document.getElementById('out_carrera').textContent = localStorage.getItem('asp_carrera') || 'No registrado';
+    document.getElementById('out_folio').textContent = localStorage.getItem('asp_folio') || 'ASP-000000';
+        const fechaInput = localStorage.getItem('asp_fecha');
+    if(fechaInput) {
+        const partes = fechaInput.split('-');
+        document.getElementById('out_fecha').textContent = `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
+    const hoy = new Date();
+    document.getElementById('out_fecha_registro').textContent = hoy.toLocaleDateString('es-MX');
+});
     </script>
 </body>
 </html>

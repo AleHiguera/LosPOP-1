@@ -65,18 +65,20 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const nombre = localStorage.getItem('asp_nombre') || 'No registrado';
-            const curp = localStorage.getItem('asp_curp') || 'No registrado';
-            const correo = localStorage.getItem('asp_correo') || 'No registrado';
-            const carrera = localStorage.getItem('asp_carrera') || 'No registrado';
-            const folio = localStorage.getItem('asp_folio') || 'ASP-000-000';
+    const nombre = localStorage.getItem('asp_nombre') || 'No registrado';
+    const curp = localStorage.getItem('asp_curp') || 'No registrado';
+    const correo = localStorage.getItem('asp_correo') || 'No registrado';
+    const carrera = localStorage.getItem('asp_carrera') || 'No registrado';
+    const folio = localStorage.getItem('asp_folio') || 'ASP-000-000';
+    const escuela = localStorage.getItem('asp_escuela') || 'No registrado';
+    const promedio = localStorage.getItem('asp_promedio') || '0.0';
 
-            document.getElementById('prev_nombre').textContent = nombre;
-            document.getElementById('prev_curp').textContent = curp;
-            document.getElementById('prev_correo').textContent = correo;
-            document.getElementById('prev_carrera').textContent = carrera;
-            document.getElementById('prev_folio').textContent = folio;
-            document.getElementById('alertFolio').textContent = folio;
+    document.getElementById('prev_nombre').textContent = nombre;
+    document.getElementById('prev_curp').textContent = curp;
+    document.getElementById('prev_correo').textContent = correo;
+    document.getElementById('prev_carrera').textContent = carrera;
+    document.getElementById('prev_folio').textContent = folio;
+    document.getElementById('alertFolio').textContent = folio;
 
             const alertBox = document.getElementById('successAlert');
             setTimeout(() => {
