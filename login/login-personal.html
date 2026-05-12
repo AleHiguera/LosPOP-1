@@ -67,13 +67,9 @@
         if (username === 'admin' && password === '1234') {
             window.location.href = '../login/panel-personal.html';
         } 
-        else if (username === 'profe' && password === '5678') {
+        else{
             localStorage.setItem('usuario_activo', username);
             window.location.href = '../login/bienvenida.html';
-        } 
-        else {
-            alert("Usuario o contraseña incorrectos. Acceso denegado.");
-            passwordInput.value = ''; 
         }
     });
 
