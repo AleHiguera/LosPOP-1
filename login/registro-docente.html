@@ -74,38 +74,45 @@
     </main>
 
     <script>
-        const camposDocente = document.querySelectorAll('#registroDocenteForm input, #registroDocenteForm select');
+    document.getElementById('registroDocenteForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const datos = {
+            doc_num: document.getElementById('doc_num').value,
+            doc_nombre: document.getElementById('doc_nombre').value,
+            doc_rfc: document.getElementById('doc_rfc').value,
+            doc_depto: document.getElementById('doc_depto').value,
+            doc_correo: document.getElementById('doc_correo').value
+        };
 
-        camposDocente.forEach(campo => {
-            campo.addEventListener('input', function() {
-                const iconoCheck = this.parentElement.querySelector('.check-icon');
-                let esValido = false;
-
-                if (this.id === 'doc_rfc') {
-                    esValido = this.value.trim().length === 13;
-                } 
-                else if (this.type === 'email') {
-                    esValido = this.value.includes('@') && this.value.includes('.');
-                }
-                else {
-                    esValido = this.value.trim() !== '';
-                }
-
-                if (esValido) {
-                    iconoCheck.classList.add('visible');
-                } else {
-                    iconoCheck.classList.remove('visible');
-                }
+        try {
+            const response = await fetch('http://localhost:3000/api/registrar-docente', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
             });
-        });
 
-        // Simulación de guardado
-        document.getElementById('registroDocenteForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert("¡Docente registrado correctamente en el sistema!");
-            window.location.href = '../login/panel-personal.html'; 
+            if (response.ok) {
+                alert("¡Docente registrado correctamente en el sistema!");
+                window.location.href = 'panel-personal.html'; 
+            } else {
+                const errorData = await response.json();
+                alert("Error: " + errorData.error);
+            }
+        } catch (error) {
+            alert("No se pudo establecer conexión con el servidor.");
+        }
+    });
+
+    // Mantener lógica visual de los iconos check
+    document.querySelectorAll('#registroDocenteForm input, #registroDocenteForm select').forEach(campo => {
+        campo.addEventListener('input', function() {
+            const iconoCheck = this.parentElement.querySelector('.check-icon');
+            if (this.value.trim() !== '') iconoCheck.classList.add('visible');
+            else iconoCheck.classList.remove('visible');
         });
-    </script>
+    });
+</script>
 
 </body>
 </html>

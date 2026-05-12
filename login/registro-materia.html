@@ -101,33 +101,61 @@
     </main>
 
     <script>
-        const inputs = document.querySelectorAll('#registroMateriaForm input, #registroMateriaForm select');
-        inputs.forEach(input => {
-            input.addEventListener('input', function() {
-                const icon = this.parentElement.querySelector('.check-icon');
-                if(icon) {
-                    if(this.value.trim() !== "") icon.classList.add('visible');
-                    else icon.classList.remove('visible');
-                }
+    const ht = document.getElementById('horas_t');
+    const hp = document.getElementById('horas_p');
+    const total = document.getElementById('horas_total');
+
+    // Cálculo automático de horas
+    function calcularTotal() {
+        total.value = parseInt(ht.value || 0) + parseInt(hp.value || 0);
+    }
+    ht.addEventListener('input', calcularTotal);
+    hp.addEventListener('input', calcularTotal);
+
+    document.getElementById('registroMateriaForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const datos = {
+            mat_clave: document.getElementById('mat_clave').value,
+            mat_nombre: document.getElementById('mat_nombre').value,
+            mat_corto: document.getElementById('mat_corto').value,
+            mat_creditos: parseInt(document.getElementById('mat_creditos').value),
+            mat_carrera: document.getElementById('mat_carrera').value,
+            mat_semestre: document.getElementById('mat_semestre').value,
+            horas_t: parseInt(ht.value || 0),
+            horas_p: parseInt(hp.value || 0),
+            horas_total: parseInt(total.value || 0)
+        };
+
+        try {
+            const response = await fetch('http://localhost:3000/api/registrar-materia', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
             });
-        });
 
-        const ht = document.getElementById('horas_t');
-        const hp = document.getElementById('horas_p');
-        const total = document.getElementById('horas_total');
-
-        function calcularTotal() {
-            total.value = parseInt(ht.value || 0) + parseInt(hp.value || 0);
+            if (response.ok) {
+                alert("Materia registrada con éxito en el catálogo institucional.");
+                window.location.href = 'panel-personal.html';
+            } else {
+                const errorData = await response.json();
+                alert("Error: " + errorData.error);
+            }
+        } catch (error) {
+            alert("No se pudo establecer conexión con el servidor.");
         }
+    });
 
-        ht.addEventListener('input', calcularTotal);
-        hp.addEventListener('input', calcularTotal);
-
-        document.getElementById('registroMateriaForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert("Materia registrada con éxito en el catálogo institucional.");
-            window.location.href = 'panel-personal.html';
+    // Lógica visual para checks
+    document.querySelectorAll('#registroMateriaForm input, #registroMateriaForm select').forEach(input => {
+        input.addEventListener('input', function() {
+            const icon = this.parentElement.querySelector('.check-icon');
+            if(icon) {
+                if(this.value.trim() !== "") icon.classList.add('visible');
+                else icon.classList.remove('visible');
+            }
         });
-    </script>
+    });
+</script>
 </body>
 </html>
