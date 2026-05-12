@@ -1,0 +1,120 @@
+.form-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+    margin: 0 auto;
+    border-top: 4px solid #162444; /* Línea superior institucional */
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-header h2 {
+    color: #1a2b4c;
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.form-header p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.form-row label {
+    flex: 1;
+    font-size: 14px;
+    color: #111827;
+    font-weight: 500;
+}
+
+.form-row input, .form-row select {
+    flex: 2;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-row input:focus, .form-row select:focus {
+    border-color: #162444;
+}
+
+.check-icon {
+    color: #10b981;
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.3s ease;
+}
+
+.check-icon.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: #162444;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #0f182e;
+}
+
+.btn-back {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.btn-back:hover {
+    color: #162444;
+    text-decoration: underline;
+}
+
+/* Responsividad para la tarjeta del formulario */
+@media (max-width: 600px) {
+    .form-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .form-row input, .form-row select {
+        width: 100%;
+    }
+
+    .check-icon {
+        position: relative;
+        top: -35px;
+        right: -90%;
+    }
+}
