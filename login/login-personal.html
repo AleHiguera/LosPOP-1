@@ -61,27 +61,20 @@
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const username = usernameInput.value;
-        const password = passwordInput.value;
-        const regexAlfanumerico = /^[a-zA-Z0-9]+$/;
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value.trim();
 
-        if (username.length > 15) {
-            alert("El nombre de usuario no puede exceder los 15 caracteres.");
-            return;
+        if (username === 'admin' && password === '1234') {
+            window.location.href = '../login/panel-personal.html';
+        } 
+        else if (username === 'profe' && password === '5678') {
+            localStorage.setItem('usuario_activo', username);
+            window.location.href = '../login/bienvenida.html';
+        } 
+        else {
+            alert("Usuario o contraseña incorrectos. Acceso denegado.");
+            passwordInput.value = ''; 
         }
-
-        if (password.length > 15) {
-            alert("La contraseña no puede exceder los 15 caracteres.");
-            return;
-        }
-
-        if (!regexAlfanumerico.test(password)) {
-            alert("La contraseña no admite caracteres especiales (solo letras y números).");
-            return;
-        }
-
-        alert("Iniciando sesión...");
-        window.location.href = 'bienvenida.html';
     });
 
     passwordInput.addEventListener('keypress', (e) => {
