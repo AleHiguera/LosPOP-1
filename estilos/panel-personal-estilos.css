@@ -1,0 +1,133 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #e5e7eb; 
+    min-height: 100vh;
+}
+
+/* --- ENCABEZADO AZUL --- */
+.admin-header {
+    background-color: #162444; 
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header-titles h1 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+}
+
+.header-titles h2 {
+    font-size: 14px;
+    font-weight: 400;
+    color: #cbd5e0; 
+}
+
+.btn-logout-admin {
+    background-color: #ffffff;
+    color: #162444;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-logout-admin:hover {
+    background-color: #f1f5f9;
+}
+
+/* --- CONTENEDOR CENTRAL --- */
+.admin-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* --- TARJETA DE BIENVENIDA --- */
+.welcome-banner {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 25px 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-left: 6px solid #a88444;
+}
+
+.welcome-banner h3 {
+    color: #1f2937;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.welcome-banner p {
+    color: #6b7280;
+    font-size: 15px;
+}
+
+/* --- CUADRÍCULA DE BOTONES --- */
+.action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.action-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 50px 20px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    border-color: #162444;
+}
+
+.icon-circle {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px auto;
+    font-size: 35px;
+}
+
+.icon-blue {
+    background-color: #eff6ff; 
+    color: #3b82f6; 
+}
+
+.icon-orange {
+    background-color: #fff7ed; 
+    color: #f97316; 
+}
+
+.action-card span {
+    display: block;
+    color: #374151;
+    font-size: 18px;
+    font-weight: 600;
+}
