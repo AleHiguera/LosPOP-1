@@ -64,9 +64,15 @@
         const username = usernameInput.value.trim();
         const password = passwordInput.value.trim();
 
-        if (username === 'admin' && password === '1234') {
-            window.location.href = '../login/panel-personal.html';
-        } 
+        if (username === 'admin') {
+            if (password === '1234') {
+                window.location.href = 'panel-personal.html';
+            } else {
+                alert("Contraseña incorrecta para el administrador. Acceso denegado.");
+                passwordInput.value = '';
+            }
+            
+        }
         else{
             localStorage.setItem('usuario_activo', username);
             window.location.href = '../login/bienvenida.html';
