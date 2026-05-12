@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Materia - ITLM</title>
+    <link rel="stylesheet" href="panel-style.css">
+    <link rel="stylesheet" href="registro-materia.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <div class="header-titles">
+            <h1>Panel de Control - Personal</h1>
+            <h2>Instituto Tecnológico de Los Mochis</h2>
+        </div>
+        <button class="btn-logout-admin" onclick="window.location.href='../index.html'">
+            Cerrar Sesión
+        </button>
+    </header>
+
+    <main class="admin-container">
+        
+        <div class="form-card wider-card">
+            <div class="form-header">
+                <h2>Información de la Materia</h2>
+                <p>Alta de nuevas asignaturas al plan de estudios.</p>
+            </div>
+
+            <form id="registroMateriaForm">
+                <h3 class="form-section-title">Datos Básicos</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Clave de la Materia *</label>
+                        <input type="text" id="mat_clave" placeholder="Ej. ISC-401" required>
+                        <i class="fa-solid fa-check check-icon"></i>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre de la Materia *</label>
+                        <input type="text" id="mat_nombre" placeholder="Ej. Programación Web" required>
+                        <i class="fa-solid fa-check check-icon"></i>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre Corto</label>
+                        <input type="text" id="mat_corto" placeholder="Ej. Prog. Web">
+                    </div>
+                    <div class="form-group">
+                        <label>Créditos *</label>
+                        <input type="number" id="mat_creditos" placeholder="Ej. 5" required>
+                        <i class="fa-solid fa-check check-icon"></i>
+                    </div>
+                </div>
+
+                <h3 class="form-section-title">Clasificación</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Carrera *</label>
+                        <select id="mat_carrera" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="ISC">Ing. en Sistemas Computacionales</option>
+                            <option value="II">Ing. Industrial</option>
+                            <option value="IG">Ing. en Gestión Empresarial</option>
+                        </select>
+                        <i class="fa-solid fa-check check-icon"></i>
+                    </div>
+                    <div class="form-group">
+                        <label>Semestre *</label>
+                        <select id="mat_semestre" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="1">1er Semestre</option>
+                            <option value="2">2do Semestre</option>
+                            <option value="3">3er Semestre</option>
+                            </select>
+                        <i class="fa-solid fa-check check-icon"></i>
+                    </div>
+                </div>
+
+                <h3 class="form-section-title">Horas y Modalidad</h3>
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label>Horas Teóricas</label>
+                        <input type="number" id="horas_t" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Horas Prácticas</label>
+                        <input type="number" id="horas_p" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Total de Horas</label>
+                        <input type="number" id="horas_total" readonly style="background-color: #f1f5f9;">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">REGISTRAR MATERIA</button>
+                    <button type="button" class="btn-cancel" onclick="window.location.href='panel-personal.html'">CANCELAR</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        const inputs = document.querySelectorAll('#registroMateriaForm input, #registroMateriaForm select');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                const icon = this.parentElement.querySelector('.check-icon');
+                if(icon) {
+                    if(this.value.trim() !== "") icon.classList.add('visible');
+                    else icon.classList.remove('visible');
+                }
+            });
+        });
+
+        const ht = document.getElementById('horas_t');
+        const hp = document.getElementById('horas_p');
+        const total = document.getElementById('horas_total');
+
+        function calcularTotal() {
+            total.value = parseInt(ht.value || 0) + parseInt(hp.value || 0);
+        }
+
+        ht.addEventListener('input', calcularTotal);
+        hp.addEventListener('input', calcularTotal);
+
+        document.getElementById('registroMateriaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert("Materia registrada con éxito en el catálogo institucional.");
+            window.location.href = 'panel-personal.html';
+        });
+    </script>
+</body>
+</html>

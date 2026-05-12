@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: #e5e7eb; /* Fondo gris claro */
+    background-color: #e5e7eb;
     min-height: 100vh;
 }
 
@@ -106,7 +106,7 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* Tarjeta Azul (Próximos Pasos) */
+/* Tarjeta Azul */
 .card-info {
     border-left: 8px solid #3b82f6;
     background-color: #eff6ff;
@@ -140,7 +140,7 @@ body {
 }
 
 .card:nth-child(2) {
-    flex-direction: column; /* Cambia a columna para esta tarjeta específica */
+    flex-direction: column; 
 }
 
 .info-grid {
