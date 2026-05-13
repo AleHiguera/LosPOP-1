@@ -83,51 +83,66 @@ body {
 /* --- CUADRÍCULA DE BOTONES --- */
 .action-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr); /* Fuerza las 3 columnas */
     gap: 25px;
 }
 
 .action-card {
     background: #ffffff;
     border-radius: 8px;
-    padding: 50px 20px;
+    padding: 40px 20px; /* Reduje un poco el padding para que encajen mejor */
     text-align: center;
     text-decoration: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     border: 2px solid transparent;
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .action-card:hover {
-    transform: translateY(-5px); 
+    transform: translateY(-5px);
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    border-color: #162444;
+    border-color: #162444; 
 }
 
+/* Para las tarjetas de "Próximamente" */
+.disabled-card:hover {
+    transform: none; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-color: transparent;
+    cursor: default;
+}
+
+.card-title {
+    color: #374151;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.card-desc {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+/* CÍRCULOS DE LOS ICONOS */
 .icon-circle {
-    width: 85px;
-    height: 85px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 25px auto;
-    font-size: 35px;
+    margin: 0 auto 20px auto;
+    font-size: 32px;
 }
 
-.icon-blue {
-    background-color: #eff6ff; 
-    color: #3b82f6; 
-}
-
-.icon-orange {
-    background-color: #fff7ed; 
-    color: #f97316; 
-}
-
-.action-card span {
-    display: block;
-    color: #374151;
-    font-size: 18px;
-    font-weight: 600;
-}
+.icon-blue { background-color: #eff6ff; color: #3b82f6; }
+.icon-orange { background-color: #fff7ed; color: #f97316; }
+.icon-green { background-color: #ecfdf5; color: #10b981; }
+.icon-purple { background-color: #f5f3ff; color: #a855f7; }
+.icon-yellow { background-color: #fefce8; color: #eab308; }
+.icon-gray { background-color: #f3f4f6; color: #6b7280; }
