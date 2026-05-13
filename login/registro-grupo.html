@@ -32,17 +32,17 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Clave del Grupo *</label>
-                        <input type="text" id="grp_clave" placeholder="Ej: ISC-401-A" required>
+                        <input type="text" id="clave_grupo" placeholder="Ej: ISC-401-A" required>
                         <i class="fa-solid fa-check check-icon"></i>
                     </div>
                     <div class="form-group">
                         <label>Nombre del Grupo *</label>
-                        <input type="text" id="grp_nombre" placeholder="Ej: Grupo A" required>
+                        <input type="text" id="nombre_grupo" placeholder="Ej: Grupo A" required>
                         <i class="fa-solid fa-check check-icon"></i>
                     </div>
                     <div class="form-group">
                         <label>Carrera *</label>
-                        <select required>
+                        <select id="carrera" required>
                             <option value="">Seleccionar...</option>
                             <option value="ISC">Ing. en Sistemas Computacionales</option>
                             <option value="II">Ing. Industrial</option>
@@ -50,10 +50,17 @@
                     </div>
                     <div class="form-group">
                         <label>Semestre *</label>
-                        <select required>
+                        <select id="semestre" required>
                             <option value="">Seleccionar...</option>
                             <option value="1">1er Semestre</option>
                             <option value="2">2do Semestre</option>
+                            <option value="3">3er Semestre</option>
+                            <option value="4">4to Semestre</option>
+                            <option value="5">5to Semestre</option>
+                            <option value="6">6to Semestre</option>
+                            <option value="7">7mo Semestre</option>
+                            <option value="8">8vo Semestre</option>
+                            <option value="9">9no Semestre</option>
                         </select>
                     </div>
                 </div>
@@ -62,7 +69,7 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Periodo *</label>
-                        <select required>
+                        <select id="periodo" required>
                             <option value="">Seleccionar...</option>
                             <option value="AGO-DIC">Agosto - Diciembre 2026</option>
                             <option value="ENE-JUN">Enero - Junio 2026</option>
@@ -70,33 +77,29 @@
                     </div>
                     <div class="form-group">
                         <label>Cupo Máximo *</label>
-                        <input type="number" placeholder="Ej: 35" required>
+                        <input type="number" id="cupo_maximo" placeholder="Ej: 35" required>
                     </div>
                     <div class="form-group">
                         <label>Fecha de Inicio *</label>
-                        <input type="date" required>
+                        <input type="date" id="fecha_inicio" required>
                     </div>
                     <div class="form-group">
                         <label>Fecha de Fin *</label>
-                        <input type="date" required>
+                        <input type="date" id="fecha_fin" required>
                     </div>
                 </div>
 
                 <h3 class="form-section-title">Asignación</h3>
                 <div class="form-group full-width">
                     <label>Materia Asignada *</label>
-                    <select required>
+                    <select id="id_materia" required>
                         <option value="">Seleccionar...</option>
-                        <option value="1">Programación Web</option>
-                        <option value="2">Estructura de Datos</option>
                     </select>
                 </div>
                 <div class="form-group full-width" style="margin-top: 15px;">
                     <label>Docente Titular *</label>
-                    <select required>
+                    <select id="id_docente" required>
                         <option value="">Seleccionar...</option>
-                        <option value="1">Ing. Juan Carlos García</option>
-                        <option value="2">Lic. Ana María López</option>
                     </select>
                 </div>
 
@@ -104,26 +107,29 @@
                 <div class="form-grid-3">
                     <div class="form-group">
                         <label>Días *</label>
-                        <select required>
+                        <select id="horario_dias" required>
                             <option value="">Seleccionar...</option>
                             <option value="L-M-V">Lunes, Miércoles, Viernes</option>
                             <option value="M-J">Martes, Jueves</option>
+                            <option value="L-V">Lunes a Viernes</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Hora de Inicio *</label>
-                        <input type="time" required>
+                        <input type="time" id="hora_inicio" required>
                     </div>
                     <div class="form-group">
                         <label>Hora de Fin *</label>
-                        <input type="time" required>
+                        <input type="time" id="hora_fin" required>
                     </div>
                 </div>
                 <div class="form-group full-width" style="margin-top: 15px;">
                     <label>Aula Asignada *</label>
-                    <select required>
+                    <select id="aula" required>
                         <option value="">Seleccionar...</option>
                         <option value="A1">Edificio A - Aula 1</option>
+                        <option value="A2">Edificio A - Aula 2</option>
+                        <option value="B1">Edificio B - Aula 1</option>
                         <option value="B2">Edificio B - Aula 2</option>
                     </select>
                 </div>
@@ -132,14 +138,14 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Estado *</label>
-                        <select required>
+                        <select id="estado" required>
                             <option value="Activo">Activo</option>
                             <option value="Inactivo">Inactivo</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Modalidad *</label>
-                        <select required>
+                        <select id="modalidad" required>
                             <option value="">Seleccionar...</option>
                             <option value="Presencial">Presencial</option>
                             <option value="Virtual">Virtual</option>
@@ -149,11 +155,11 @@
                 </div>
                 <div class="form-group full-width" style="margin-top: 15px;">
                     <label>Observaciones:</label>
-                    <textarea rows="3" placeholder="Notas adicionales sobre el grupo..."></textarea>
+                    <textarea id="observaciones" rows="3" placeholder="Notas adicionales sobre el grupo..."></textarea>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn-save-green">REGISTRAR GRUPO</button>
+                    <button type="submit" id="btnSubmitGrupo" class="btn-save-green">REGISTRAR GRUPO</button>
                     <button type="button" class="btn-cancel" onclick="window.location.href='panel-personal.html'">CANCELAR</button>
                 </div>
             </form>
@@ -161,23 +167,159 @@
     </main>
 
     <script>
-        // Lógica de validación de palomitas para Clave y Nombre
-        const inputs = document.querySelectorAll('#registroGrupoForm input[type="text"]');
-        inputs.forEach(input => {
-            input.addEventListener('input', function() {
+        const API_URL = 'http://localhost:3000';
+
+        // ── Al cargar: poblar selects de Docente y Materia desde la BD ────
+        document.addEventListener('DOMContentLoaded', async () => {
+            await cargarDocentes();
+            await cargarMaterias();
+
+            // Si cambia carrera o semestre, refiltrar materias
+            document.getElementById('carrera').addEventListener('change', cargarMaterias);
+            document.getElementById('semestre').addEventListener('change', cargarMaterias);
+        });
+
+        async function cargarDocentes() {
+            try {
+                const res  = await fetch(`${API_URL}/api/docentes`);
+                const data = await res.json();
+                const sel  = document.getElementById('id_docente');
+                sel.innerHTML = '<option value="">Seleccionar...</option>';
+                data.forEach(d => {
+                    const opt = document.createElement('option');
+                    opt.value       = d.id;
+                    opt.textContent = d.doc_nombre;
+                    sel.appendChild(opt);
+                });
+            } catch (err) {
+                console.warn('No se pudieron cargar los docentes:', err.message);
+            }
+        }
+
+        async function cargarMaterias() {
+            try {
+                const carrera  = document.getElementById('carrera').value;
+                const semestre = document.getElementById('semestre').value;
+
+                let url = `${API_URL}/api/materias`;
+                const params = new URLSearchParams();
+                if (carrera)  params.append('carrera',  carrera);
+                if (semestre) params.append('semestre', semestre);
+                if (params.toString()) url += '?' + params.toString();
+
+                const res  = await fetch(url);
+                const data = await res.json();
+                const sel  = document.getElementById('id_materia');
+                sel.innerHTML = '<option value="">Seleccionar...</option>';
+                data.forEach(m => {
+                    const opt = document.createElement('option');
+                    opt.value       = m.id;
+                    opt.textContent = `${m.mat_clave} – ${m.mat_nombre}`;
+                    sel.appendChild(opt);
+                });
+            } catch (err) {
+                console.warn('No se pudieron cargar las materias:', err.message);
+            }
+        }
+
+        // ── Palomitas de validación en Clave y Nombre ──────────────────────
+        ['clave_grupo', 'nombre_grupo'].forEach(id => {
+            document.getElementById(id).addEventListener('input', function () {
                 const icon = this.parentElement.querySelector('.check-icon');
-                if(icon) {
-                    if(this.value.trim().length > 3) icon.classList.add('visible');
+                if (icon) {
+                    if (this.value.trim().length > 3) icon.classList.add('visible');
                     else icon.classList.remove('visible');
                 }
             });
         });
 
-        document.getElementById('registroGrupoForm').addEventListener('submit', function(e) {
+        // ── Envío del formulario ───────────────────────────────────────────
+        document.getElementById('registroGrupoForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-            alert("¡Grupo registrado exitosamente y horario asignado!");
-            window.location.href = 'panel-personal.html';
+
+            const clave_grupo   = document.getElementById('clave_grupo').value.trim();
+            const nombre_grupo  = document.getElementById('nombre_grupo').value.trim();
+            const carrera       = document.getElementById('carrera').value;
+            const semestre      = document.getElementById('semestre').value;
+            const periodo       = document.getElementById('periodo').value;
+            const cupo_maximo   = document.getElementById('cupo_maximo').value;
+            const fecha_inicio  = document.getElementById('fecha_inicio').value;
+            const fecha_fin     = document.getElementById('fecha_fin').value;
+            const id_materia    = document.getElementById('id_materia').value;
+            const id_docente    = document.getElementById('id_docente').value;
+            const horario_dias  = document.getElementById('horario_dias').value;
+            const hora_inicio   = document.getElementById('hora_inicio').value;
+            const hora_fin      = document.getElementById('hora_fin').value;
+            const aula          = document.getElementById('aula').value;
+            const estado        = document.getElementById('estado').value;
+            const modalidad     = document.getElementById('modalidad').value;
+            const observaciones = document.getElementById('observaciones').value.trim();
+
+            const payload = {
+                clave_grupo, nombre_grupo, carrera,
+                semestre:    semestre    ? parseInt(semestre)    : null,
+                periodo:     periodo     || null,
+                cupo_maximo: cupo_maximo ? parseInt(cupo_maximo) : null,
+                fecha_inicio: fecha_inicio || null,
+                fecha_fin:    fecha_fin    || null,
+                id_materia:   id_materia   ? parseInt(id_materia)  : null,
+                id_docente:   id_docente   ? parseInt(id_docente)  : null,
+                horario_dias: horario_dias || null,
+                hora_inicio:  hora_inicio  || null,
+                hora_fin:     hora_fin     || null,
+                aula:         aula         || null,
+                estado, modalidad,
+                observaciones: observaciones || null
+            };
+
+            const btn = document.getElementById('btnSubmitGrupo');
+            btn.disabled = true;
+            btn.textContent = 'GUARDANDO...';
+
+            try {
+                const response = await fetch(`${API_URL}/api/grupos`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert(`✅ Grupo registrado exitosamente.\nClave: ${data.clave_grupo}`);
+                    window.location.href = 'panel-personal.html';
+                } else {
+                    mostrarMensaje(data.error || 'Error al registrar grupo.', 'error');
+                }
+            } catch (err) {
+                mostrarMensaje('No se pudo conectar con el servidor. Verifica que esté en ejecución.', 'error');
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'REGISTRAR GRUPO';
+            }
         });
+
+        // ── Notificación flotante ──────────────────────────────────────────
+        function mostrarMensaje(texto, tipo) {
+            let alerta = document.getElementById('form-alerta');
+            if (!alerta) {
+                alerta = document.createElement('div');
+                alerta.id = 'form-alerta';
+                alerta.style.cssText = `
+                    position: fixed; top: 20px; right: 20px; z-index: 9999;
+                    padding: 14px 22px; border-radius: 8px; font-weight: 600;
+                    font-size: .9rem; box-shadow: 0 4px 16px rgba(0,0,0,.15);
+                    transition: opacity .3s;
+                `;
+                document.body.appendChild(alerta);
+            }
+            alerta.textContent = texto;
+            alerta.style.background = tipo === 'error' ? '#c0392b' : '#27ae60';
+            alerta.style.color = '#fff';
+            alerta.style.opacity = '1';
+            setTimeout(() => { alerta.style.opacity = '0'; }, 4000);
+        }
     </script>
 </body>
 </html>
