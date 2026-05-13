@@ -1,0 +1,100 @@
+.wider-card {
+    max-width: 1000px !important;
+}
+
+.form-section-title {
+    font-size: 15px;
+    color: #1e3a8a;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 5px;
+    margin: 30px 0 15px 0;
+    font-weight: 700;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 40px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.form-group input, .form-group select {
+    padding: 9px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    outline: none;
+    font-size: 14px;
+}
+
+.form-group small {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.check-icon {
+    position: absolute;
+    right: 10px;
+    top: 30px;
+    color: #10b981;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.check-icon.visible {
+    opacity: 1;
+}
+
+/* --- BOTONES --- */
+.form-actions {
+    margin-top: 40px;
+    display: flex;
+    gap: 20px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 25px;
+}
+
+.btn-save-purple {
+    flex: 2;
+    padding: 15px;
+    background-color: #a855f7; 
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.3s;
+    text-transform: uppercase;
+}
+
+.btn-save-purple:hover {
+    background-color: #9333ea;
+}
+
+.btn-cancel {
+    flex: 1;
+    padding: 15px;
+    background-color: #64748b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+}
