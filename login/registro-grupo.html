@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Grupo - ITLM</title>
+    <link rel="stylesheet" href="panel-style.css">
+    <link rel="stylesheet" href="registro-grupo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <div class="header-titles">
+            <h1>Panel de Control - Personal</h1>
+            <h2>Instituto Tecnológico de Los Mochis</h2>
+        </div>
+        <button class="btn-logout-admin" onclick="window.location.href='panel-personal.html'">
+            Regresar al Dashboard
+        </button>
+    </header>
+
+    <main class="admin-container">
+        <div class="form-card wider-card">
+            <div class="form-header">
+                <h2>Información del Grupo</h2>
+                <p>Configuración de grupos, horarios y asignación de docentes.</p>
+            </div>
+
+            <form id="registroGrupoForm">
+                <h3 class="form-section-title">Datos Básicos</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Clave del Grupo *</label>
+                        <input type="text" id="grp_clave" placeholder="Ej: ISC-401-A" required>
+                        <i class="fa-solid fa-check check-icon"></i>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre del Grupo *</label>
+                        <input type="text" id="grp_nombre" placeholder="Ej: Grupo A" required>
+                        <i class="fa-solid fa-check check-icon"></i>
+                    </div>
+                    <div class="form-group">
+                        <label>Carrera *</label>
+                        <select required>
+                            <option value="">Seleccionar...</option>
+                            <option value="ISC">Ing. en Sistemas Computacionales</option>
+                            <option value="II">Ing. Industrial</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Semestre *</label>
+                        <select required>
+                            <option value="">Seleccionar...</option>
+                            <option value="1">1er Semestre</option>
+                            <option value="2">2do Semestre</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3 class="form-section-title">Periodo y Capacidad</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Periodo *</label>
+                        <select required>
+                            <option value="">Seleccionar...</option>
+                            <option value="AGO-DIC">Agosto - Diciembre 2026</option>
+                            <option value="ENE-JUN">Enero - Junio 2026</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Cupo Máximo *</label>
+                        <input type="number" placeholder="Ej: 35" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de Inicio *</label>
+                        <input type="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de Fin *</label>
+                        <input type="date" required>
+                    </div>
+                </div>
+
+                <h3 class="form-section-title">Asignación</h3>
+                <div class="form-group full-width">
+                    <label>Materia Asignada *</label>
+                    <select required>
+                        <option value="">Seleccionar...</option>
+                        <option value="1">Programación Web</option>
+                        <option value="2">Estructura de Datos</option>
+                    </select>
+                </div>
+                <div class="form-group full-width" style="margin-top: 15px;">
+                    <label>Docente Titular *</label>
+                    <select required>
+                        <option value="">Seleccionar...</option>
+                        <option value="1">Ing. Juan Carlos García</option>
+                        <option value="2">Lic. Ana María López</option>
+                    </select>
+                </div>
+
+                <h3 class="form-section-title">Horario de Clases</h3>
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label>Días *</label>
+                        <select required>
+                            <option value="">Seleccionar...</option>
+                            <option value="L-M-V">Lunes, Miércoles, Viernes</option>
+                            <option value="M-J">Martes, Jueves</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Hora de Inicio *</label>
+                        <input type="time" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Hora de Fin *</label>
+                        <input type="time" required>
+                    </div>
+                </div>
+                <div class="form-group full-width" style="margin-top: 15px;">
+                    <label>Aula Asignada *</label>
+                    <select required>
+                        <option value="">Seleccionar...</option>
+                        <option value="A1">Edificio A - Aula 1</option>
+                        <option value="B2">Edificio B - Aula 2</option>
+                    </select>
+                </div>
+
+                <h3 class="form-section-title">Estado del Grupo</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Estado *</label>
+                        <select required>
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Modalidad *</label>
+                        <select required>
+                            <option value="">Seleccionar...</option>
+                            <option value="Presencial">Presencial</option>
+                            <option value="Virtual">Virtual</option>
+                            <option value="Hibrida">Híbrida</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group full-width" style="margin-top: 15px;">
+                    <label>Observaciones:</label>
+                    <textarea rows="3" placeholder="Notas adicionales sobre el grupo..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-save-green">REGISTRAR GRUPO</button>
+                    <button type="button" class="btn-cancel" onclick="window.location.href='panel-personal.html'">CANCELAR</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Lógica de validación de palomitas para Clave y Nombre
+        const inputs = document.querySelectorAll('#registroGrupoForm input[type="text"]');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                const icon = this.parentElement.querySelector('.check-icon');
+                if(icon) {
+                    if(this.value.trim().length > 3) icon.classList.add('visible');
+                    else icon.classList.remove('visible');
+                }
+            });
+        });
+
+        document.getElementById('registroGrupoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert("¡Grupo registrado exitosamente y horario asignado!");
+            window.location.href = 'panel-personal.html';
+        });
+    </script>
+</body>
+</html>
