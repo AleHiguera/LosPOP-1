@@ -27,14 +27,11 @@
                 <div class="search-box">
                     <input type="text" id="buscadorAlumnos" placeholder="Buscar por nombre o número de control...">
                 </div>
-
-                <div class="student-list" id="contenedor-alumnos">
-                    </div>
+                <div class="student-list" id="contenedor-alumnos"></div>
             </div>
         </aside>
 
         <section class="assignment-workspace">
-            
             <div class="info-card selected-student-card">
                 <h3 class="blue-title">Alumno Seleccionado</h3>
                 <h2 class="student-name-large" id="top-nombre">Seleccione un alumno</h2>
@@ -46,8 +43,7 @@
                 <div class="card-header">
                     <h3 class="section-title">Materias Inscritas (<span id="counter-title">0</span>/8)</h3>
                 </div>
-                <div id="lista-inscritas" class="subject-list">
-                    </div>
+                <div id="lista-inscritas" class="subject-list"></div>
             </div>
 
             <div class="info-card">
@@ -57,155 +53,167 @@
                         <option>Todos los semestres</option>
                     </select>
                 </div>
-                <div id="lista-disponibles" class="subject-list scrollable-list">
-                    </div>
+                <div id="lista-disponibles" class="subject-list scrollable-list"></div>
             </div>
-
         </section>
     </main>
 
     <script>
-        // "Base de Datos" simulada
         const baseDatos = {
             alumnos: {
                 '20240001': { control: '20240001', nombre: 'Juan Pérez García', carrera: 'ISC', semestre: '4° Semestre', materias: ['isc401'] },
-                '20240002': { control: '20240002', nombre: 'María López Hernández', carrera: 'ISC', semestre: '4° Semestre', materias: [] }, // Sin materias
-                '20240003': { control: '20240003', nombre: 'Carlos Ramírez Soto', carrera: 'ISC', semestre: '5° Semestre', materias: ['isc402'] }
+                '20240002': { control: '20240002', nombre: 'María López Hernández', carrera: 'ISC', semestre: '4° Semestre', materias: [] },
+                '20240003': { control: '20240003', nombre: 'Carlos Ramírez Soto', carrera: 'ISC', semestre: '5° Semestre', materias: ['isc404'] } 
             },
             catalogoMaterias: {
-                'isc401': { id: 'isc401', nombre: 'ISC-401 - Programación Web', detalles: 'Créditos: 6 | Semestre: 4', horario: 'Lunes 08:00-10:00, Miércoles 08:00-10:00' },
-                'isc402': { id: 'isc402', nombre: 'ISC-402 - Estructura de Datos', detalles: 'Créditos: 5 | Semestre: 4', horario: 'Martes 10:00-12:00, Jueves 10:00-12:00' },
-                'isc403': { id: 'isc403', nombre: 'ISC-403 - Sistemas Operativos', detalles: 'Créditos: 5 | Semestre: 4', horario: 'Viernes 08:00-11:00' }
+                'isc401': { id: 'isc401', nombre: 'ISC-401 - Programación Web', det: 'Créditos: 6 | Semestre: 4', hor: 'Lunes 08:00-10:00, Miércoles 08:00-10:00', cupoA: 28, cupoM: 30, condicion: 'normal' },
+                'isc402': { id: 'isc402', nombre: 'ISC-402 - Base de Datos Avanzadas', det: 'Créditos: 5 | Semestre: 4', hor: 'Martes 10:00-12:00, Jueves 10:00-12:00', cupoA: 30, cupoM: 30, condicion: 'aprobada' },
+                'isc403': { id: 'isc403', nombre: 'ISC-403 - Inteligencia Artificial', det: 'Créditos: 6 | Semestre: 5', hor: 'Lunes 08:00-10:00, Miércoles 08:00-10:00', cupoA: 15, cupoM: 25, condicion: 'conflicto' },
+                'isc404': { id: 'isc404', nombre: 'ISC-404 - Redes de Computadoras', det: 'Créditos: 5 | Semestre: 5', hor: 'Martes 08:00-10:00, Jueves 08:00-10:00', cupoA: 20, cupoM: 30, condicion: 'especial' },
+                'isc405': { id: 'isc405', nombre: 'ISC-405 - Ingeniería de Software', det: 'Créditos: 6 | Semestre: 6', hor: 'Viernes 10:00-12:00', cupoA: 12, cupoM: 25, condicion: 'normal' },
+                'ii301':  { id: 'ii301', nombre: 'II-301 - Procesos Industriales <span style="color:#ef4444">(II)</span>', det: 'Créditos: 5 | Semestre: 3', hor: 'Lunes 14:00-16:00', cupoA: 18, cupoM: 25, condicion: 'otracarrera' }
             }
         };
 
-        let alumnoSeleccionado = '20240001'; 
+        let alumnoSeleccionado = '20240001';
 
-        // Función para pintar la barra lateral de alumnos
         function renderizarBarraAlumnos() {
             const contenedor = document.getElementById('contenedor-alumnos');
-            contenedor.innerHTML = ''; // Limpiamos
-
+            contenedor.innerHTML = '';
             Object.values(baseDatos.alumnos).forEach(alumno => {
                 const activoClass = alumno.control === alumnoSeleccionado ? 'active' : '';
-                const totalMaterias = alumno.materias.length;
-
                 contenedor.innerHTML += `
                     <div class="student-item ${activoClass}" onclick="seleccionarAlumno('${alumno.control}')" data-nombre="${alumno.nombre.toLowerCase()}" data-control="${alumno.control}">
                         <div class="student-name">${alumno.nombre}</div>
                         <div class="student-details">${alumno.control}</div>
                         <div class="student-details">${alumno.carrera} - ${alumno.semestre}</div>
-                        <div class="student-count"><span id="count-side-${alumno.control}">${totalMaterias}</span>/8 materias inscritas</div>
-                    </div>
-                `;
+                        <div class="student-count"><span id="count-side-${alumno.control}">${alumno.materias.length}</span>/8 materias inscritas</div>
+                    </div>`;
             });
         }
 
-        // Función principal: Cambiar de alumno
         function seleccionarAlumno(idControl) {
             alumnoSeleccionado = idControl;
             const alumno = baseDatos.alumnos[idControl];
-
-            // Actualizar clases CSS en la barra lateral
             document.querySelectorAll('.student-item').forEach(item => item.classList.remove('active'));
             document.querySelector(`.student-item[data-control="${idControl}"]`).classList.add('active');
-
-            // Actualizar información de la tarjeta superior
             document.getElementById('top-nombre').innerText = alumno.nombre;
             document.getElementById('top-meta').innerText = `${alumno.control} | ${alumno.carrera} | ${alumno.semestre}`;
-
-            // Refrescar las listas de materias
             renderizarMaterias();
         }
 
-        // Función para cargar las materias según el alumno
         function renderizarMaterias() {
             const alumno = baseDatos.alumnos[alumnoSeleccionado];
             const listaInscritas = document.getElementById('lista-inscritas');
             const listaDisponibles = document.getElementById('lista-disponibles');
-
-            listaInscritas.innerHTML = '';
+            
+            listaInscritas.innerHTML = ''; 
             listaDisponibles.innerHTML = '';
+            let countInscritas = 0;
 
-            let materiasInscritasCount = 0;
             Object.values(baseDatos.catalogoMaterias).forEach(materia => {
                 const estaInscrita = alumno.materias.includes(materia.id);
-
-                const htmlMateria = `
-                    <div class="subject-info">
-                        <h4 class="subject-name">${materia.nombre}</h4>
-                        <p class="subject-details">${materia.detalles}</p>
-                        <p class="subject-schedule">${materia.horario}</p>
-                    </div>
-                `;
+                
+                const porcentaje = Math.round((materia.cupoA / materia.cupoM) * 100);
+                let colorBarra = 'bg-green';
+                if (porcentaje >= 90 && porcentaje < 100) colorBarra = 'bg-yellow';
+                if (porcentaje === 100) colorBarra = 'bg-red';
 
                 if (estaInscrita) {
-                    materiasInscritasCount++;
+                    countInscritas++;
                     listaInscritas.innerHTML += `
-                        <div class="subject-card enrolled" id="mat-${materia.id}">
-                            ${htmlMateria}
-                            <div class="subject-action">
-                                <button class="btn-rojo" onclick="desasignar('${materia.id}')">Desasignar</button>
+                        <div class="subject-card enrolled" id="mat-inc-${materia.id}">
+                            <div class="subject-card-content">
+                                <div class="subject-info">
+                                    <h4 class="subject-name">${materia.nombre}</h4>
+                                    <p class="subject-details">${materia.det}</p>
+                                    <p class="subject-schedule">${materia.hor}</p>
+                                </div>
+                                <div class="subject-action">
+                                    <button class="btn-rojo" onclick="desasignar('${materia.id}')">Desasignar</button>
+                                </div>
                             </div>
-                        </div>`;
-                } else {
-                    listaDisponibles.innerHTML += `
-                        <div class="subject-card" id="mat-${materia.id}">
-                            ${htmlMateria}
-                            <div class="subject-action">
-                                <button class="btn-azul" onclick="inscribir('${materia.id}')">Inscribir</button>
+                            <div style="width: 100%; margin-top:10px;">
+                                <div class="progress-track"><div class="progress-fill bg-green" style="width: 100%;"></div></div>
                             </div>
                         </div>`;
                 }
+
+                let htmlAlerta = '';
+                let htmlBoton = `<button class="btn-asignar" onclick="inscribir('${materia.id}')">Asignar</button>`;
+                let estiloCard = '';
+
+                if (estaInscrita) {
+                    htmlBoton = `<button class="btn-disabled" disabled>Ya Inscrito</button>`;
+                    estiloCard = 'opacity: 0.6;';
+                } 
+                else if (materia.condicion === 'aprobada') {
+                    htmlAlerta = `<div class="status-alert text-green"><i class="fa-solid fa-check"></i> Materia aprobada</div>`;
+                    htmlBoton = `<button class="btn-disabled" disabled>Ya Aprobada</button>`;
+                } else if (materia.condicion === 'conflicto') {
+                    htmlBoton = `<button class="btn-disabled" disabled>Conflicto Horario</button>`;
+                } else if (materia.condicion === 'especial') {
+                    htmlAlerta = `<div class="status-alert text-orange"><i class="fa-solid fa-triangle-exclamation"></i> Especial (3ra vez)</div>`;
+                } else if (porcentaje === 100) {
+                    htmlBoton = `<button class="btn-disabled" disabled>Grupo Lleno</button>`;
+                }
+
+                listaDisponibles.innerHTML += `
+                    <div class="subject-card" style="${estiloCard}">
+                        <div class="subject-card-content">
+                            <div class="subject-info">
+                                <h4 class="subject-name">${materia.nombre}</h4>
+                                <p class="subject-details">${materia.det}</p>
+                                <p class="subject-schedule">${materia.hor}</p>
+                                ${htmlAlerta}
+                            </div>
+                            <div class="subject-action">
+                                ${htmlBoton}
+                            </div>
+                        </div>
+                        <div style="width: 100%;">
+                            <div class="capacity-info">
+                                <span>Cupo: ${materia.cupoA}/${materia.cupoM}</span>
+                                <span>${porcentaje}% ocupado</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill ${colorBarra}" style="width: ${porcentaje}%;"></div>
+                            </div>
+                        </div>
+                    </div>`;
             });
 
-            // Si el alumno no tiene materias mostramos un mensaje vacío
-            if (materiasInscritasCount === 0) {
-                listaInscritas.innerHTML = `
-                    <div style="text-align: center; padding: 30px; color: #64748b;">
-                        <i class="fa-solid fa-folder-open" style="font-size: 30px; margin-bottom: 10px; opacity: 0.5;"></i>
-                        <p>El alumno no tiene materias inscritas actualmente.</p>
-                    </div>`;
+            if (countInscritas === 0) {
+                listaInscritas.innerHTML = `<p style="text-align:center; padding:20px; color:#64748b;">No hay materias inscritas.</p>`;
             }
 
-            document.getElementById('counter-top').innerText = materiasInscritasCount;
-            document.getElementById('counter-title').innerText = materiasInscritasCount;
-            document.getElementById(`count-side-${alumnoSeleccionado}`).innerText = materiasInscritasCount;
+            document.getElementById('counter-top').innerText = countInscritas;
+            document.getElementById('counter-title').innerText = countInscritas;
+            if(document.getElementById(`count-side-${alumnoSeleccionado}`)) {
+                document.getElementById(`count-side-${alumnoSeleccionado}`).innerText = countInscritas;
+            }
         }
 
-        // Lógica del Buscador en tiempo real
-        document.getElementById('buscadorAlumnos').addEventListener('input', function(e) {
-            const busqueda = e.target.value.toLowerCase();
-            const alumnosCajas = document.querySelectorAll('.student-item');
-
-            alumnosCajas.forEach(caja => {
-                const nombre = caja.getAttribute('data-nombre');
-                const control = caja.getAttribute('data-control');
-                
-                // Muestra el nombre si lo buscamos o buscamos el numero de control 
-                if(nombre.includes(busqueda) || control.includes(busqueda)) {
-                    caja.style.display = 'block';
-                } else {
-                    caja.style.display = 'none';
-                }
+        document.getElementById('buscadorAlumnos').addEventListener('input', e => {
+            const b = e.target.value.toLowerCase();
+            document.querySelectorAll('.student-item').forEach(c => {
+                c.style.display = (c.dataset.nombre.includes(b) || c.dataset.control.includes(b)) ? 'block' : 'none';
             });
         });
 
-        // Funciones de Inscribir/Desasignar (Actualizan la base de datos)
         function inscribir(idMateria) {
             const alumno = baseDatos.alumnos[alumnoSeleccionado];
-            if (alumno.materias.length >= 8) {
-                alert("Este alumno ya alcanzó el límite máximo de 8 materias.");
-                return;
-            }
-            alumno.materias.push(idMateria); 
+            if (alumno.materias.length >= 8) return alert("Límite máximo de 8 materias.");
+            baseDatos.catalogoMaterias[idMateria].cupoA++; 
+            alumno.materias.push(idMateria);
             renderizarMaterias();
         }
 
         function desasignar(idMateria) {
             const alumno = baseDatos.alumnos[alumnoSeleccionado];
+            baseDatos.catalogoMaterias[idMateria].cupoA--; 
             alumno.materias = alumno.materias.filter(id => id !== idMateria);
-            renderizarMaterias(); 
+            renderizarMaterias();
         }
 
         renderizarBarraAlumnos();

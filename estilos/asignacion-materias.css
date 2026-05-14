@@ -214,3 +214,82 @@
     color: #94a3b8;
     cursor: not-allowed !important;
 }
+
+/* --- BARRAS DE CUPO Y ESTADOS --- */
+.capacity-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 12px;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.progress-track {
+    height: 6px;
+    background-color: #e2e8f0;
+    border-radius: 3px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+.bg-green { background-color: #10b981; }
+.bg-yellow { background-color: #eab308; }
+.bg-red { background-color: #ef4444; }
+
+/* Textos de alerta */
+.status-alert {
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.text-green { color: #10b981; }
+.text-orange { color: #f97316; }
+
+/* Botones específicos de asignación */
+.btn-asignar {
+    background-color: #0f172a; 
+    color: white;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    min-width: 110px;
+}
+.btn-asignar:hover { background-color: #1e293b; }
+
+.btn-disabled {
+    background-color: #cbd5e0;
+    color: #64748b;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: not-allowed;
+    min-width: 110px;
+}
+
+.subject-card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+.subject-card {
+    flex-direction: column; 
+    align-items: stretch;
+}
