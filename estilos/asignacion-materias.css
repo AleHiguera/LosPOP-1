@@ -1,0 +1,295 @@
+.assignment-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 25px;
+    align-items: start;
+}
+
+/* --- TARJETAS GLOBALES --- */
+.sidebar-card, .info-card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 16px;
+    color: #1e3a8a;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* --- COLUMNA IZQUIERDA (Alumnos) --- */
+.search-box input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-bottom: 20px;
+    outline: none;
+}
+
+.student-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.student-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.student-item:hover {
+    border-color: #93c5fd;
+}
+
+.student-item.active {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid #1e3a8a; /* Borde izquierdo azul */
+}
+
+.student-name {
+    font-weight: 600;
+    color: #111827;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.student-details {
+    color: #4b5563;
+    font-size: 12px;
+    margin-bottom: 2px;
+}
+
+.student-count {
+    color: #2563eb; /* Azul texto */
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+/* --- COLUMNA DERECHA (Área de Trabajo) --- */
+.selected-student-card {
+    border-left: 4px solid #1e3a8a;
+    padding: 25px;
+}
+
+.blue-title {
+    color: #1e3a8a;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.student-name-large {
+    font-size: 20px;
+    color: #111827;
+    margin-bottom: 5px;
+}
+
+.student-meta {
+    font-size: 14px;
+    color: #4b5563;
+    margin-bottom: 2px;
+}
+
+.blue-text {
+    color: #2563eb;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+/* Cabeceras Flexibles */
+.card-header {
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.semester-filter {
+    padding: 5px 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #4b5563;
+    outline: none;
+}
+
+/* --- TARJETAS DE MATERIAS --- */
+.subject-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.scrollable-list {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.subject-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+/* Estado: Inscrita (Fondo Verde) */
+.subject-card.enrolled {
+    background-color: #f0fdf4; /* Verde muy claro */
+    border-color: #bbf7d0;
+}
+
+/* Estado: Deshabilitada (En lista de disponibles) */
+.subject-card.disabled {
+    opacity: 0.6;
+    background-color: #f8fafc;
+}
+
+.subject-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 5px;
+}
+
+.subject-details {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 3px;
+}
+
+.subject-schedule {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* --- BOTONES DE ACCIÓN --- */
+.subject-action button {
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.btn-rojo {
+    background-color: #ef4444;
+    color: white;
+}
+.btn-rojo:hover { background-color: #dc2626; }
+
+.btn-azul {
+    background-color: #3b82f6;
+    color: white;
+}
+.btn-azul:hover { background-color: #2563eb; }
+
+.btn-gris {
+    background-color: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed !important;
+}
+
+/* --- BARRAS DE CUPO Y ESTADOS --- */
+.capacity-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 12px;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.progress-track {
+    height: 6px;
+    background-color: #e2e8f0;
+    border-radius: 3px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+.bg-green { background-color: #10b981; }
+.bg-yellow { background-color: #eab308; }
+.bg-red { background-color: #ef4444; }
+
+/* Textos de alerta */
+.status-alert {
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.text-green { color: #10b981; }
+.text-orange { color: #f97316; }
+
+/* Botones específicos de asignación */
+.btn-asignar {
+    background-color: #0f172a; 
+    color: white;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    min-width: 110px;
+}
+.btn-asignar:hover { background-color: #1e293b; }
+
+.btn-disabled {
+    background-color: #cbd5e0;
+    color: #64748b;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: not-allowed;
+    min-width: 110px;
+}
+
+.subject-card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+.subject-card {
+    flex-direction: column; 
+    align-items: stretch;
+}
