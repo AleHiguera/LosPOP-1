@@ -1,0 +1,124 @@
+/* Reset y tipografía */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f3f4f6; /* Fondo gris claro */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-wrapper {
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    padding: 20px;
+}
+
+.page-title {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.login-card {
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 25px;
+}
+
+/* Círculo suave para el icono */
+.icon-circle {
+    background-color: #eff6ff;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+}
+
+.icon-circle i {
+    color: #162444; /* Azul marino oscuro coincidente */
+    font-size: 35px;
+}
+
+.main-title {
+    color: #1e293b;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 30px;
+}
+
+.input-container {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-container label {
+    display: block;
+    color: #1e293b;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: #f9fafb;
+    outline: none;
+}
+
+/* Botón con el azul marino solicitado */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background-color: #162444; /* Color azul marino oscuro */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #0f182e;
+}
+
+.footer-info {
+    color: #64748b;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+/* Botón de regresar gris */
+.btn-back {
+    display: inline-block;
+    padding: 10px 30px;
+    background-color: #94a3b8;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.btn-back:hover {
+    background-color: #64748b;
+}
