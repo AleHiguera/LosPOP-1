@@ -83,14 +83,14 @@ body {
 /* --- CUADRÍCULA DE BOTONES --- */
 .action-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Fuerza las 3 columnas */
+    grid-template-columns: repeat(3, 1fr);
     gap: 25px;
 }
 
 .action-card {
     background: #ffffff;
     border-radius: 8px;
-    padding: 40px 20px; /* Reduje un poco el padding para que encajen mejor */
+    padding: 40px 20px; 
     text-align: center;
     text-decoration: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -145,4 +145,4 @@ body {
 .icon-green { background-color: #ecfdf5; color: #10b981; }
 .icon-purple { background-color: #f5f3ff; color: #a855f7; }
 .icon-yellow { background-color: #fefce8; color: #eab308; }
-.icon-gray { background-color: #f3f4f6; color: #6b7280; }
+.icon-pink { background-color: #fdf2f8; color: #ec4899; }
