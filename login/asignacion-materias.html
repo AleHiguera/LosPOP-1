@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignación de Materias - ITLM</title>
+    <link rel="stylesheet" href="../estilos/panel-personal-estilos.css">
+    <link rel="stylesheet" href="../estilos/asignacion-materias.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <div class="header-titles">
+            <h1>Asignación de Materias a Alumnos</h1>
+        </div>
+        <button class="btn-logout-admin" onclick="window.location.href='panel-personal.html'">
+            Regresar al Dashboard
+        </button>
+    </header>
+
+    <main class="assignment-container">
+        
+        <aside class="sidebar-students">
+            <div class="sidebar-card">
+                <h3 class="section-title">Buscar Alumno</h3>
+                <div class="search-box">
+                    <input type="text" placeholder="Buscar por nombre o número de control...">
+                </div>
+
+                <div class="student-list">
+                    <div class="student-item active">
+                        <div class="student-name">Juan Pérez García</div>
+                        <div class="student-details">20240001</div>
+                        <div class="student-details">ISC - 4° Semestre</div>
+                        <div class="student-count"><span id="counter-side">1</span>/8 materias inscritas</div>
+                    </div>
+
+                    <div class="student-item">
+                        <div class="student-name">María López Hernández</div>
+                        <div class="student-details">20240002</div>
+                        <div class="student-details">ISC - 4° Semestre</div>
+                        <div class="student-count">2/8 materias inscritas</div>
+                    </div>
+
+                    <div class="student-item">
+                        <div class="student-name">Carlos Ramírez Soto</div>
+                        <div class="student-details">20240003</div>
+                        <div class="student-details">ISC - 5° Semestre</div>
+                        <div class="student-count">1/8 materias inscritas</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <section class="assignment-workspace">
+            
+            <div class="info-card selected-student-card">
+                <h3 class="blue-title">Alumno Seleccionado</h3>
+                <h2 class="student-name-large">Juan Pérez García</h2>
+                <p class="student-meta">20240001 | ISC | 4° Semestre</p>
+                <p class="student-meta blue-text">Materias inscritas: <span id="counter-top">1</span>/8</p>
+            </div>
+
+            <div class="info-card">
+                <div class="card-header">
+                    <h3 class="section-title">Materias Inscritas (<span id="counter-title">1</span>/8)</h3>
+                </div>
+                
+                <div id="lista-inscritas" class="subject-list">
+                    <div class="subject-card enrolled" id="mat-isc401">
+                        <div class="subject-info">
+                            <h4 class="subject-name">ISC-401 - Programación Web</h4>
+                            <p class="subject-details">Créditos: 6 | Semestre: 4</p>
+                            <p class="subject-schedule">Lunes 08:00-10:00, Miércoles 08:00-10:00</p>
+                        </div>
+                        <div class="subject-action">
+                            <button class="btn-rojo" onclick="desasignar('mat-isc401')">Desasignar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-header flex-between">
+                    <h3 class="section-title">Materias Disponibles</h3>
+                    <select class="semester-filter">
+                        <option>Todos los semestres</option>
+                        <option>3er Semestre</option>
+                        <option>4to Semestre</option>
+                    </select>
+                </div>
+                
+                <div id="lista-disponibles" class="subject-list scrollable-list">
+                    <div class="subject-card" id="mat-isc402">
+                        <div class="subject-info">
+                            <h4 class="subject-name">ISC-402 - Estructura de Datos</h4>
+                            <p class="subject-details">Créditos: 5 | Semestre: 4</p>
+                            <p class="subject-schedule">Martes 10:00-12:00, Jueves 10:00-12:00</p>
+                        </div>
+                        <div class="subject-action">
+                            <button class="btn-azul" onclick="inscribir('mat-isc402')">Inscribir</button>
+                        </div>
+                    </div>
+
+                    <div class="subject-card disabled" id="mat-isc401-dup">
+                        <div class="subject-info">
+                            <h4 class="subject-name">ISC-401 - Programación Web</h4>
+                            <p class="subject-details">Créditos: 6 | Semestre: 4</p>
+                            <p class="subject-schedule">Lunes 08:00-10:00, Miércoles 08:00-10:00</p>
+                        </div>
+                        <div class="subject-action">
+                            <button class="btn-gris" disabled>Ya Inscrito</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        let materiasInscritas = 1;
+
+        function actualizarContadores() {
+            document.getElementById('counter-side').innerText = materiasInscritas;
+            document.getElementById('counter-top').innerText = materiasInscritas;
+            document.getElementById('counter-title').innerText = materiasInscritas;
+        }
+
+        function desasignar(idMateria) {
+            const materiaCard = document.getElementById(idMateria);
+            
+            // Cambiar estilos a tarjeta normal
+            materiaCard.classList.remove('enrolled');
+            
+            // Cambiar botón a Inscribir
+            const btn = materiaCard.querySelector('button');
+            btn.className = 'btn-azul';
+            btn.innerText = 'Inscribir';
+            btn.setAttribute('onclick', `inscribir('${idMateria}')`);
+
+            // Mover a la lista de disponibles
+            document.getElementById('lista-disponibles').prepend(materiaCard);
+            
+            materiasInscritas--;
+            actualizarContadores();
+        }
+
+        function inscribir(idMateria) {
+            if (materiasInscritas >= 8) {
+                alert("El alumno ya alcanzó el límite máximo de 8 materias.");
+                return;
+            }
+
+            const materiaCard = document.getElementById(idMateria);
+            
+            // Cambiar estilos a tarjeta inscrita
+            materiaCard.classList.add('enrolled');
+            
+            // Cambiar botón a Desasignar
+            const btn = materiaCard.querySelector('button');
+            btn.className = 'btn-rojo';
+            btn.innerText = 'Desasignar';
+            btn.removeAttribute('disabled');
+            btn.setAttribute('onclick', `desasignar('${idMateria}')`);
+
+            // Mover a la lista de inscritas
+            document.getElementById('lista-inscritas').appendChild(materiaCard);
+            
+            materiasInscritas++;
+            actualizarContadores();
+        }
+    </script>
+</body>
+</html>
