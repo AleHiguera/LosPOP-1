@@ -268,6 +268,59 @@ app.get('/api/materias', (req, res) => {
     });
 });
 
+// POST /api/registrar-docente — Guardar nuevo docente
+app.post('/api/registrar-docente', (req, res) => {
+    const { doc_num, doc_nombre, doc_rfc, doc_depto, doc_correo } = req.body;
+
+    if (!doc_num || !doc_nombre) {
+        return res.status(400).json({ error: 'Número de empleado y nombre son obligatorios.' });
+    }
+
+    const sql = `INSERT INTO docentes (doc_num, doc_nombre, doc_rfc, doc_depto, doc_correo)
+                 VALUES (?, ?, ?, ?, ?)`;
+    const params = [doc_num, doc_nombre, doc_rfc || null, doc_depto || null, doc_correo || null];
+
+    db.run(sql, params, function (err) {
+        if (err) {
+            if (err.message.includes('UNIQUE constraint failed')) {
+                return res.status(409).json({ error: 'El número de empleado ya está registrado.' });
+            }
+            return res.status(500).json({ error: 'Error en la base de datos.', detalle: err.message });
+        }
+        res.status(201).json({ mensaje: 'Docente registrado con éxito', id: this.lastID });
+    });
+});
+
+// POST /api/registrar-materia — Guardar nueva materia
+app.post('/api/registrar-materia', (req, res) => {
+    const { mat_clave, mat_nombre, mat_corto, mat_creditos,
+            mat_carrera, mat_semestre, horas_t, horas_p, horas_total } = req.body;
+
+    if (!mat_clave || !mat_nombre || !mat_creditos || !mat_carrera || !mat_semestre) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+    }
+
+    const sql = `INSERT INTO materias
+                    (mat_clave, mat_nombre, mat_corto, mat_creditos,
+                     mat_carrera, mat_semestre, horas_t, horas_p, horas_total)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const params = [
+        mat_clave, mat_nombre, mat_corto || null, mat_creditos,
+        mat_carrera, mat_semestre,
+        horas_t || 0, horas_p || 0, horas_total || 0
+    ];
+
+    db.run(sql, params, function (err) {
+        if (err) {
+            if (err.message.includes('UNIQUE constraint failed')) {
+                return res.status(409).json({ error: 'La clave de materia ya existe.' });
+            }
+            return res.status(500).json({ error: 'Error en la base de datos.', detalle: err.message });
+        }
+        res.status(201).json({ mensaje: 'Materia registrada con éxito', id: this.lastID });
+    });
+});
+
 // ─── Iniciar servidor ────────────────────────────────────────────────────────
 const PORT = 3000;
 app.listen(PORT, () => {
