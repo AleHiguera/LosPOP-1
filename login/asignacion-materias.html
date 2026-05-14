@@ -25,31 +25,11 @@
             <div class="sidebar-card">
                 <h3 class="section-title">Buscar Alumno</h3>
                 <div class="search-box">
-                    <input type="text" placeholder="Buscar por nombre o número de control...">
+                    <input type="text" id="buscadorAlumnos" placeholder="Buscar por nombre o número de control...">
                 </div>
 
-                <div class="student-list">
-                    <div class="student-item active">
-                        <div class="student-name">Juan Pérez García</div>
-                        <div class="student-details">20240001</div>
-                        <div class="student-details">ISC - 4° Semestre</div>
-                        <div class="student-count"><span id="counter-side">1</span>/8 materias inscritas</div>
+                <div class="student-list" id="contenedor-alumnos">
                     </div>
-
-                    <div class="student-item">
-                        <div class="student-name">María López Hernández</div>
-                        <div class="student-details">20240002</div>
-                        <div class="student-details">ISC - 4° Semestre</div>
-                        <div class="student-count">2/8 materias inscritas</div>
-                    </div>
-
-                    <div class="student-item">
-                        <div class="student-name">Carlos Ramírez Soto</div>
-                        <div class="student-details">20240003</div>
-                        <div class="student-details">ISC - 5° Semestre</div>
-                        <div class="student-count">1/8 materias inscritas</div>
-                    </div>
-                </div>
             </div>
         </aside>
 
@@ -57,28 +37,17 @@
             
             <div class="info-card selected-student-card">
                 <h3 class="blue-title">Alumno Seleccionado</h3>
-                <h2 class="student-name-large">Juan Pérez García</h2>
-                <p class="student-meta">20240001 | ISC | 4° Semestre</p>
-                <p class="student-meta blue-text">Materias inscritas: <span id="counter-top">1</span>/8</p>
+                <h2 class="student-name-large" id="top-nombre">Seleccione un alumno</h2>
+                <p class="student-meta" id="top-meta">---</p>
+                <p class="student-meta blue-text">Materias inscritas: <span id="counter-top">0</span>/8</p>
             </div>
 
             <div class="info-card">
                 <div class="card-header">
-                    <h3 class="section-title">Materias Inscritas (<span id="counter-title">1</span>/8)</h3>
+                    <h3 class="section-title">Materias Inscritas (<span id="counter-title">0</span>/8)</h3>
                 </div>
-                
                 <div id="lista-inscritas" class="subject-list">
-                    <div class="subject-card enrolled" id="mat-isc401">
-                        <div class="subject-info">
-                            <h4 class="subject-name">ISC-401 - Programación Web</h4>
-                            <p class="subject-details">Créditos: 6 | Semestre: 4</p>
-                            <p class="subject-schedule">Lunes 08:00-10:00, Miércoles 08:00-10:00</p>
-                        </div>
-                        <div class="subject-action">
-                            <button class="btn-rojo" onclick="desasignar('mat-isc401')">Desasignar</button>
-                        </div>
                     </div>
-                </div>
             </div>
 
             <div class="info-card">
@@ -86,91 +55,161 @@
                     <h3 class="section-title">Materias Disponibles</h3>
                     <select class="semester-filter">
                         <option>Todos los semestres</option>
-                        <option>3er Semestre</option>
-                        <option>4to Semestre</option>
                     </select>
                 </div>
-                
                 <div id="lista-disponibles" class="subject-list scrollable-list">
-                    <div class="subject-card" id="mat-isc402">
-                        <div class="subject-info">
-                            <h4 class="subject-name">ISC-402 - Estructura de Datos</h4>
-                            <p class="subject-details">Créditos: 5 | Semestre: 4</p>
-                            <p class="subject-schedule">Martes 10:00-12:00, Jueves 10:00-12:00</p>
-                        </div>
-                        <div class="subject-action">
-                            <button class="btn-azul" onclick="inscribir('mat-isc402')">Inscribir</button>
-                        </div>
                     </div>
-
-                    <div class="subject-card disabled" id="mat-isc401-dup">
-                        <div class="subject-info">
-                            <h4 class="subject-name">ISC-401 - Programación Web</h4>
-                            <p class="subject-details">Créditos: 6 | Semestre: 4</p>
-                            <p class="subject-schedule">Lunes 08:00-10:00, Miércoles 08:00-10:00</p>
-                        </div>
-                        <div class="subject-action">
-                            <button class="btn-gris" disabled>Ya Inscrito</button>
-                        </div>
-                    </div>
-                </div>
             </div>
 
         </section>
     </main>
 
     <script>
-        let materiasInscritas = 1;
+        // "Base de Datos" simulada
+        const baseDatos = {
+            alumnos: {
+                '20240001': { control: '20240001', nombre: 'Juan Pérez García', carrera: 'ISC', semestre: '4° Semestre', materias: ['isc401'] },
+                '20240002': { control: '20240002', nombre: 'María López Hernández', carrera: 'ISC', semestre: '4° Semestre', materias: [] }, // Sin materias
+                '20240003': { control: '20240003', nombre: 'Carlos Ramírez Soto', carrera: 'ISC', semestre: '5° Semestre', materias: ['isc402'] }
+            },
+            catalogoMaterias: {
+                'isc401': { id: 'isc401', nombre: 'ISC-401 - Programación Web', detalles: 'Créditos: 6 | Semestre: 4', horario: 'Lunes 08:00-10:00, Miércoles 08:00-10:00' },
+                'isc402': { id: 'isc402', nombre: 'ISC-402 - Estructura de Datos', detalles: 'Créditos: 5 | Semestre: 4', horario: 'Martes 10:00-12:00, Jueves 10:00-12:00' },
+                'isc403': { id: 'isc403', nombre: 'ISC-403 - Sistemas Operativos', detalles: 'Créditos: 5 | Semestre: 4', horario: 'Viernes 08:00-11:00' }
+            }
+        };
 
-        function actualizarContadores() {
-            document.getElementById('counter-side').innerText = materiasInscritas;
-            document.getElementById('counter-top').innerText = materiasInscritas;
-            document.getElementById('counter-title').innerText = materiasInscritas;
+        let alumnoSeleccionado = '20240001'; 
+
+        // Función para pintar la barra lateral de alumnos
+        function renderizarBarraAlumnos() {
+            const contenedor = document.getElementById('contenedor-alumnos');
+            contenedor.innerHTML = ''; // Limpiamos
+
+            Object.values(baseDatos.alumnos).forEach(alumno => {
+                const activoClass = alumno.control === alumnoSeleccionado ? 'active' : '';
+                const totalMaterias = alumno.materias.length;
+
+                contenedor.innerHTML += `
+                    <div class="student-item ${activoClass}" onclick="seleccionarAlumno('${alumno.control}')" data-nombre="${alumno.nombre.toLowerCase()}" data-control="${alumno.control}">
+                        <div class="student-name">${alumno.nombre}</div>
+                        <div class="student-details">${alumno.control}</div>
+                        <div class="student-details">${alumno.carrera} - ${alumno.semestre}</div>
+                        <div class="student-count"><span id="count-side-${alumno.control}">${totalMaterias}</span>/8 materias inscritas</div>
+                    </div>
+                `;
+            });
+        }
+
+        // Función principal: Cambiar de alumno
+        function seleccionarAlumno(idControl) {
+            alumnoSeleccionado = idControl;
+            const alumno = baseDatos.alumnos[idControl];
+
+            // Actualizar clases CSS en la barra lateral
+            document.querySelectorAll('.student-item').forEach(item => item.classList.remove('active'));
+            document.querySelector(`.student-item[data-control="${idControl}"]`).classList.add('active');
+
+            // Actualizar información de la tarjeta superior
+            document.getElementById('top-nombre').innerText = alumno.nombre;
+            document.getElementById('top-meta').innerText = `${alumno.control} | ${alumno.carrera} | ${alumno.semestre}`;
+
+            // Refrescar las listas de materias
+            renderizarMaterias();
+        }
+
+        // Función para cargar las materias según el alumno
+        function renderizarMaterias() {
+            const alumno = baseDatos.alumnos[alumnoSeleccionado];
+            const listaInscritas = document.getElementById('lista-inscritas');
+            const listaDisponibles = document.getElementById('lista-disponibles');
+
+            listaInscritas.innerHTML = '';
+            listaDisponibles.innerHTML = '';
+
+            let materiasInscritasCount = 0;
+            Object.values(baseDatos.catalogoMaterias).forEach(materia => {
+                const estaInscrita = alumno.materias.includes(materia.id);
+
+                const htmlMateria = `
+                    <div class="subject-info">
+                        <h4 class="subject-name">${materia.nombre}</h4>
+                        <p class="subject-details">${materia.detalles}</p>
+                        <p class="subject-schedule">${materia.horario}</p>
+                    </div>
+                `;
+
+                if (estaInscrita) {
+                    materiasInscritasCount++;
+                    listaInscritas.innerHTML += `
+                        <div class="subject-card enrolled" id="mat-${materia.id}">
+                            ${htmlMateria}
+                            <div class="subject-action">
+                                <button class="btn-rojo" onclick="desasignar('${materia.id}')">Desasignar</button>
+                            </div>
+                        </div>`;
+                } else {
+                    listaDisponibles.innerHTML += `
+                        <div class="subject-card" id="mat-${materia.id}">
+                            ${htmlMateria}
+                            <div class="subject-action">
+                                <button class="btn-azul" onclick="inscribir('${materia.id}')">Inscribir</button>
+                            </div>
+                        </div>`;
+                }
+            });
+
+            // Si el alumno no tiene materias mostramos un mensaje vacío
+            if (materiasInscritasCount === 0) {
+                listaInscritas.innerHTML = `
+                    <div style="text-align: center; padding: 30px; color: #64748b;">
+                        <i class="fa-solid fa-folder-open" style="font-size: 30px; margin-bottom: 10px; opacity: 0.5;"></i>
+                        <p>El alumno no tiene materias inscritas actualmente.</p>
+                    </div>`;
+            }
+
+            document.getElementById('counter-top').innerText = materiasInscritasCount;
+            document.getElementById('counter-title').innerText = materiasInscritasCount;
+            document.getElementById(`count-side-${alumnoSeleccionado}`).innerText = materiasInscritasCount;
+        }
+
+        // Lógica del Buscador en tiempo real
+        document.getElementById('buscadorAlumnos').addEventListener('input', function(e) {
+            const busqueda = e.target.value.toLowerCase();
+            const alumnosCajas = document.querySelectorAll('.student-item');
+
+            alumnosCajas.forEach(caja => {
+                const nombre = caja.getAttribute('data-nombre');
+                const control = caja.getAttribute('data-control');
+                
+                // Muestra el nombre si lo buscamos o buscamos el numero de control 
+                if(nombre.includes(busqueda) || control.includes(busqueda)) {
+                    caja.style.display = 'block';
+                } else {
+                    caja.style.display = 'none';
+                }
+            });
+        });
+
+        // Funciones de Inscribir/Desasignar (Actualizan la base de datos)
+        function inscribir(idMateria) {
+            const alumno = baseDatos.alumnos[alumnoSeleccionado];
+            if (alumno.materias.length >= 8) {
+                alert("Este alumno ya alcanzó el límite máximo de 8 materias.");
+                return;
+            }
+            alumno.materias.push(idMateria); 
+            renderizarMaterias();
         }
 
         function desasignar(idMateria) {
-            const materiaCard = document.getElementById(idMateria);
-            
-            // Cambiar estilos a tarjeta normal
-            materiaCard.classList.remove('enrolled');
-            
-            // Cambiar botón a Inscribir
-            const btn = materiaCard.querySelector('button');
-            btn.className = 'btn-azul';
-            btn.innerText = 'Inscribir';
-            btn.setAttribute('onclick', `inscribir('${idMateria}')`);
-
-            // Mover a la lista de disponibles
-            document.getElementById('lista-disponibles').prepend(materiaCard);
-            
-            materiasInscritas--;
-            actualizarContadores();
+            const alumno = baseDatos.alumnos[alumnoSeleccionado];
+            alumno.materias = alumno.materias.filter(id => id !== idMateria);
+            renderizarMaterias(); 
         }
 
-        function inscribir(idMateria) {
-            if (materiasInscritas >= 8) {
-                alert("El alumno ya alcanzó el límite máximo de 8 materias.");
-                return;
-            }
-
-            const materiaCard = document.getElementById(idMateria);
-            
-            // Cambiar estilos a tarjeta inscrita
-            materiaCard.classList.add('enrolled');
-            
-            // Cambiar botón a Desasignar
-            const btn = materiaCard.querySelector('button');
-            btn.className = 'btn-rojo';
-            btn.innerText = 'Desasignar';
-            btn.removeAttribute('disabled');
-            btn.setAttribute('onclick', `desasignar('${idMateria}')`);
-
-            // Mover a la lista de inscritas
-            document.getElementById('lista-inscritas').appendChild(materiaCard);
-            
-            materiasInscritas++;
-            actualizarContadores();
-        }
+        renderizarBarraAlumnos();
+        seleccionarAlumno(alumnoSeleccionado);
     </script>
 </body>
 </html>
