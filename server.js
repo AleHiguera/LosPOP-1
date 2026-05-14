@@ -2,6 +2,7 @@ const express = require('express');
 const cors    = require('cors');
 const bcrypt  = require('bcrypt');
 const sqlite3 = require('sqlite3').verbose();
+const { body, validationResult } = require('express-validator'); // <-- Añadido
 
 const app = express();
 app.use(cors());
@@ -14,12 +15,29 @@ const db = new sqlite3.Database('./instituto.db', (err) => {
     else console.log('✅ Conectado a instituto.db');
 });
 
+// Middleware auxiliar para revisar errores de express-validator
+const revisarErrores = (req, res, next) => {
+    const errores = validationResult(req);
+    if (!errores.isEmpty()) {
+        return res.status(400).json({ error: 'Errores de validación', detalles: errores.array() });
+    }
+    next();
+};
+
 // ════════════════════════════════════════════════════════════════════════════
 // ALUMNOS
 // ════════════════════════════════════════════════════════════════════════════
 
-// POST /api/alumnos — Registrar nuevo alumno
-app.post('/api/alumnos', async (req, res) => {
+// POST /api/alumnos — Registrar nuevo alumno (AHORA CON VALIDACIONES)
+app.post('/api/alumnos', [
+    // Validaciones de seguridad
+    body('numero_control').isLength({ min: 8 }).withMessage('El número de control debe tener al menos 8 caracteres.').trim().escape(),
+    body('nombre').notEmpty().withMessage('El nombre es obligatorio.').trim().escape(),
+    body('apellido_paterno').notEmpty().withMessage('El apellido paterno es obligatorio.').trim().escape(),
+    body('carrera').notEmpty().withMessage('La carrera es obligatoria.').trim().escape(),
+    body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres.')
+], revisarErrores, async (req, res) => {
+    
     const {
         numero_control, curp, nombre, apellido_paterno, apellido_materno,
         fecha_nacimiento, sexo, estado_civil,
@@ -32,16 +50,6 @@ app.post('/api/alumnos', async (req, res) => {
         estado, credencial_vigente,
         password
     } = req.body;
-
-    // Validación de campos obligatorios
-    const requeridos = { numero_control, nombre, apellido_paterno, carrera, password };
-    const faltantes = Object.keys(requeridos).filter(k => !requeridos[k]);
-    if (faltantes.length > 0) {
-        return res.status(400).json({
-            error: 'Faltan campos obligatorios',
-            campos: faltantes
-        });
-    }
 
     try {
         const password_hash = await bcrypt.hash(password, 10);
@@ -84,7 +92,6 @@ app.post('/api/alumnos', async (req, res) => {
         db.run(sql, params, function (err) {
             if (err) {
                 if (err.message.includes('UNIQUE constraint failed')) {
-                    // Identificar qué campo está duplicado
                     const campo = err.message.includes('numero_control') ? 'Número de control'
                                 : err.message.includes('curp')           ? 'CURP'
                                 : err.message.includes('correo')         ? 'Correo electrónico'
@@ -107,7 +114,7 @@ app.post('/api/alumnos', async (req, res) => {
     }
 });
 
-// GET /api/alumnos — Listar todos los alumnos (sin password_hash)
+// GET /api/alumnos — Listar todos los alumnos
 app.get('/api/alumnos', (req, res) => {
     const sql = `
         SELECT id_alumno, numero_control, curp, nombre,
@@ -121,7 +128,7 @@ app.get('/api/alumnos', (req, res) => {
     });
 });
 
-// GET /api/alumnos/:numero_control — Obtener alumno por número de control
+// GET /api/alumnos/:numero_control — Obtener alumno
 app.get('/api/alumnos/:numero_control', (req, res) => {
     const sql = `
         SELECT id_alumno, numero_control, curp, nombre,
@@ -146,8 +153,12 @@ app.get('/api/alumnos/:numero_control', (req, res) => {
 // GRUPOS
 // ════════════════════════════════════════════════════════════════════════════
 
-// POST /api/grupos — Registrar nuevo grupo
-app.post('/api/grupos', (req, res) => {
+app.post('/api/grupos', [
+    body('clave_grupo').notEmpty().trim().escape(),
+    body('nombre_grupo').notEmpty().trim().escape(),
+    body('carrera').notEmpty().trim().escape(),
+    body('semestre').isInt()
+], revisarErrores, (req, res) => {
     const {
         clave_grupo, nombre_grupo, carrera, semestre,
         periodo, cupo_maximo, fecha_inicio, fecha_fin,
@@ -155,16 +166,6 @@ app.post('/api/grupos', (req, res) => {
         horario_dias, hora_inicio, hora_fin, aula,
         estado, modalidad, observaciones
     } = req.body;
-
-    // Validación de campos obligatorios
-    const requeridos = { clave_grupo, nombre_grupo, carrera, semestre };
-    const faltantes = Object.keys(requeridos).filter(k => !requeridos[k]);
-    if (faltantes.length > 0) {
-        return res.status(400).json({
-            error: 'Faltan campos obligatorios',
-            campos: faltantes
-        });
-    }
 
     const sql = `
         INSERT INTO grupos (
@@ -188,18 +189,12 @@ app.post('/api/grupos', (req, res) => {
             if (err.message.includes('UNIQUE constraint failed')) {
                 return res.status(409).json({ error: 'La clave de grupo ya existe.' });
             }
-            console.error('DB error:', err.message);
             return res.status(500).json({ error: 'Error en la base de datos.', detalle: err.message });
         }
-        res.status(201).json({
-            mensaje: 'Grupo registrado con éxito',
-            id_grupo: this.lastID,
-            clave_grupo
-        });
+        res.status(201).json({ mensaje: 'Grupo registrado con éxito', id_grupo: this.lastID, clave_grupo });
     });
 });
 
-// GET /api/grupos — Listar todos los grupos
 app.get('/api/grupos', (req, res) => {
     const sql = `
         SELECT g.id_grupo, g.clave_grupo, g.nombre_grupo, g.carrera,
@@ -219,7 +214,6 @@ app.get('/api/grupos', (req, res) => {
     });
 });
 
-// GET /api/grupos/:id — Obtener grupo por ID
 app.get('/api/grupos/:id', (req, res) => {
     const sql = `
         SELECT g.*, m.mat_nombre AS materia, d.doc_nombre AS docente
@@ -236,10 +230,9 @@ app.get('/api/grupos/:id', (req, res) => {
 });
 
 // ════════════════════════════════════════════════════════════════════════════
-// CATÁLOGOS (para poblar los <select> de los formularios)
+// CATÁLOGOS Y DOCENTES
 // ════════════════════════════════════════════════════════════════════════════
 
-// GET /api/docentes — Lista de docentes para el select del formulario de grupos
 app.get('/api/docentes', (req, res) => {
     db.all('SELECT id, doc_num, doc_nombre FROM docentes ORDER BY doc_nombre', [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -247,7 +240,6 @@ app.get('/api/docentes', (req, res) => {
     });
 });
 
-// GET /api/materias — Lista de materias para el select del formulario de grupos
 app.get('/api/materias', (req, res) => {
     const { carrera, semestre } = req.query;
     let sql = 'SELECT id, mat_clave, mat_nombre, mat_carrera, mat_semestre FROM materias';
@@ -268,61 +260,80 @@ app.get('/api/materias', (req, res) => {
     });
 });
 
-// POST /api/registrar-docente — Guardar nuevo docente
-app.post('/api/registrar-docente', (req, res) => {
+app.post('/api/registrar-docente', [
+    body('doc_num').notEmpty().trim().escape(),
+    body('doc_nombre').notEmpty().trim().escape()
+], revisarErrores, (req, res) => {
     const { doc_num, doc_nombre, doc_rfc, doc_depto, doc_correo } = req.body;
-
-    if (!doc_num || !doc_nombre) {
-        return res.status(400).json({ error: 'Número de empleado y nombre son obligatorios.' });
-    }
-
-    const sql = `INSERT INTO docentes (doc_num, doc_nombre, doc_rfc, doc_depto, doc_correo)
-                 VALUES (?, ?, ?, ?, ?)`;
+    const sql = `INSERT INTO docentes (doc_num, doc_nombre, doc_rfc, doc_depto, doc_correo) VALUES (?, ?, ?, ?, ?)`;
     const params = [doc_num, doc_nombre, doc_rfc || null, doc_depto || null, doc_correo || null];
 
     db.run(sql, params, function (err) {
         if (err) {
-            if (err.message.includes('UNIQUE constraint failed')) {
-                return res.status(409).json({ error: 'El número de empleado ya está registrado.' });
-            }
+            if (err.message.includes('UNIQUE constraint failed')) return res.status(409).json({ error: 'El número de empleado ya está registrado.' });
             return res.status(500).json({ error: 'Error en la base de datos.', detalle: err.message });
         }
         res.status(201).json({ mensaje: 'Docente registrado con éxito', id: this.lastID });
     });
 });
 
-// POST /api/registrar-materia — Guardar nueva materia
-app.post('/api/registrar-materia', (req, res) => {
-    const { mat_clave, mat_nombre, mat_corto, mat_creditos,
-            mat_carrera, mat_semestre, horas_t, horas_p, horas_total } = req.body;
-
-    if (!mat_clave || !mat_nombre || !mat_creditos || !mat_carrera || !mat_semestre) {
-        return res.status(400).json({ error: 'Faltan campos obligatorios.' });
-    }
-
-    const sql = `INSERT INTO materias
-                    (mat_clave, mat_nombre, mat_corto, mat_creditos,
-                     mat_carrera, mat_semestre, horas_t, horas_p, horas_total)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    const params = [
-        mat_clave, mat_nombre, mat_corto || null, mat_creditos,
-        mat_carrera, mat_semestre,
-        horas_t || 0, horas_p || 0, horas_total || 0
-    ];
+app.post('/api/registrar-materia', [
+    body('mat_clave').notEmpty().trim().escape(),
+    body('mat_nombre').notEmpty().trim().escape()
+], revisarErrores, (req, res) => {
+    const { mat_clave, mat_nombre, mat_corto, mat_creditos, mat_carrera, mat_semestre, horas_t, horas_p, horas_total } = req.body;
+    const sql = `INSERT INTO materias (mat_clave, mat_nombre, mat_corto, mat_creditos, mat_carrera, mat_semestre, horas_t, horas_p, horas_total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const params = [ mat_clave, mat_nombre, mat_corto || null, mat_creditos, mat_carrera, mat_semestre, horas_t || 0, horas_p || 0, horas_total || 0 ];
 
     db.run(sql, params, function (err) {
         if (err) {
-            if (err.message.includes('UNIQUE constraint failed')) {
-                return res.status(409).json({ error: 'La clave de materia ya existe.' });
-            }
+            if (err.message.includes('UNIQUE constraint failed')) return res.status(409).json({ error: 'La clave de materia ya existe.' });
             return res.status(500).json({ error: 'Error en la base de datos.', detalle: err.message });
         }
         res.status(201).json({ mensaje: 'Materia registrada con éxito', id: this.lastID });
     });
 });
 
+// ════════════════════════════════════════════════════════════════════════════
+// SISTEMA DE LOGIN Y AUTENTICACIÓN
+// ════════════════════════════════════════════════════════════════════════════
+
+app.post('/api/login', [
+    body('numero_control').notEmpty().withMessage('El número de control es obligatorio').trim().escape(),
+    body('password').notEmpty().withMessage('La contraseña es obligatoria')
+], revisarErrores, (req, res) => {
+    const { numero_control, password } = req.body;
+
+    // Busca al alumno por su número de control
+    db.get('SELECT * FROM alumnos WHERE numero_control = ?', [numero_control], async (err, usuario) => {
+        if (err) return res.status(500).json({ error: "Error en el servidor al buscar usuario" });
+        
+        if (!usuario) {
+            return res.status(404).json({ error: "Usuario no encontrado." });
+        }
+
+        // Compara la contraseña enviada con el hash guardado en la base de datos
+        const coincide = await bcrypt.compare(password, usuario.password_hash);
+        
+        if (!coincide) {
+            return res.status(401).json({ error: "Contraseña incorrecta." });
+        }
+
+        // Si la contraseña es correcta, permite el acceso
+        res.json({ 
+            mensaje: "Acceso autorizado", 
+            usuario: { 
+                id_alumno: usuario.id_alumno, 
+                nombre: usuario.nombre,
+                apellido_paterno: usuario.apellido_paterno,
+                carrera: usuario.carrera 
+            } 
+        });
+    });
+});
+
 // ─── Iniciar servidor ────────────────────────────────────────────────────────
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
