@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignación de Carga Docente - ITLM</title>
+    <link rel="stylesheet" href="../estilos/panel-personal-estilos.css">
+    <link rel="stylesheet" href="../estilos/asignacion-docentes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <div class="header-titles">
+            <h1>Asignación de Carga Horaria a Docentes</h1>
+        </div>
+        <button class="btn-logout-admin" onclick="window.location.href='../login/panel-personal.html'">
+            Regresar al Dashboard
+        </button>
+    </header>
+
+    <main class="assignment-container">
+        
+        <aside class="sidebar-teachers">
+            <div class="sidebar-card">
+                <h3 class="section-title">Seleccionar Docente</h3>
+                <div class="search-box">
+                    <input type="text" id="buscadorDocentes" placeholder="Buscar por nombre o número...">
+                </div>
+                <div class="teacher-list" id="contenedor-docentes">
+                    </div>
+            </div>
+        </aside>
+
+        <section class="assignment-workspace">
+            
+            <div id="estado-vacio" class="empty-state-card">
+                <i class="fa-regular fa-user"></i>
+                <p>Selecciona un docente para asignar materias</p>
+            </div>
+
+            <div id="estado-activo" style="display: none;">
+                </div>
+
+        </section>
+    </main>
+
+    <script>
+        const docentes = [
+            { id: 'DOC-001', nombre: 'Dr. Juan Carlos Pérez López', area: 'Ingeniería de Software', asignadas: 0 },
+            { id: 'DOC-002', nombre: 'Mtra. María Elena Rodríguez García', area: 'Redes y Telecomunicaciones', asignadas: 0 },
+            { id: 'DOC-003', nombre: 'Dr. Roberto Sánchez Mendoza', area: 'Inteligencia Artificial', asignadas: 0 },
+            { id: 'DOC-004', nombre: 'Mtro. Luis Fernando Torres Cruz', area: 'Base de Datos', asignadas: 0 }
+        ];
+
+        let docenteSeleccionado = null; 
+
+        function renderizarListaDocentes() {
+            const contenedor = document.getElementById('contenedor-docentes');
+            contenedor.innerHTML = '';
+
+            docentes.forEach(docente => {
+                const activoClass = docente.id === docenteSeleccionado ? 'active' : '';
+                
+                contenedor.innerHTML += `
+                    <div class="teacher-item ${activoClass}" onclick="seleccionarDocente('${docente.id}')" data-nombre="${docente.nombre.toLowerCase()}" data-id="${docente.id.toLowerCase()}">
+                        <div class="teacher-name">${docente.nombre}</div>
+                        <div class="teacher-details">No. Empleado: ${docente.id}</div>
+                        <div class="teacher-details">${docente.area}</div>
+                        <div class="teacher-count"><span>${docente.asignadas}</span> materia(s) asignada(s)</div>
+                    </div>
+                `;
+            });
+        }
+
+        function seleccionarDocente(id) {
+            docenteSeleccionado = id;
+            renderizarListaDocentes(); 
+            document.getElementById('estado-vacio').style.display = 'none';
+            document.getElementById('estado-activo').style.display = 'block';
+            
+            console.log("Docente seleccionado:", id);
+        }
+
+        document.getElementById('buscadorDocentes').addEventListener('input', e => {
+            const busqueda = e.target.value.toLowerCase();
+            document.querySelectorAll('.teacher-item').forEach(caja => {
+                const nombre = caja.getAttribute('data-nombre');
+                const id = caja.getAttribute('data-id');
+                caja.style.display = (nombre.includes(busqueda) || id.includes(busqueda)) ? 'block' : 'none';
+            });
+        });
+
+        renderizarListaDocentes();
+    </script>
+</body>
+</html>
