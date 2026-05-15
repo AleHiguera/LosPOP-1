@@ -74,8 +74,9 @@
                 'isc402': { clave: 'ISC-402', nombre: 'Base de Datos Avanzadas', salon: 'LAB-302', alumnos: 25, horarios: ['Martes 09:00 - 10:00', 'Jueves 09:00 - 10:00'] },
                 'isc201': { clave: 'ISC-201', nombre: 'Estructura de Datos', salon: 'LAB-201', alumnos: 32, horarios: ['Lunes 09:00 - 10:00', 'Miércoles 09:00 - 10:00'] },
                 'isc404': { clave: 'ISC-404', nombre: 'Sistemas Operativos', salon: 'LAB-304', alumnos: 27, horarios: ['Lunes 07:00 - 08:00', 'Miércoles 07:00 - 08:00'] },
-                'isc101': { clave: 'ISC-101', nombre: 'Fundamentos de Programación', salon: 'AULA-101', alumnos: 35, horarios: ['Viernes 10:00 - 12:00'] },
-                'ii305':  { clave: 'II-305', nombre: 'Investigación de Operaciones', salon: 'EDIF-B2', alumnos: 40, horarios: ['Lunes 12:00 - 14:00', 'Miércoles 12:00 - 14:00'] }
+                'isc401': { clave: 'ISC-401', nombre: 'Programación Web', salon: 'LAB-301', alumnos: 28, horarios: ['Lunes 07:00 - 08:00', 'Miércoles 07:00 - 08:00'] },                
+                'isc301': { clave: 'ISC-301', nombre: 'Redes de Computadoras', salon: 'AULA-201', alumnos: 30, horarios: ['Lunes 10:00 - 11:00', 'Miércoles 10:00 - 11:00'] },
+                'isc501': { clave: 'ISC-501', nombre: 'Seguridad Informática', salon: 'LAB-401', alumnos: 22, horarios: ['Martes 12:00 - 13:00', 'Viernes 07:00 - 08:00'] }
             }
         };
 
@@ -84,19 +85,15 @@
         function renderizarBarraDocentes() {
             const contenedor = document.getElementById('contenedor-docentes');
             contenedor.innerHTML = '';
-
             Object.values(baseDatos.docentes).forEach(docente => {
                 const activoClass = docente.id === docenteActivo ? 'active' : '';
-                const totalM = docente.materias.length;
-                
                 contenedor.innerHTML += `
                     <div class="teacher-item ${activoClass}" onclick="seleccionarDocente('${docente.id}')" data-nombre="${docente.nombre.toLowerCase()}" data-id="${docente.id.toLowerCase()}">
                         <div class="teacher-name">${docente.nombre}</div>
                         <div class="teacher-details">No. Empleado: ${docente.id}</div>
                         <div class="teacher-details">${docente.area}</div>
-                        <div class="teacher-count"><span id="count-side-${docente.id}">${totalM}</span> materia(s) asignada(s)</div>
-                    </div>
-                `;
+                        <div class="teacher-count"><span id="count-side-${docente.id}">${docente.materias.length}</span> materia(s) asignada(s)</div>
+                    </div>`;
             });
         }
 
@@ -104,7 +101,6 @@
             docenteActivo = id;
             document.getElementById('estado-vacio').style.display = 'none';
             document.getElementById('estado-activo').style.display = 'block';
-            
             renderizarBarraDocentes(); 
             renderizarMateriasWorkspace(); 
         }
@@ -116,52 +112,95 @@
             
             divAsignadas.innerHTML = '';
             divDisponibles.innerHTML = '';
-            
-            let countAsig = 0;
-            let countDisp = 0;
+            let countAsig = 0; let countDisp = 0;
 
             Object.keys(baseDatos.materias).forEach(idMateria => {
                 const mat = baseDatos.materias[idMateria];
                 const estaAsignada = docente.materias.includes(idMateria);
 
+                let conflictoCon = null;
+                if (!estaAsignada) {
+                    for (let idAsig of docente.materias) {
+                        const matAsig = baseDatos.materias[idAsig];
+                        const hayChoque = mat.horarios.some(horario => matAsig.horarios.includes(horario));
+                        if (hayChoque) {
+                            conflictoCon = matAsig;
+                            break; 
+                        }
+                    }
+                }
+
                 let htmlHorarios = '';
                 mat.horarios.forEach(h => htmlHorarios += `<div class="schedule-pill">${h}</div>`);
 
-                const infoTarjeta = `
-                    <div class="doc-subj-header">
-                        <div class="doc-subj-title">
-                            <span class="subj-badge">${mat.clave}</span>
-                            <span class="subj-name">${mat.nombre}</span>
-                        </div>
-                        <div class="doc-subj-actions">
-                            ${estaAsignada 
-                                ? `<button class="btn-sm-navy">Ver Alumnos</button> <button class="btn-sm-red" onclick="desasignar('${idMateria}')">Desasignar</button>`
-                                : `<button class="btn-sm-green" onclick="asignar('${idMateria}')">Asignar al Docente</button>`
-                            }
-                        </div>
-                    </div>
-                    <div class="doc-subj-meta">
-                        <span><i class="fa-solid fa-thumbtack"></i> Salón: <strong>${mat.salon}</strong></span>
-                        <span><i class="fa-solid fa-user-group"></i> Alumnos: <strong>${mat.alumnos}</strong></span>
-                    </div>
-                    <div class="doc-subj-schedule">
-                        <div>Horarios:</div>
-                        <div class="schedule-boxes">${htmlHorarios}</div>
-                    </div>
-                `;
-
                 if (estaAsignada) {
                     countAsig++;
-                    divAsignadas.innerHTML += `<div class="doc-subject-card">${infoTarjeta}</div>`;
-                } else {
+                    divAsignadas.innerHTML += `
+                        <div class="doc-subject-card">
+                            <div class="doc-subj-header">
+                                <div class="doc-subj-title">
+                                    <span class="subj-badge">${mat.clave}</span>
+                                    <span class="subj-name">${mat.nombre}</span>
+                                </div>
+                                <div class="doc-subj-actions">
+                                    <button class="btn-sm-navy">Ver Alumnos</button>
+                                    <button class="btn-sm-red" onclick="desasignar('${idMateria}')">Desasignar</button>
+                                </div>
+                            </div>
+                            <div class="doc-subj-meta">
+                                <span><i class="fa-solid fa-thumbtack"></i> Salón: <strong>${mat.salon}</strong></span>
+                                <span><i class="fa-solid fa-user-group"></i> Alumnos: <strong>${mat.alumnos}</strong></span>
+                            </div>
+                            <div class="doc-subj-schedule">
+                                <div>Horarios:</div>
+                                <div class="schedule-boxes">${htmlHorarios}</div>
+                            </div>
+                        </div>`;
+                } 
+                else {
                     countDisp++;
-                    divDisponibles.innerHTML += `<div class="doc-subject-card" style="background: white;">${infoTarjeta}</div>`;
+                    let estiloCarta = "background: white;";
+                    let claseCarta = "doc-subject-card";
+                    let htmlBoton = `<button class="btn-sm-green" onclick="asignar('${idMateria}')">Asignar</button>`;
+                    let htmlAlerta = "";
+
+                    if (conflictoCon) {
+                        claseCarta += " conflict";
+                        estiloCarta = ""; 
+                        htmlBoton = `<button class="btn-sm-gray" disabled>Bloqueado</button>`;
+                        htmlAlerta = `
+                            <div class="conflict-alert">
+                                <div class="conflict-title"><i class="fa-solid fa-triangle-exclamation"></i> Conflicto de horario:</div>
+                                <div class="conflict-desc">Choca con ${conflictoCon.clave} - ${conflictoCon.nombre}</div>
+                                <div class="conflict-detail">El docente no puede estar en dos salones al mismo tiempo</div>
+                            </div>`;
+                    }
+
+                    divDisponibles.innerHTML += `
+                        <div class="${claseCarta}" style="${estiloCarta}">
+                            <div class="doc-subj-header">
+                                <div class="doc-subj-title">
+                                    <span class="subj-badge-orange">${mat.clave}</span>
+                                    <span class="subj-name">${mat.nombre}</span>
+                                </div>
+                                <div class="doc-subj-actions">
+                                    ${htmlBoton}
+                                </div>
+                            </div>
+                            <div class="doc-subj-meta">
+                                <span><i class="fa-solid fa-thumbtack"></i> Salón: <strong>${mat.salon}</strong></span>
+                                <span><i class="fa-solid fa-user-group"></i> Alumnos: <strong>${mat.alumnos}</strong></span>
+                            </div>
+                            <div class="doc-subj-schedule">
+                                <div>Horarios:</div>
+                                <div class="schedule-boxes">${htmlHorarios}</div>
+                            </div>
+                            ${htmlAlerta}
+                        </div>`;
                 }
             });
 
-            if(countAsig === 0) {
-                divAsignadas.innerHTML = `<p style="color: #64748b; padding: 10px;">Este docente no tiene carga horaria asignada.</p>`;
-            }
+            if(countAsig === 0) divAsignadas.innerHTML = `<p style="color: #64748b; padding: 10px;">Este docente no tiene carga horaria asignada.</p>`;
 
             document.getElementById('count-asignadas').innerText = countAsig;
             document.getElementById('count-disponibles').innerText = countDisp;
@@ -170,14 +209,12 @@
 
         function asignar(idMateria) {
             baseDatos.docentes[docenteActivo].materias.push(idMateria);
-            renderizarMateriasWorkspace();
-            renderizarBarraDocentes();
+            renderizarMateriasWorkspace(); renderizarBarraDocentes();
         }
 
         function desasignar(idMateria) {
             baseDatos.docentes[docenteActivo].materias = baseDatos.docentes[docenteActivo].materias.filter(m => m !== idMateria);
-            renderizarMateriasWorkspace();
-            renderizarBarraDocentes();
+            renderizarMateriasWorkspace(); renderizarBarraDocentes();
         }
 
         document.getElementById('buscadorDocentes').addEventListener('input', e => {

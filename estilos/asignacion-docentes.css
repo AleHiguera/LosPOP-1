@@ -240,3 +240,68 @@
     overflow-y: auto;
     padding-right: 5px;
 }
+
+.subj-badge-orange {
+    background: #f97316;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+/* Botón Bloqueado */
+.btn-sm-gray {
+    background: #cbd5e0;
+    color: #4b5563;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: not-allowed;
+}
+
+/* Tarjeta en estado de conflicto */
+.doc-subject-card.conflict {
+    background-color: #fef2f2; 
+    border-color: #fca5a5; 
+}
+
+/* Caja de alerta de conflicto */
+.conflict-alert {
+    background-color: #fee2e2;
+    border: 1px solid #fca5a5;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 15px;
+}
+
+.conflict-title {
+    color: #991b1b;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.conflict-title i {
+    color: #ea580c; 
+}
+
+.conflict-desc {
+    color: #b91c1c;
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: 20px;
+}
+
+.conflict-detail {
+    color: #dc2626;
+    font-size: 12px;
+    margin-left: 20px;
+    margin-top: 2px;
+}
