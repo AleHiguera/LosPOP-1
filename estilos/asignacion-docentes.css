@@ -305,3 +305,129 @@
     margin-left: 20px;
     margin-top: 2px;
 }
+
+/* --- VISTA DE HORARIO GENERADO --- */
+.schedule-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.schedule-title-area h2 {
+    font-size: 20px;
+    color: #111827;
+    margin-bottom: 5px;
+}
+
+.schedule-title-area p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.schedule-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-outline-gray {
+    background: white;
+    border: 1px solid #cbd5e0;
+    color: #4b5563;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: 0.2s;
+}
+.btn-outline-gray:hover { background: #f8fafc; color: #111827; }
+
+.success-banner {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-left: 4px solid #22c55e;
+}
+
+/* Tabla del Horario */
+.schedule-table-wrapper {
+    overflow-x: auto;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+    text-align: center;
+}
+
+.schedule-table th {
+    border-bottom: 2px solid #e2e8f0;
+    padding: 12px;
+    font-size: 13px;
+    color: #111827;
+    font-weight: 600;
+}
+
+.schedule-table td {
+    border: 1px solid #e2e8f0;
+    padding: 5px;
+    vertical-align: top;
+    height: 90px;
+    width: 16%;
+}
+
+.schedule-table .time-col {
+    font-weight: 600;
+    color: #4b5563;
+    width: 8%;
+    vertical-align: middle;
+}
+
+/* Bloques de clase dentro de la tabla */
+.class-block {
+    background: #eff6ff; 
+    border: 1px solid #bfdbfe;
+    border-radius: 4px;
+    padding: 8px;
+    text-align: left;
+    font-size: 11px;
+    color: #4b5563;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.class-block .cb-title {
+    font-weight: 700;
+    color: #1e3a8a;
+    font-size: 11px;
+}
+
+.class-block .cb-meta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+}
+
+.class-block .cb-meta i.fa-thumbtack { color: #ef4444; }
+.class-block .cb-meta i.fa-user-group { color: #1e3a8a; }
+
+.info-card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    margin-bottom: 20px;
+}
