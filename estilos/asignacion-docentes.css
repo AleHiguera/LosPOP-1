@@ -103,9 +103,140 @@
     font-weight: 500;
 }
 
-/* Móvil */
-@media (max-width: 900px) {
-    .assignment-container {
-        grid-template-columns: 1fr;
-    }
+/* TARJETAS DE MATERIAS */
+.doc-subject-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.doc-subject-card {
+    background: #f8fafc; 
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 18px;
+    transition: all 0.3s;
+}
+
+.doc-subject-card:hover {
+    border-color: #cbd5e0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.doc-subj-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.doc-subj-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.subj-badge {
+    background: #1e3a8a; 
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.subj-name {
+    font-size: 15px;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.doc-subj-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-sm-navy {
+    background: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-sm-navy:hover { background: #172a63; }
+
+.btn-sm-red {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-sm-red:hover { background: #dc2626; }
+
+.btn-sm-green {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-sm-green:hover { background: #059669; }
+
+.doc-subj-meta {
+    display: flex;
+    gap: 30px;
+    font-size: 13px;
+    color: #4b5563;
+    margin-bottom: 12px;
+}
+
+.doc-subj-meta i {
+    color: #94a3b8; 
+    margin-right: 6px;
+}
+
+.doc-subj-meta i.fa-thumbtack {
+    color: #ef4444; 
+}
+
+.doc-subj-meta i.fa-user-group {
+    color: #1e3a8a; 
+}
+
+.doc-subj-schedule {
+    font-size: 13px;
+    color: #4b5563;
+}
+
+.schedule-boxes {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+
+.schedule-pill {
+    border: 1px solid #cbd5e0;
+    background: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.scrollable-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
 }

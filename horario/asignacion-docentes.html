@@ -14,7 +14,7 @@
         <div class="header-titles">
             <h1>Asignación de Carga Horaria a Docentes</h1>
         </div>
-        <button class="btn-logout-admin" onclick="window.location.href='../login/panel-personal.html'">
+        <button class="btn-logout-admin" onclick="window.location.href='panel-personal.html'">
             Regresar al Dashboard
         </button>
     </header>
@@ -27,8 +27,7 @@
                 <div class="search-box">
                     <input type="text" id="buscadorDocentes" placeholder="Buscar por nombre o número...">
                 </div>
-                <div class="teacher-list" id="contenedor-docentes">
-                    </div>
+                <div class="teacher-list" id="contenedor-docentes"></div>
             </div>
         </aside>
 
@@ -40,58 +39,155 @@
             </div>
 
             <div id="estado-activo" style="display: none;">
+                
+                <div class="info-card">
+                    <h3 class="section-title" style="margin-bottom: 20px;">Materias Asignadas (<span id="count-asignadas">0</span>)</h3>
+                    <div id="lista-asignadas" class="doc-subject-list"></div>
                 </div>
+
+                <div class="info-card" style="margin-top: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 class="section-title" style="margin-bottom: 0;">Materias Disponibles (<span id="count-disponibles">0</span>)</h3>
+                        <select style="padding: 5px; border-radius: 4px; border: 1px solid #cbd5e0;">
+                            <option>Filtrar por carrera...</option>
+                            <option>ISC</option>
+                            <option>Industrial</option>
+                        </select>
+                    </div>
+                    <div id="lista-disponibles" class="doc-subject-list scrollable-list"></div>
+                </div>
+
+            </div>
 
         </section>
     </main>
 
     <script>
-        const docentes = [
-            { id: 'DOC-001', nombre: 'Dr. Juan Carlos Pérez López', area: 'Ingeniería de Software', asignadas: 0 },
-            { id: 'DOC-002', nombre: 'Mtra. María Elena Rodríguez García', area: 'Redes y Telecomunicaciones', asignadas: 0 },
-            { id: 'DOC-003', nombre: 'Dr. Roberto Sánchez Mendoza', area: 'Inteligencia Artificial', asignadas: 0 },
-            { id: 'DOC-004', nombre: 'Mtro. Luis Fernando Torres Cruz', area: 'Base de Datos', asignadas: 0 }
-        ];
+        const baseDatos = {
+            docentes: {
+                'DOC-001': { id: 'DOC-001', nombre: 'Dr. Juan Carlos Pérez López', area: 'Ingeniería de Software', materias: ['isc402', 'isc201', 'isc404'] },
+                'DOC-002': { id: 'DOC-002', nombre: 'Mtra. María Elena Rodríguez García', area: 'Redes y Telecomunicaciones', materias: [] },
+                'DOC-003': { id: 'DOC-003', nombre: 'Dr. Roberto Sánchez Mendoza', area: 'Inteligencia Artificial', materias: [] },
+                'DOC-004': { id: 'DOC-004', nombre: 'Mtro. Luis Fernando Torres Cruz', area: 'Base de Datos', materias: [] }
+            },
+            materias: {
+                'isc402': { clave: 'ISC-402', nombre: 'Base de Datos Avanzadas', salon: 'LAB-302', alumnos: 25, horarios: ['Martes 09:00 - 10:00', 'Jueves 09:00 - 10:00'] },
+                'isc201': { clave: 'ISC-201', nombre: 'Estructura de Datos', salon: 'LAB-201', alumnos: 32, horarios: ['Lunes 09:00 - 10:00', 'Miércoles 09:00 - 10:00'] },
+                'isc404': { clave: 'ISC-404', nombre: 'Sistemas Operativos', salon: 'LAB-304', alumnos: 27, horarios: ['Lunes 07:00 - 08:00', 'Miércoles 07:00 - 08:00'] },
+                'isc101': { clave: 'ISC-101', nombre: 'Fundamentos de Programación', salon: 'AULA-101', alumnos: 35, horarios: ['Viernes 10:00 - 12:00'] },
+                'ii305':  { clave: 'II-305', nombre: 'Investigación de Operaciones', salon: 'EDIF-B2', alumnos: 40, horarios: ['Lunes 12:00 - 14:00', 'Miércoles 12:00 - 14:00'] }
+            }
+        };
 
-        let docenteSeleccionado = null; 
+        let docenteActivo = null;
 
-        function renderizarListaDocentes() {
+        function renderizarBarraDocentes() {
             const contenedor = document.getElementById('contenedor-docentes');
             contenedor.innerHTML = '';
 
-            docentes.forEach(docente => {
-                const activoClass = docente.id === docenteSeleccionado ? 'active' : '';
+            Object.values(baseDatos.docentes).forEach(docente => {
+                const activoClass = docente.id === docenteActivo ? 'active' : '';
+                const totalM = docente.materias.length;
                 
                 contenedor.innerHTML += `
                     <div class="teacher-item ${activoClass}" onclick="seleccionarDocente('${docente.id}')" data-nombre="${docente.nombre.toLowerCase()}" data-id="${docente.id.toLowerCase()}">
                         <div class="teacher-name">${docente.nombre}</div>
                         <div class="teacher-details">No. Empleado: ${docente.id}</div>
                         <div class="teacher-details">${docente.area}</div>
-                        <div class="teacher-count"><span>${docente.asignadas}</span> materia(s) asignada(s)</div>
+                        <div class="teacher-count"><span id="count-side-${docente.id}">${totalM}</span> materia(s) asignada(s)</div>
                     </div>
                 `;
             });
         }
 
         function seleccionarDocente(id) {
-            docenteSeleccionado = id;
-            renderizarListaDocentes(); 
+            docenteActivo = id;
             document.getElementById('estado-vacio').style.display = 'none';
             document.getElementById('estado-activo').style.display = 'block';
             
-            console.log("Docente seleccionado:", id);
+            renderizarBarraDocentes(); 
+            renderizarMateriasWorkspace(); 
+        }
+
+        function renderizarMateriasWorkspace() {
+            const docente = baseDatos.docentes[docenteActivo];
+            const divAsignadas = document.getElementById('lista-asignadas');
+            const divDisponibles = document.getElementById('lista-disponibles');
+            
+            divAsignadas.innerHTML = '';
+            divDisponibles.innerHTML = '';
+            
+            let countAsig = 0;
+            let countDisp = 0;
+
+            Object.keys(baseDatos.materias).forEach(idMateria => {
+                const mat = baseDatos.materias[idMateria];
+                const estaAsignada = docente.materias.includes(idMateria);
+
+                let htmlHorarios = '';
+                mat.horarios.forEach(h => htmlHorarios += `<div class="schedule-pill">${h}</div>`);
+
+                const infoTarjeta = `
+                    <div class="doc-subj-header">
+                        <div class="doc-subj-title">
+                            <span class="subj-badge">${mat.clave}</span>
+                            <span class="subj-name">${mat.nombre}</span>
+                        </div>
+                        <div class="doc-subj-actions">
+                            ${estaAsignada 
+                                ? `<button class="btn-sm-navy">Ver Alumnos</button> <button class="btn-sm-red" onclick="desasignar('${idMateria}')">Desasignar</button>`
+                                : `<button class="btn-sm-green" onclick="asignar('${idMateria}')">Asignar al Docente</button>`
+                            }
+                        </div>
+                    </div>
+                    <div class="doc-subj-meta">
+                        <span><i class="fa-solid fa-thumbtack"></i> Salón: <strong>${mat.salon}</strong></span>
+                        <span><i class="fa-solid fa-user-group"></i> Alumnos: <strong>${mat.alumnos}</strong></span>
+                    </div>
+                    <div class="doc-subj-schedule">
+                        <div>Horarios:</div>
+                        <div class="schedule-boxes">${htmlHorarios}</div>
+                    </div>
+                `;
+
+                if (estaAsignada) {
+                    countAsig++;
+                    divAsignadas.innerHTML += `<div class="doc-subject-card">${infoTarjeta}</div>`;
+                } else {
+                    countDisp++;
+                    divDisponibles.innerHTML += `<div class="doc-subject-card" style="background: white;">${infoTarjeta}</div>`;
+                }
+            });
+
+            if(countAsig === 0) {
+                divAsignadas.innerHTML = `<p style="color: #64748b; padding: 10px;">Este docente no tiene carga horaria asignada.</p>`;
+            }
+
+            document.getElementById('count-asignadas').innerText = countAsig;
+            document.getElementById('count-disponibles').innerText = countDisp;
+            document.getElementById(`count-side-${docenteActivo}`).innerText = countAsig;
+        }
+
+        function asignar(idMateria) {
+            baseDatos.docentes[docenteActivo].materias.push(idMateria);
+            renderizarMateriasWorkspace();
+            renderizarBarraDocentes();
+        }
+
+        function desasignar(idMateria) {
+            baseDatos.docentes[docenteActivo].materias = baseDatos.docentes[docenteActivo].materias.filter(m => m !== idMateria);
+            renderizarMateriasWorkspace();
+            renderizarBarraDocentes();
         }
 
         document.getElementById('buscadorDocentes').addEventListener('input', e => {
-            const busqueda = e.target.value.toLowerCase();
-            document.querySelectorAll('.teacher-item').forEach(caja => {
-                const nombre = caja.getAttribute('data-nombre');
-                const id = caja.getAttribute('data-id');
-                caja.style.display = (nombre.includes(busqueda) || id.includes(busqueda)) ? 'block' : 'none';
+            const b = e.target.value.toLowerCase();
+            document.querySelectorAll('.teacher-item').forEach(c => {
+                c.style.display = (c.dataset.nombre.includes(b) || c.dataset.id.includes(b)) ? 'block' : 'none';
             });
         });
 
-        renderizarListaDocentes();
+        renderizarBarraDocentes();
     </script>
 </body>
 </html>
