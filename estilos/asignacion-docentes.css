@@ -431,3 +431,79 @@
     padding: 25px;
     margin-bottom: 20px;
 }
+
+/* --- ESTILOS PARA EL MODAL DE VISTA PREVIA --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    border-radius: 8px;
+    padding: 30px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.print-preview-paper {
+    background: white;
+    padding: 40px;
+    color: black;
+    font-family: 'Arial', sans-serif;
+}
+
+.print-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.print-header h1 { font-size: 22px; margin: 0; }
+.print-header h2 { font-size: 18px; margin: 5px 0; font-weight: normal; }
+
+.print-details {
+    text-align: center;
+    font-size: 13px;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.table-print {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-print th, .table-print td {
+    border: 2px solid black; 
+    padding: 6px;
+    font-size: 11px;
+    vertical-align: top;
+}
+
+.table-print th { font-weight: bold; background: #f3f4f6; }
+.table-print .time-col { width: 60px; text-align: center; font-weight: bold; vertical-align: middle; }
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}

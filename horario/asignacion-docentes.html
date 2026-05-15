@@ -14,7 +14,7 @@
         <div class="header-titles">
             <h1>Asignación de Carga Horaria a Docentes</h1>
         </div>
-        <button class="btn-logout-admin" onclick="window.location.href='panel-personal.html'">
+        <button class="btn-logout-admin" onclick="window.location.href='../login/panel-personal.html'">
             Regresar al Dashboard
         </button>
     </header>
@@ -67,8 +67,8 @@
                         <button class="btn-outline-gray" onclick="volverEdicion()">
                             <i class="fa-solid fa-pen"></i> Editar Asignación
                         </button>
-                        <button class="btn-sm-navy" style="padding: 10px 15px; font-size:13px;">
-                            <i class="fa-solid fa-print"></i> Descargar Horario
+                        <button class="btn-sm-navy" onclick="abrirVistaPrevia()">
+                        <i class="fa-solid fa-eye"></i> Descargar Horario
                         </button>
                     </div>
                 </div>
@@ -98,6 +98,48 @@
 
         </section>
     </main>
+
+    <div id="modalPreview" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="color: #1e3a8a;">Vista Previa de Impresión</h3>
+                <button onclick="cerrarModal()" style="border: none; background: none; font-size: 20px; cursor: pointer;">&times;</button>
+            </div>
+
+            <div id="hoja-oficial" class="print-preview-paper">
+                <div class="print-header">
+                    <h1>Instituto Tecnológico de Los Mochis</h1>
+                    <h2>Horario del Docente</h2>
+                </div>
+                <div class="print-details">
+                    <strong>Docente:</strong> <span id="p-nombre">---</span><br>
+                    <strong>No. Empleado:</strong> <span id="p-id">---</span><br>
+                    <strong>Especialidad:</strong> <span id="p-area">---</span>
+                </div>
+                <table class="table-print">
+                    <thead>
+                        <tr>
+                            <th>Hora</th>
+                            <th>Lunes</th>
+                            <th>Martes</th>
+                            <th>Miércoles</th>
+                            <th>Jueves</th>
+                            <th>Viernes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-impresion">
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-outline-gray" onclick="cerrarModal()">Cancelar</button>
+                <button class="btn-sm-navy" onclick="ejecutarDescargaReal()" style="padding: 12px 25px;">
+                    <i class="fa-solid fa-download"></i> Confirmar y Descargar PDF
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
         const baseDatos = {
@@ -298,6 +340,57 @@
                 c.style.display = (c.dataset.nombre.includes(b) || c.dataset.id.includes(b)) ? 'block' : 'none';
             });
         });
+
+        function abrirVistaPrevia() {
+        const docente = baseDatos.docentes[docenteActivo];
+        document.getElementById('p-nombre').innerText = docente.nombre;
+        document.getElementById('p-id').innerText = docente.id;
+        document.getElementById('p-area').innerText = docente.area;
+        const tbodyImpresion = document.getElementById('cuerpo-impresion');
+        tbodyImpresion.innerHTML = '';
+        
+        const horas = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00'];
+        const diasIndices = { 'Lunes': 0, 'Martes': 1, 'Miércoles': 2, 'Jueves': 3, 'Viernes': 4 };
+        let cuadricula = Array(6).fill().map(() => Array(5).fill(null));
+
+        docente.materias.forEach(idMat => {
+            const mat = baseDatos.materias[idMat];
+            mat.horarios.forEach(hStr => {
+                const p = hStr.split(' '); 
+                const f = horas.indexOf(p[1]); const c = diasIndices[p[0]];
+                if (f !== -1) cuadricula[f][c] = mat;
+            });
+        });
+
+        for (let f = 0; f < horas.length; f++) {
+            let tr = `<tr><td class="time-col">${horas[f]}</td>`;
+            for (let c = 0; c < 5; c++) {
+                let m = cuadricula[f][c];
+                tr += m ? `<td><strong>${m.clave}</strong><br>${m.nombre}<br>Salón: ${m.salon}<br>Alumnos: ${m.alumnos}</td>` : `<td></td>`;
+            }
+            tbodyImpresion.innerHTML += tr + `</tr>`;
+        }
+        document.getElementById('modalPreview').style.display = 'flex';
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalPreview').style.display = 'none';
+    }
+
+    function ejecutarDescargaReal() {
+        const docente = baseDatos.docentes[docenteActivo];
+        const elemento = document.getElementById('hoja-oficial');
+        const opt = {
+            margin: 10,
+            filename: `Horario_Oficial_${docente.id}.pdf`,
+            html2canvas: { scale: 3 }, 
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } 
+        };
+        
+        html2pdf().set(opt).from(elemento).save().then(() => {
+            cerrarModal(); 
+        });
+    }
 
         renderizarBarraDocentes();
     </script>
