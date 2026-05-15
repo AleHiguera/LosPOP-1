@@ -2,7 +2,7 @@ const express = require('express');
 const cors    = require('cors');
 const bcrypt  = require('bcrypt');
 const sqlite3 = require('sqlite3').verbose();
-const { body, validationResult } = require('express-validator'); // <-- Añadido
+const { body, validationResult } = require('express-validator');
 
 const app = express();
 app.use(cors());
@@ -293,6 +293,102 @@ app.post('/api/registrar-materia', [
         res.status(201).json({ mensaje: 'Materia registrada con éxito', id: this.lastID });
     });
 });
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// ASIGNACIÓN DE DOCENTES, GRUPOS Y HORARIOS (NUEVO)
+// ════════════════════════════════════════════════════════════════════════════
+
+// 1. Crear Asignación (Relación Docente-Grupo-Materia)
+app.post('/api/asignar-docente', [
+    body('id_docente').isInt().withMessage('Se requiere ID de docente válido.'),
+    body('id_grupo').isInt().withMessage('Se requiere ID de grupo válido.'),
+    body('id_materia').isInt().withMessage('Se requiere ID de materia válido.')
+], revisarErrores, (req, res) => {
+    const { id_docente, id_grupo, id_materia } = req.body;
+
+    const sql = `INSERT INTO docente_grupo (id_docente, id_grupo, id_materia) VALUES (?, ?, ?)`;
+    db.run(sql, [id_docente, id_grupo, id_materia], function(err) {
+        if (err) return res.status(500).json({ error: 'Error al crear la asignación.', detalle: err.message });
+        res.status(201).json({ mensaje: 'Relación docente-grupo creada exitosamente', id_asignacion: this.lastID });
+    });
+});
+
+// 2. Registrar Horario (Con validación de colisiones)
+app.post('/api/registrar-horario', [
+    body('id_asignacion').isInt().withMessage('Se requiere ID de asignación válido.'),
+    body('dia_semana').notEmpty().trim().escape(),
+    body('hora_inicio').notEmpty().trim().escape(),
+    body('hora_fin').notEmpty().trim().escape(),
+    body('aula').notEmpty().trim().escape()
+], revisarErrores, (req, res) => {
+    const { id_asignacion, dia_semana, hora_inicio, hora_fin, aula } = req.body;
+
+    // Validación de lógica de negocio para evitar empalmes
+    const sqlCheck = `
+        SELECT h.id_horario, h.aula, dg.id_docente, dg.id_grupo
+        FROM horarios h
+        JOIN docente_grupo dg ON h.id_asignacion = dg.id_asignacion
+        WHERE h.dia_semana = ?
+        AND (
+            (h.hora_inicio < ? AND h.hora_fin > ?) 
+            OR (h.hora_inicio < ? AND h.hora_fin > ?) 
+            OR (? <= h.hora_inicio AND ? >= h.hora_fin)
+        )
+    `;
+
+    db.all(sqlCheck, [dia_semana, hora_fin, hora_inicio, hora_inicio, hora_fin, hora_inicio, hora_fin], (err, rows) => {
+        if (err) return res.status(500).json({ error: 'Error comprobando disponibilidad.', detalle: err.message });
+
+        db.get(`SELECT id_docente, id_grupo FROM docente_grupo WHERE id_asignacion = ?`, [id_asignacion], (err, current) => {
+            if (err) return res.status(500).json({ error: 'Error obteniendo datos de asignación.' });
+            if (!current) return res.status(404).json({ error: 'La asignación no existe.' });
+
+            // Verificar cruces en los resultados
+            for (let row of rows) {
+                if (row.aula === aula) {
+                    return res.status(409).json({ error: `Conflicto: El aula ${aula} ya está ocupada el ${dia_semana} de ${row.hora_inicio} a ${row.hora_fin}.` });
+                }
+                if (row.id_docente === current.id_docente) {
+                    return res.status(409).json({ error: `Conflicto: El docente ya tiene otra clase asignada el ${dia_semana} a esa hora.` });
+                }
+                if (row.id_grupo === current.id_grupo) {
+                    return res.status(409).json({ error: `Conflicto: El grupo ya tiene otra materia asignada el ${dia_semana} a esa hora.` });
+                }
+            }
+
+            // Inserción segura si no hay empalmes
+            const sqlInsert = `INSERT INTO horarios (id_asignacion, dia_semana, hora_inicio, hora_fin, aula) VALUES (?, ?, ?, ?, ?)`;
+            db.run(sqlInsert, [id_asignacion, dia_semana, hora_inicio, hora_fin, aula], function(err) {
+                if (err) return res.status(500).json({ error: 'Error al registrar horario', detalle: err.message });
+                res.status(201).json({ mensaje: 'Horario registrado exitosamente', id_horario: this.lastID });
+            });
+        });
+    });
+});
+
+// 3. Consultar Carga Horaria de un Docente Específico
+app.get('/api/horarios/docente/:id_docente', (req, res) => {
+    const sql = `
+        SELECT dg.id_asignacion, m.mat_nombre AS materia, g.nombre_grupo AS grupo, 
+               h.dia_semana, h.hora_inicio, h.hora_fin, h.aula
+        FROM docente_grupo dg
+        JOIN materias m ON dg.id_materia = m.id
+        JOIN grupos g ON dg.id_grupo = g.id_grupo
+        JOIN horarios h ON dg.id_asignacion = h.id_asignacion
+        WHERE dg.id_docente = ?
+        ORDER BY h.dia_semana, h.hora_inicio
+    `;
+    db.all(sql, [req.params.id_docente], (err, rows) => {
+        if (err) return res.status(500).json({ error: 'Error al obtener carga horaria.', detalle: err.message });
+        res.json({
+            id_docente: req.params.id_docente,
+            total_clases: rows.length,
+            horarios: rows
+        });
+    });
+});
+
 
 // ════════════════════════════════════════════════════════════════════════════
 // SISTEMA DE LOGIN Y AUTENTICACIÓN
