@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Horario - ITLM</title>
+    <link rel="stylesheet" href="../estilos/panel-personal-estilos.css">
+    <link rel="stylesheet" href="../estilos/mi-horario.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <div class="header-titles">
+            <h1>Mi Horario</h1>
+            <h2>Instituto Tecnológico de Los Mochis</h2>
+        </div>
+        <button class="btn-logout-admin" onclick="window.location.href='../login/portal-alumno.html'">
+            Regresar
+        </button>
+    </header>
+
+    <main class="portal-container">
+        
+        <div class="student-header-card">
+            <div class="student-info">
+                <h2>Juan Carlos Pérez García</h2>
+                <div class="student-meta">
+                    <strong>No. Control:</strong> 19400123 &nbsp;&nbsp;&nbsp;&nbsp; <strong>Semestre:</strong> 4
+                </div>
+                <div class="student-meta">
+                    <strong>Carrera:</strong> Ingeniería en Sistemas Computacionales
+                </div>
+                
+                <div class="badges-row">
+                    <span class="badge-blue">5 materias inscritas</span>
+                    <span class="badge-green">24 créditos totales</span>
+                </div>
+            </div>
+            
+            <div class="student-actions">
+                <button class="btn-download" onclick="alert('Descargando horario...')">
+                    <i class="fa-solid fa-print"></i> Descargar Horario
+                </button>
+            </div>
+        </div>
+
+        <div class="schedule-card">
+            <h3><i class="fa-regular fa-calendar-days"></i> Horario Semanal</h3>
+            
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th class="time-col">Hora</th>
+                        <th>Lunes</th>
+                        <th>Martes</th>
+                        <th>Miércoles</th>
+                        <th>Jueves</th>
+                        <th>Viernes</th>
+                        <th>Sábado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="time-col">07:00</td>
+                        <td>
+                            <div class="class-block">
+                                <span class="cb-title">ISC-401<br>Programación Web</span>
+                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-301</span>
+                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Dr. Juan</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <div class="class-block">
+                                <span class="cb-title">ISC-401<br>Programación Web</span>
+                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-301</span>
+                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Dr. Juan</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <div class="class-block">
+                                <span class="cb-title">ISC-501<br>Seguridad Informática</span>
+                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-401</span>
+                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Mtra. María</span>
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="time-col">08:00</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="time-col">09:00</td>
+                        <td></td>
+                        <td>
+                            <div class="class-block">
+                                <span class="cb-title">ISC-402<br>Base de Datos Avanzadas</span>
+                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-302</span>
+                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Mtro. Luis</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <div class="class-block">
+                                <span class="cb-title">ISC-402<br>Base de Datos Avanzadas</span>
+                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-302</span>
+                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Mtro. Luis</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="time-col">10:00</td>
+                        <td>
+                            <div class="class-block">
+                                <span class="cb-title">ISC-301<br>Redes de Computadoras</span>
+                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> AULA-201</span>
+                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Mtra. Elena</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <div class="class-block">
+                                <span class="cb-title">ISC-301<br>Redes de Computadoras</span>
+                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> AULA-201</span>
+                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Mtra. Elena</span>
+                            </div>
+                        </td>
+                        <td></td><td></td><td></td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="time-col">11:00</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="time-col">11:00</td>
+                        <td>
+                            <div class="class-block">
+                                <span class="cb-title">ISC-403<br>Desarrollo Móvil</span>
+                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-303</span>
+                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Dr. Roberto</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <div class="class-block">
+                                <span class="cb-title">ISC-403<br>Desarrollo Móvil</span>
+                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-303</span>
+                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Dr. Roberto</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="time-col">12:00</td>
+                        <td></td>
+                        <td>
+                            <div class="class-block">
+                                <span class="cb-title">ISC-501<br>Seguridad Informática</span>
+                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-401</span>
+                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Mtra. María</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="time-col">13:00</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">14:00</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td class="time-col">15:00</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+</body>
+</html>

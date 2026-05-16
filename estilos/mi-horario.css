@@ -1,0 +1,168 @@
+.portal-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.student-header-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 25px 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.student-info h2 {
+    color: #111827;
+    font-size: 22px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.student-meta {
+    color: #4b5563;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.student-meta strong {
+    color: #111827;
+    font-weight: 600;
+}
+
+/* Etiquetas de colores */
+.badges-row {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.badge-blue {
+    background-color: #eff6ff;
+    color: #3b82f6;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.badge-green {
+    background-color: #ecfdf5;
+    color: #10b981;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Botón Descargar */
+.btn-download {
+    background-color: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-download:hover {
+    background-color: #172a63;
+}
+
+/* --- TARJETA DEL HORARIO --- */
+.schedule-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
+}
+
+.schedule-card h3 {
+    color: #1e3a8a;
+    font-size: 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.schedule-card h3 i {
+    color: #94a3b8;
+}
+
+/* Tabla */
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.schedule-table th, .schedule-table td {
+    border: 1px solid #e2e8f0;
+    padding: 10px;
+    vertical-align: top;
+}
+
+.schedule-table th {
+    background-color: #f8fafc;
+    color: #111827;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 15px 10px;
+    text-align: center;
+}
+
+.schedule-table td {
+    border: 1px solid #e2e8f0;
+    padding: 10px;
+    vertical-align: top;
+    height: 80px; 
+}
+
+.time-col {
+    width: 80px;
+    text-align: center;
+    font-weight: 600;
+    color: #4b5563;
+    vertical-align: middle !important;
+    font-size: 14px;
+}
+
+.class-block {
+    background: #eff6ff; 
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    padding: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cb-title {
+    color: #1e3a8a;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.cb-detail {
+    color: #4b5563;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.cb-detail i.fa-thumbtack { color: #ef4444; } 
+.cb-detail i.fa-chalkboard-user { color: #eab308; }
