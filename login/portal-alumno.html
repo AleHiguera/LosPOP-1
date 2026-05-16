@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal del Alumno - ITLM</title>
+    <link rel="stylesheet" href="../estilos/panel-personal-estilos.css">
+    <link rel="stylesheet" href="../estilos/portal-alumno.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <div class="header-titles">
+            <h1>Portal del Alumno</h1>
+            <h2>Instituto Tecnológico de Los Mochis</h2>
+        </div>
+        <button class="btn-logout-admin" onclick="window.location.href='login.html'">
+            Cerrar Sesión
+        </button>
+    </header>
+
+    <main class="portal-container">
+        
+        <div class="welcome-card">
+            <h2>Bienvenido, Juan Carlos Pérez García</h2>
+            <div class="welcome-info">
+                <span><strong>No. Control:</strong> 19400123</span>
+                <span><strong>Carrera:</strong> Ingeniería en Sistemas Computacionales</span>
+                <span><strong>Semestre:</strong> 4</span>
+            </div>
+        </div>
+
+        <div class="action-grid">
+            
+            <a href="mi-horario.html" class="action-card">
+                <div class="icon-circle icon-blue">
+                    <i class="fa-regular fa-calendar"></i>
+                </div>
+                <span class="card-title">Mi Horario</span>
+                <span class="card-desc">Consultar y descargar horario</span>
+            </a>
+
+            <div class="action-card empty-placeholder"></div>
+            <div class="action-card empty-placeholder"></div>
+            <div class="action-card empty-placeholder"></div>
+            <div class="action-card empty-placeholder"></div>
+            <div class="action-card empty-placeholder"></div>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

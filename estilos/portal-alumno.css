@@ -1,0 +1,52 @@
+.portal-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.welcome-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.welcome-card h2 {
+    color: #111827;
+    font-size: 20px;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.welcome-info {
+    display: flex;
+    gap: 30px;
+    color: #4b5563;
+    font-size: 14px;
+}
+
+.welcome-info strong {
+    color: #111827;
+    font-weight: 600;
+}
+
+.action-card.empty-placeholder {
+    background: #ffffff;
+    cursor: default;
+    min-height: 180px; 
+}
+
+.action-card.empty-placeholder:hover {
+    transform: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-color: transparent;
+}
+
+/* Móvil */
+@media (max-width: 768px) {
+    .welcome-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
