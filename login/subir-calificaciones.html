@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Calificaciones - ITLM</title>
+    <link rel="stylesheet" href="../estilos/panel-personal-estilos.css">
+    <link rel="stylesheet" href="../estilos/subir-calificaciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <div class="header-titles">
+            <h1>Subir Calificaciones</h1>
+            <h2>Instituto Tecnológico de Los Mochis</h2>
+        </div>
+        <button class="btn-logout-admin" onclick="window.location.href='portal-docente.html'">
+            Regresar
+        </button>
+    </header>
+
+    <main class="portal-container">
+        
+        <div class="subject-selection-card">
+            <h3 class="section-title">Seleccionar Materia</h3>
+            <div class="subjects-grid">
+                <div class="subject-card" onclick="cargarMateria(this, 'isc401')">
+                    <div class="subject-badges"><span class="badge-orange">ISC-401</span><span class="badge-gray">Grupo A</span></div>
+                    <h4 class="subject-name">Programación Web</h4>
+                    <p class="subject-students">8 alumnos</p>
+                </div>
+                <div class="subject-card" onclick="cargarMateria(this, 'isc402')">
+                    <div class="subject-badges"><span class="badge-orange">ISC-402</span><span class="badge-gray">Grupo B</span></div>
+                    <h4 class="subject-name">Base de Datos Avanzadas</h4>
+                    <p class="subject-students">2 alumnos</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="area-vacia" class="empty-state-grades">
+            <i class="fa-solid fa-clipboard-list"></i>
+            <p>Selecciona una materia para comenzar a capturar calificaciones</p>
+        </div>
+        
+        <div id="area-captura" style="display: none;">
+            
+            <div class="info-card">
+                
+                <div class="capture-header">
+                    <div class="capture-title-group">
+                        <h2 id="cap-titulo">ISC-401 - Programación Web</h2>
+                        <span class="capture-subtitle" id="cap-sub">Grupo A • 8 alumnos</span>
+                    </div>
+                    <button class="btn-save-grades" onclick="guardarCalificaciones()">
+                        <i class="fa-solid fa-check"></i> Guardar Calificaciones
+                    </button>
+                </div>
+
+                <div class="instructions-panel">
+                    <h4><i class="fa-solid fa-clipboard-list"></i> Instrucciones:</h4>
+                    <ul>
+                        <li>Las calificaciones deben estar en una escala de 0 a 100</li>
+                        <li>Los alumnos están ordenados alfabéticamente por apellido</li>
+                        <li>El promedio se calcula automáticamente</li>
+                        <li>Recuerda guardar los cambios antes de salir</li>
+                    </ul>
+                </div>
+
+                <div class="grades-table-wrapper">
+                    <table class="grades-table">
+                        <thead>
+                            <tr>
+                                <th class="center-col" style="width: 50px;">#</th>
+                                <th>No. Control</th>
+                                <th>Nombre Completo</th>
+                                <th class="center-col">Parcial 1<span>(0-100)</span></th>
+                                <th class="center-col">Parcial 2<span>(0-100)</span></th>
+                                <th class="center-col">Parcial 3<span>(0-100)</span></th>
+                                <th class="center-col col-promedio">Promedio</th>
+                                <th class="center-col col-final">Calificación<br>Final</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpo-tabla-calificaciones">
+                            </tbody>
+                    </table>
+                </div>
+
+            </div> <div class="stats-panel">
+                <h4><i class="fa-solid fa-chart-simple" style="color: #6366f1;"></i> Estadísticas</h4>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">Total de Alumnos</span>
+                        <span class="stat-value val-total" id="stat-total">8</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Calificaciones Capturadas</span>
+                        <span class="stat-value val-capturadas" id="stat-capturadas">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Pendientes</span>
+                        <span class="stat-value val-pendientes" id="stat-pendientes">8</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Progreso</span>
+                        <span class="stat-value val-progreso" id="stat-progreso">0%</span>
+                    </div>
+                </div>
+            </div>
+
+        </div> </main>
+
+    <script>
+        const alumnosProgramacionWeb = [
+            { id: '19400130', apellidos: 'Álvarez Castillo', nombre: 'Gabriela' },
+            { id: '19400129', apellidos: 'Díaz Morales', nombre: 'Diego' },
+            { id: '19400128', apellidos: 'Fernández Ruiz', nombre: 'Carmen' },
+            { id: '19400124', apellidos: 'González López', nombre: 'María Elena' },
+            { id: '19400126', apellidos: 'Martínez Ramírez', nombre: 'Ana Laura' },
+            { id: '19400123', apellidos: 'Pérez García', nombre: 'Juan Carlos' },
+            { id: '19400125', apellidos: 'Sánchez Mendoza', nombre: 'Roberto' },
+            { id: '19400127', apellidos: 'Torres Cruz', nombre: 'Luis Fernando' }
+        ];
+
+        let totalAlumnosActual = 0;
+
+        function cargarMateria(elementoTarjeta, idMateria) {
+            document.querySelectorAll('.subject-card').forEach(t => t.classList.remove('selected'));
+            elementoTarjeta.classList.add('selected');
+            document.getElementById('area-vacia').style.display = 'none';
+            document.getElementById('area-captura').style.display = 'block';
+            if(idMateria === 'isc401') {
+                dibujarTabla(alumnosProgramacionWeb);
+            } else {
+                dibujarTabla([]); 
+            }
+        }
+
+        function dibujarTabla(listaAlumnos) {
+            const tbody = document.getElementById('cuerpo-tabla-calificaciones');
+            tbody.innerHTML = '';
+            totalAlumnosActual = listaAlumnos.length;
+
+            listaAlumnos.forEach((alumno, index) => {
+                const num = index + 1;
+                const tr = `
+                    <tr id="fila-${alumno.id}">
+                        <td class="center-col cell-number">${num}</td>
+                        <td class="cell-control">${alumno.id}</td>
+                        <td>
+                            <span class="cell-name-main">${alumno.apellidos}</span>
+                            <span class="cell-name-sub">${alumno.nombre}</span>
+                        </td>
+                        <td class="center-col">
+                            <input type="text" class="grade-input p1" maxlength="3" oninput="validarYCalcular('${alumno.id}')" placeholder="-">
+                        </td>
+                        <td class="center-col">
+                            <input type="text" class="grade-input p2" maxlength="3" oninput="validarYCalcular('${alumno.id}')" placeholder="-">
+                        </td>
+                        <td class="center-col">
+                            <input type="text" class="grade-input p3" maxlength="3" oninput="validarYCalcular('${alumno.id}')" placeholder="-">
+                        </td>
+                        <td class="center-col col-promedio" id="promedio-${alumno.id}">-</td>
+                        <td class="center-col col-final" id="final-${alumno.id}">-</td>
+                    </tr>
+                `;
+                tbody.innerHTML += tr;
+            });
+
+            actualizarEstadisticas();
+        }
+
+        function validarYCalcular(idAlumno) {
+            const fila = document.getElementById(`fila-${idAlumno}`);
+            const inputs = fila.querySelectorAll('.grade-input');
+            
+            let suma = 0;
+            let calificacionesValidas = 0;
+
+            inputs.forEach(input => {
+                let valor = input.value.replace(/[^0-9]/g, '');
+                if (valor !== '') {
+                    let numValor = parseInt(valor);
+                    if (numValor > 100) numValor = 100; 
+                    input.value = numValor;
+                    
+                    suma += numValor;
+                    calificacionesValidas++;
+                } else {
+                    input.value = '';
+                }
+            });
+
+            const celdaPromedio = document.getElementById(`promedio-${idAlumno}`);
+            const celdaFinal = document.getElementById(`final-${idAlumno}`);
+
+            if (calificacionesValidas === 3) {
+                const promedio = Math.round(suma / 3);
+                celdaPromedio.innerText = promedio;
+                celdaFinal.innerText = promedio;
+            } else {
+                celdaPromedio.innerText = '-';
+                celdaFinal.innerText = '-';
+            }
+
+            actualizarEstadisticas();
+        }
+
+        function actualizarEstadisticas() {
+            let capturadasCompletas = 0;
+
+            const filas = document.querySelectorAll('tr[id^="fila-"]');
+            filas.forEach(fila => {
+                const textoPromedio = fila.querySelector('.col-promedio').innerText;
+                if (textoPromedio !== '-') {
+                    capturadasCompletas++;
+                }
+            });
+
+            const pendientes = totalAlumnosActual - capturadasCompletas;
+            const progreso = totalAlumnosActual === 0 ? 0 : Math.round((capturadasCompletas / totalAlumnosActual) * 100);
+
+            document.getElementById('stat-total').innerText = totalAlumnosActual;
+            document.getElementById('stat-capturadas').innerText = capturadasCompletas;
+            document.getElementById('stat-pendientes').innerText = pendientes;
+            document.getElementById('stat-progreso').innerText = progreso + '%';
+        }
+
+        function guardarCalificaciones() {
+            alert("¡Calificaciones guardadas exitosamente en el sistema!");
+        }
+    </script>
+</body>
+</html>

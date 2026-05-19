@@ -1,0 +1,136 @@
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.step {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #e2e8f0;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.step.active {
+    background-color: #1e3a8a; 
+    color: white;
+}
+
+.progress-line {
+    height: 4px;
+    width: 60px;
+    background-color: #e2e8f0;
+    transition: all 0.3s;
+}
+
+.progress-line.active-line {
+    background-color: #1e3a8a;
+}
+
+/* --- CAJAS DE INFORMACIÓN --- */
+.info-box-blue {
+    background-color: #eff6ff;
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.success-box {
+    background-color: #ecfdf5; 
+    border-radius: 6px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+}
+
+.success-title {
+    color: #059669; 
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.student-name-success {
+    color: #065f46;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+.student-details-success {
+    color: #10b981;
+    font-size: 13px;
+}
+
+/* --- CAMPOS EXTRA Y BOTONES --- */
+.input-hint {
+    display: block;
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.dual-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.btn-gray {
+    flex: 1;
+    padding: 14px;
+    background-color: #cbd5e0;
+    color: #4b5563;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.btn-gray:hover {
+    background-color: #94a3b8;
+    color: white;
+}
+
+.btn-green {
+    flex: 2; 
+    padding: 14px;
+    background-color: #10b981; 
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.btn-green:hover {
+    background-color: #059669;
+}
+
+.login-card {
+    height: auto !important;
+    min-height: fit-content;
+    padding-bottom: 30px; 
+}
+
+#paso-2 .input-container {
+    position: relative;
+    z-index: 10;
+}
+
+#paso-2 input {
+    pointer-events: auto !important;
+    user-select: text !important;
+    position: relative;
+    z-index: 11;
+}

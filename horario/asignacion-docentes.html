@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignación de Carga Docente - ITLM</title>
+    <link rel="stylesheet" href="../estilos/panel-personal-estilos.css">
+    <link rel="stylesheet" href="../estilos/asignacion-docentes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <div class="header-titles">
+            <h1>Asignación de Carga Horaria a Docentes</h1>
+        </div>
+        <button class="btn-logout-admin" onclick="window.location.href='../login/panel-personal.html'">
+            Regresar al Dashboard
+        </button>
+    </header>
+
+    <main class="assignment-container">
+        
+        <aside class="sidebar-teachers">
+            <div class="sidebar-card">
+                <h3 class="section-title">Seleccionar Docente</h3>
+                <div class="search-box">
+                    <input type="text" id="buscadorDocentes" placeholder="Buscar por nombre o número...">
+                </div>
+                <div class="teacher-list" id="contenedor-docentes"></div>
+            </div>
+        </aside>
+
+        <section class="assignment-workspace">
+            
+            <div id="estado-vacio" class="empty-state-card">
+                <i class="fa-regular fa-user"></i>
+                <p>Selecciona un docente para asignar materias</p>
+            </div>
+
+            <div id="estado-activo" style="display: none;">
+                <div class="info-card">
+                    <h3 class="section-title" style="margin-bottom: 20px;">Materias Asignadas (<span id="count-asignadas">0</span>/4)</h3>
+                    <div id="lista-asignadas" class="doc-subject-list"></div>
+                </div>
+
+                <div class="info-card" style="margin-top: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 class="section-title" style="margin-bottom: 0;">Materias Disponibles</h3>
+                        <select style="padding: 5px; border-radius: 4px; border: 1px solid #cbd5e0;">
+                            <option>Filtrar por carrera...</option>
+                        </select>
+                    </div>
+                    <div id="lista-disponibles" class="doc-subject-list scrollable-list"></div>
+                </div>
+            </div>
+
+            <div id="estado-horario" style="display: none;" class="info-card">
+                
+                <div class="schedule-header-flex">
+                    <div class="schedule-title-area">
+                        <h2>Horario del Docente</h2>
+                        <p id="horario-nombre">Dr. Nombre</p>
+                        <p id="horario-id" style="font-size: 12px; margin-top:2px;">No. Empleado: DOC-XXX</p>
+                    </div>
+                    <div class="schedule-actions">
+                        <button class="btn-outline-gray" onclick="volverEdicion()">
+                            <i class="fa-solid fa-pen"></i> Editar Asignación
+                        </button>
+                        <button class="btn-sm-navy" onclick="abrirVistaPrevia()">
+                        <i class="fa-solid fa-eye"></i> Descargar Horario
+                        </button>
+                    </div>
+                </div>
+
+                <div class="success-banner">
+                    <i class="fa-solid fa-circle-check"></i> Horario válido sin conflictos
+                </div>
+
+                <div class="schedule-table-wrapper">
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
+                                <th class="time-col">Hora</th>
+                                <th>Lunes</th>
+                                <th>Martes</th>
+                                <th>Miércoles</th>
+                                <th>Jueves</th>
+                                <th>Viernes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpo-horario">
+                            </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </section>
+    </main>
+
+    <div id="modalPreview" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="color: #1e3a8a;">Vista Previa de Impresión</h3>
+                <button onclick="cerrarModal()" style="border: none; background: none; font-size: 20px; cursor: pointer;">&times;</button>
+            </div>
+
+            <div id="hoja-oficial" class="print-preview-paper">
+                <div class="print-header">
+                    <h1>Instituto Tecnológico de Los Mochis</h1>
+                    <h2>Horario del Docente</h2>
+                </div>
+                <div class="print-details">
+                    <strong>Docente:</strong> <span id="p-nombre">---</span><br>
+                    <strong>No. Empleado:</strong> <span id="p-id">---</span><br>
+                    <strong>Especialidad:</strong> <span id="p-area">---</span>
+                </div>
+                <table class="table-print">
+                    <thead>
+                        <tr>
+                            <th>Hora</th>
+                            <th>Lunes</th>
+                            <th>Martes</th>
+                            <th>Miércoles</th>
+                            <th>Jueves</th>
+                            <th>Viernes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-impresion">
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-outline-gray" onclick="cerrarModal()">Cancelar</button>
+                <button class="btn-sm-navy" onclick="ejecutarDescargaReal()" style="padding: 12px 25px;">
+                    <i class="fa-solid fa-download"></i> Confirmar y Descargar PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const baseDatos = {
+            docentes: {
+                'DOC-001': { id: 'DOC-001', nombre: 'Dr. Juan Carlos Pérez López', area: 'Ingeniería de Software', materias: ['isc402', 'isc201', 'isc404'] },
+                'DOC-002': { id: 'DOC-002', nombre: 'Mtra. María Elena Rodríguez García', area: 'Redes y Telecomunicaciones', materias: [] },
+                'DOC-003': { id: 'DOC-003', nombre: 'Dr. Roberto Sánchez Mendoza', area: 'Inteligencia Artificial', materias: [] },
+                'DOC-004': { id: 'DOC-004', nombre: 'Mtro. Luis Fernando Torres Cruz', area: 'Base de Datos', materias: [] }
+            },
+            materias: {
+                'isc402': { clave: 'ISC-402', nombre: 'Base de Datos Avanzadas', salon: 'LAB-302', alumnos: 25, horarios: ['Martes 09:00 - 10:00', 'Jueves 09:00 - 10:00'] },
+                'isc201': { clave: 'ISC-201', nombre: 'Estructura de Datos', salon: 'LAB-201', alumnos: 32, horarios: ['Lunes 09:00 - 10:00', 'Miércoles 09:00 - 10:00'] },
+                'isc404': { clave: 'ISC-404', nombre: 'Sistemas Operativos', salon: 'LAB-304', alumnos: 27, horarios: ['Lunes 07:00 - 08:00', 'Miércoles 07:00 - 08:00'] },
+                'isc401': { clave: 'ISC-401', nombre: 'Programación Web', salon: 'LAB-301', alumnos: 28, horarios: ['Lunes 07:00 - 08:00', 'Miércoles 07:00 - 08:00'] }, 
+                'isc301': { clave: 'ISC-301', nombre: 'Redes de Computadoras', salon: 'AULA-201', alumnos: 30, horarios: ['Lunes 10:00 - 11:00', 'Miércoles 10:00 - 11:00'] }, 
+                'isc501': { clave: 'ISC-501', nombre: 'Seguridad Informática', salon: 'LAB-401', alumnos: 22, horarios: ['Martes 12:00 - 13:00', 'Viernes 07:00 - 08:00'] }
+            }
+        };
+
+        let docenteActivo = null;
+
+        function renderizarBarraDocentes() {
+            const contenedor = document.getElementById('contenedor-docentes');
+            contenedor.innerHTML = '';
+            Object.values(baseDatos.docentes).forEach(docente => {
+                const activoClass = docente.id === docenteActivo ? 'active' : '';
+                contenedor.innerHTML += `
+                    <div class="teacher-item ${activoClass}" onclick="seleccionarDocente('${docente.id}')" data-nombre="${docente.nombre.toLowerCase()}" data-id="${docente.id.toLowerCase()}">
+                        <div class="teacher-name">${docente.nombre}</div>
+                        <div class="teacher-details">No. Empleado: ${docente.id}</div>
+                        <div class="teacher-details">${docente.area}</div>
+                        <div class="teacher-count"><span id="count-side-${docente.id}">${docente.materias.length}</span> materia(s) asignada(s)</div>
+                    </div>`;
+            });
+        }
+
+        function seleccionarDocente(id) {
+            docenteActivo = id;
+            document.getElementById('estado-vacio').style.display = 'none';
+            document.getElementById('estado-horario').style.display = 'none';
+            document.getElementById('estado-activo').style.display = 'block';
+            
+            renderizarBarraDocentes(); 
+            renderizarMateriasWorkspace(); 
+        }
+
+        function renderizarMateriasWorkspace() {
+            const docente = baseDatos.docentes[docenteActivo];
+            const divAsignadas = document.getElementById('lista-asignadas');
+            const divDisponibles = document.getElementById('lista-disponibles');
+            
+            divAsignadas.innerHTML = ''; divDisponibles.innerHTML = '';
+            let countAsig = 0;
+
+            Object.keys(baseDatos.materias).forEach(idMateria => {
+                const mat = baseDatos.materias[idMateria];
+                const estaAsignada = docente.materias.includes(idMateria);
+
+                let conflictoCon = null;
+                if (!estaAsignada) {
+                    for (let idAsig of docente.materias) {
+                        const matAsig = baseDatos.materias[idAsig];
+                        if(mat.horarios.some(h => matAsig.horarios.includes(h))) {
+                            conflictoCon = matAsig; break;
+                        }
+                    }
+                }
+
+                let htmlHorarios = '';
+                mat.horarios.forEach(h => htmlHorarios += `<div class="schedule-pill">${h}</div>`);
+
+                const htmlMeta = `
+                    <div class="doc-subj-meta">
+                        <span><i class="fa-solid fa-thumbtack"></i> Salón: <strong>${mat.salon}</strong></span>
+                        <span><i class="fa-solid fa-user-group"></i> Alumnos: <strong>${mat.alumnos}</strong></span>
+                    </div>`;
+
+                if (estaAsignada) {
+                    countAsig++;
+                    divAsignadas.innerHTML += `
+                        <div class="doc-subject-card">
+                            <div class="doc-subj-header">
+                                <div class="doc-subj-title"><span class="subj-badge">${mat.clave}</span><span class="subj-name">${mat.nombre}</span></div>
+                                <div class="doc-subj-actions">
+                                    <button class="btn-sm-navy">Ver Alumnos</button>
+                                    <button class="btn-sm-red" onclick="desasignar('${idMateria}')">Desasignar</button>
+                                </div>
+                            </div>
+                            ${htmlMeta}
+                            <div class="doc-subj-schedule">
+                                <div>Horarios:</div>
+                                <div class="schedule-boxes">${htmlHorarios}</div>
+                            </div>
+                        </div>`;
+                } else {
+                    let btn = `<button class="btn-sm-green" onclick="asignar('${idMateria}')">Asignar</button>`;
+                    let alerta = "", extraClass = "", estilo = "background: white;";
+                    
+                    if (conflictoCon) {
+                        extraClass = "conflict"; estilo = "";
+                        btn = `<button class="btn-sm-gray" disabled>Bloqueado</button>`;
+                        alerta = `<div class="conflict-alert"><div class="conflict-title"><i class="fa-solid fa-triangle-exclamation"></i> Conflicto de horario:</div><div class="conflict-desc">Choca con ${conflictoCon.clave} - ${conflictoCon.nombre}</div><div class="conflict-detail">El docente no puede estar en dos salones al mismo tiempo</div></div>`;
+                    } else if (docente.materias.length >= 4) {
+                        btn = `<button class="btn-sm-gray" disabled>Límite Alcanzado</button>`;
+                    }
+
+                    divDisponibles.innerHTML += `
+                        <div class="doc-subject-card ${extraClass}" style="${estilo}">
+                            <div class="doc-subj-header">
+                                <div class="doc-subj-title"><span class="subj-badge-orange">${mat.clave}</span><span class="subj-name">${mat.nombre}</span></div>
+                                <div class="doc-subj-actions">${btn}</div>
+                            </div>
+                            ${htmlMeta}
+                            <div class="doc-subj-schedule">
+                                <div>Horarios:</div>
+                                <div class="schedule-boxes">${htmlHorarios}</div>
+                            </div>
+                            ${alerta}
+                        </div>`;
+                }
+            });
+
+            if(countAsig === 0) divAsignadas.innerHTML = `<p style="color: #64748b; padding: 10px;">Este docente no tiene carga horaria asignada.</p>`;
+
+            document.getElementById('count-asignadas').innerText = countAsig;
+            document.getElementById(`count-side-${docenteActivo}`).innerText = countAsig;
+            if (countAsig === 4) mostrarHorario();
+        }
+
+        function asignar(idMateria) {
+            baseDatos.docentes[docenteActivo].materias.push(idMateria);
+            renderizarMateriasWorkspace(); renderizarBarraDocentes();
+        }
+
+        function desasignar(idMateria) {
+            baseDatos.docentes[docenteActivo].materias = baseDatos.docentes[docenteActivo].materias.filter(m => m !== idMateria);
+            renderizarMateriasWorkspace(); renderizarBarraDocentes();
+        }
+
+        function mostrarHorario() {
+            document.getElementById('estado-activo').style.display = 'none';
+            document.getElementById('estado-horario').style.display = 'block';
+            
+            const docente = baseDatos.docentes[docenteActivo];
+            document.getElementById('horario-nombre').innerText = docente.nombre;
+            document.getElementById('horario-id').innerText = `No. Empleado: ${docente.id}`;
+            
+            generarTablaHorario(docente);
+        }
+
+        function volverEdicion() {
+            document.getElementById('estado-horario').style.display = 'none';
+            document.getElementById('estado-activo').style.display = 'block';
+        }
+
+        function generarTablaHorario(docente) {
+            const tbody = document.getElementById('cuerpo-horario');
+            tbody.innerHTML = '';
+            
+            const horas = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00'];
+            const diasIndices = { 'Lunes': 0, 'Martes': 1, 'Miércoles': 2, 'Jueves': 3, 'Viernes': 4 };
+            let cuadricula = Array(6).fill().map(() => Array(5).fill(null));
+
+            docente.materias.forEach(idMat => {
+                const mat = baseDatos.materias[idMat];
+                mat.horarios.forEach(horarioStr => {
+                    const partes = horarioStr.split(' '); 
+                    const fila = horas.indexOf(partes[1]);
+                    const col = diasIndices[partes[0]];
+                    if (fila !== -1 && col !== undefined) cuadricula[fila][col] = mat;
+                });
+            });
+
+            for (let f = 0; f < horas.length; f++) {
+                let tr = `<tr><td class="time-col">${horas[f]}</td>`;
+                for (let c = 0; c < 5; c++) {
+                    let materia = cuadricula[f][c];
+                    if (materia) {
+                        tr += `<td>
+                                <div class="class-block">
+                                    <span class="cb-title">${materia.clave} <br> ${materia.nombre}</span>
+                                    <span class="cb-meta"><i class="fa-solid fa-thumbtack"></i> ${materia.salon}</span>
+                                    <span class="cb-meta"><i class="fa-solid fa-user-group"></i> ${materia.alumnos} alumnos</span>
+                                </div>
+                               </td>`;
+                    } else {
+                        tr += `<td></td>`;
+                    }
+                }
+                tr += `</tr>`;
+                tbody.innerHTML += tr;
+            }
+        }
+
+        document.getElementById('buscadorDocentes').addEventListener('input', e => {
+            const b = e.target.value.toLowerCase();
+            document.querySelectorAll('.teacher-item').forEach(c => {
+                c.style.display = (c.dataset.nombre.includes(b) || c.dataset.id.includes(b)) ? 'block' : 'none';
+            });
+        });
+
+        function abrirVistaPrevia() {
+        const docente = baseDatos.docentes[docenteActivo];
+        document.getElementById('p-nombre').innerText = docente.nombre;
+        document.getElementById('p-id').innerText = docente.id;
+        document.getElementById('p-area').innerText = docente.area;
+        const tbodyImpresion = document.getElementById('cuerpo-impresion');
+        tbodyImpresion.innerHTML = '';
+        
+        const horas = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00'];
+        const diasIndices = { 'Lunes': 0, 'Martes': 1, 'Miércoles': 2, 'Jueves': 3, 'Viernes': 4 };
+        let cuadricula = Array(6).fill().map(() => Array(5).fill(null));
+
+        docente.materias.forEach(idMat => {
+            const mat = baseDatos.materias[idMat];
+            mat.horarios.forEach(hStr => {
+                const p = hStr.split(' '); 
+                const f = horas.indexOf(p[1]); const c = diasIndices[p[0]];
+                if (f !== -1) cuadricula[f][c] = mat;
+            });
+        });
+
+        for (let f = 0; f < horas.length; f++) {
+            let tr = `<tr><td class="time-col">${horas[f]}</td>`;
+            for (let c = 0; c < 5; c++) {
+                let m = cuadricula[f][c];
+                tr += m ? `<td><strong>${m.clave}</strong><br>${m.nombre}<br>Salón: ${m.salon}<br>Alumnos: ${m.alumnos}</td>` : `<td></td>`;
+            }
+            tbodyImpresion.innerHTML += tr + `</tr>`;
+        }
+        document.getElementById('modalPreview').style.display = 'flex';
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalPreview').style.display = 'none';
+    }
+
+    function ejecutarDescargaReal() {
+        const docente = baseDatos.docentes[docenteActivo];
+        const elemento = document.getElementById('hoja-oficial');
+        const opt = {
+            margin: 10,
+            filename: `Horario_Oficial_${docente.id}.pdf`,
+            html2canvas: { scale: 3 }, 
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } 
+        };
+        
+        html2pdf().set(opt).from(elemento).save().then(() => {
+            cerrarModal(); 
+        });
+    }
+
+        renderizarBarraDocentes();
+    </script>
+</body>
+</html>

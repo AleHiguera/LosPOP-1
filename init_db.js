@@ -3,7 +3,6 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./instituto.db');
 
 db.serialize(() => {
-
     // 1. Tabla de Personal
     db.run(`CREATE TABLE IF NOT EXISTS personal (
         id_personal       INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -13,7 +12,7 @@ db.serialize(() => {
         rol               TEXT DEFAULT 'staff'
     )`);
 
-    // 2. Tabla de Usuarios (login centralizado)
+    // 2. Tabla de Usuarios
     db.run(`CREATE TABLE IF NOT EXISTS usuarios (
         id            INTEGER PRIMARY KEY AUTOINCREMENT,
         identificador TEXT UNIQUE NOT NULL,
@@ -54,7 +53,7 @@ db.serialize(() => {
         horas_total  INTEGER NOT NULL
     )`);
 
-    // 6. Tabla de Alumnos (campos completos según formulario)
+    // 6. Tabla de Alumnos
     db.run(`CREATE TABLE IF NOT EXISTS alumnos (
         id_alumno           INTEGER PRIMARY KEY AUTOINCREMENT,
         numero_control      TEXT UNIQUE NOT NULL,
@@ -89,7 +88,7 @@ db.serialize(() => {
         password_hash       TEXT NOT NULL
     )`);
 
-    // 7. Tabla de Grupos (campos completos según formulario)
+    // 7. Tabla de Grupos
     db.run(`CREATE TABLE IF NOT EXISTS grupos (
         id_grupo      INTEGER PRIMARY KEY AUTOINCREMENT,
         clave_grupo   TEXT UNIQUE NOT NULL,
@@ -98,27 +97,32 @@ db.serialize(() => {
         semestre      INTEGER NOT NULL,
         periodo       TEXT,
         cupo_maximo   INTEGER,
-        fecha_inicio  DATE,
-        fecha_fin     DATE,
-        id_materia    INTEGER,
-        id_docente    INTEGER,
-        horario_dias  TEXT,
-        hora_inicio   TEXT,
-        hora_fin      TEXT,
-        aula          TEXT,
-        estado        TEXT DEFAULT 'Activo',
-        modalidad     TEXT DEFAULT 'Presencial',
-        observaciones TEXT,
-        FOREIGN KEY (id_materia) REFERENCES materias(id),
-        FOREIGN KEY (id_docente) REFERENCES docentes(id)
-    )`, () => {
-        console.log("✅ Todas las tablas verificadas/creadas correctamente.");
-        db.close((err) => {
-            if (err) console.error("Error al cerrar la DB:", err.message);
-            else console.log("🔌 Conexión cerrada.");
-        });
-    });
+        estado        TEXT DEFAULT 'Activo'
+    )`);
 
+    // 8. Tabla de Relación Docente - Grupo - Materia (Asignación)
+    db.run(`CREATE TABLE IF NOT EXISTS docente_grupo (
+        id_asignacion INTEGER PRIMARY KEY AUTOINCREMENT,
+        id_docente    INTEGER NOT NULL,
+        id_grupo      INTEGER NOT NULL,
+        id_materia    INTEGER NOT NULL,
+        FOREIGN KEY (id_docente) REFERENCES docentes(id) ON DELETE CASCADE,
+        FOREIGN KEY (id_grupo) REFERENCES grupos(id_grupo) ON DELETE CASCADE,
+        FOREIGN KEY (id_materia) REFERENCES materias(id) ON DELETE CASCADE
+    )`);
+
+    // 9. Tabla de Horarios detallados
+    db.run(`CREATE TABLE IF NOT EXISTS horarios (
+        id_horario    INTEGER PRIMARY KEY AUTOINCREMENT,
+        id_asignacion INTEGER NOT NULL,
+        dia_semana    TEXT NOT NULL, -- Lunes, Martes, etc.
+        hora_inicio   TEXT NOT NULL, -- Formato HH:MM
+        hora_fin      TEXT NOT NULL, -- Formato HH:MM
+        aula          TEXT NOT NULL,
+        FOREIGN KEY (id_asignacion) REFERENCES docente_grupo(id_asignacion) ON DELETE CASCADE
+    )`, () => {
+        console.log("✅ Estructura de base de datos completa y lista.");
+    });
 });
 
 module.exports = db;

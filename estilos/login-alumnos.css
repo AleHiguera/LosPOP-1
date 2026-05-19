@@ -122,3 +122,63 @@ body {
 .btn-back:hover {
     background-color: #64748b;
 }
+
+.login-footer-actions {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.separator:not(:empty)::before {
+    margin-right: .5em;
+}
+
+.separator:not(:empty)::after {
+    margin-left: .5em;
+}
+
+.btn-secondary {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #ffffff;
+    color: #1e3a8a;
+    border: 2px solid #1e3a8a;
+    border-radius: 6px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #f0f7ff;
+    border-color: #172a63;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background-color: #1e3a8a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
