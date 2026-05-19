@@ -123,6 +123,22 @@ db.serialize(() => {
     )`, () => {
         console.log("✅ Estructura de base de datos completa y lista.");
     });
+    // 10. Tabla de Calificaciones
+    db.run(`CREATE TABLE IF NOT EXISTS calificaciones (
+        id_calificacion     INTEGER PRIMARY KEY AUTOINCREMENT,
+        numero_control      TEXT NOT NULL,
+        id_materia          INTEGER NOT NULL,
+        id_grupo            INTEGER,
+        calificacion_u1     REAL DEFAULT 0,
+        calificacion_u2     REAL DEFAULT 0,
+        calificacion_u3     REAL DEFAULT 0,
+        calificacion_final  REAL DEFAULT 0,
+        estado_aprobacion   TEXT DEFAULT 'Pendiente', -- Aprobado, Reprobado, Pendiente
+        FOREIGN KEY (numero_control) REFERENCES alumnos(numero_control) ON DELETE CASCADE,
+        FOREIGN KEY (id_materia) REFERENCES materias(id) ON DELETE CASCADE,
+        FOREIGN KEY (id_grupo) REFERENCES grupos(id_grupo) ON DELETE CASCADE,
+        UNIQUE(numero_control, id_materia, id_grupo)
+    )`);
 });
 
 module.exports = db;
