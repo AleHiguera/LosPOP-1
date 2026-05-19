@@ -109,3 +109,192 @@
     font-size: 16px;
     font-weight: 500;
 }
+
+/* --- ÁREA DE CAPTURA DE CALIFICACIONES --- */
+
+/* Cabecera del área de captura */
+.capture-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.capture-title-group h2 {
+    color: #111827;
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.capture-subtitle {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.btn-save-grades {
+    background-color: #10b981; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.btn-save-grades:hover { background-color: #059669; }
+
+/* Panel de Instrucciones */
+.instructions-panel {
+    background-color: #f8fafc;
+    border-left: 4px solid #1e3a8a; 
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 30px;
+}
+
+.instructions-panel h4 {
+    color: #1e3a8a;
+    font-size: 16px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.instructions-panel h4 i { color: #fba918; }
+
+.instructions-panel ul {
+    list-style-type: none; 
+    padding: 0;
+    margin: 0;
+}
+
+.instructions-panel li {
+    color: #4b5563;
+    font-size: 14px;
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.instructions-panel li::before {
+    content: "•";
+    color: #64748b;
+    position: absolute;
+    left: 0;
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* Tabla de Calificaciones */
+.grades-table-wrapper {
+    overflow-x: auto;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.grades-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+.grades-table th, .grades-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+}
+
+.grades-table th {
+    background-color: #f8fafc;
+    color: #111827;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.grades-table th span {
+    display: block;
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 400;
+}
+
+.grades-table th.center-col, .grades-table td.center-col {
+    text-align: center;
+}
+
+.grades-table tr:hover { background-color: #f8fafc; }
+
+.cell-number { font-weight: 600; color: #111827; font-size: 13px; }
+.cell-control { color: #4b5563; font-size: 14px; }
+.cell-name-main { color: #111827; font-weight: 600; font-size: 14px; display: block;}
+.cell-name-sub { color: #64748b; font-size: 12px; display: block;}
+
+.grade-input {
+    width: 60px;
+    padding: 8px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.grade-input:focus { border-color: #3b82f6; }
+
+.col-promedio { background-color: #f0fdf4;  font-weight: 600; }
+.col-final { background-color: #fefce8;  font-weight: 700; color: #111827; }
+
+/* --- PANEL DE ESTADÍSTICAS --- */
+.stats-panel {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 20px 25px;
+}
+
+.stats-panel h4 {
+    color: #1f2937;
+    font-size: 16px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.val-total { color: #111827; }
+.val-capturadas { color: #3b82f6; }
+.val-pendientes { color: #f97316; }
+.val-progreso { color: #10b981; }
