@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal del Docente - ITLM</title>
+    <link rel="stylesheet" href="../estilos/panel-personal-estilos.css">
+    <link rel="stylesheet" href="../estilos/portal-docente.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <div class="header-titles">
+            <h1>Portal del Docente</h1>
+            <h2>Instituto Tecnológico de Los Mochis</h2>
+        </div>
+        <button class="btn-logout-admin" onclick="window.location.href='../login/login-personal.html'">
+            Cerrar Sesión
+        </button>
+    </header>
+
+    <main class="portal-container">
+        
+        <div class="welcome-card-teacher">
+            <div class="welcome-indicator"></div>
+            <div class="welcome-text">
+                <h2>¡Bienvenido!</h2>
+                <p>Has iniciado sesión como Personal Docente. Selecciona una opción en el panel inferior para comenzar a gestionar tus grupos.</p>
+            </div>
+        </div>
+
+        <div class="action-grid">
+            
+            <a href="subir-calificaciones.html" class="action-card">
+                <div class="icon-circle icon-teal">
+                    <i class="fa-regular fa-file-lines"></i>
+                </div>
+                <span class="card-title">Subir Calificaciones</span>
+                <span class="card-desc">Capturar calificaciones</span>
+            </a>
+
+            <div class="action-card empty-placeholder" style="cursor: default; background: #ffffff; min-height: 180px;"></div>
+            <div class="action-card empty-placeholder" style="cursor: default; background: #ffffff; min-height: 180px;"></div>
+            
+        </div>
+
+    </main>
+
+</body>
+</html>

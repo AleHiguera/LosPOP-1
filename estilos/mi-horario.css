@@ -1,0 +1,373 @@
+.portal-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.student-header-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 25px 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.student-info h2 {
+    color: #111827;
+    font-size: 22px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.student-meta {
+    color: #4b5563;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.student-meta strong {
+    color: #111827;
+    font-weight: 600;
+}
+
+/* Etiquetas de colores */
+.badges-row {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.badge-blue {
+    background-color: #eff6ff;
+    color: #3b82f6;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.badge-green {
+    background-color: #ecfdf5;
+    color: #10b981;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Botón Descargar */
+.btn-download {
+    background-color: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-download:hover {
+    background-color: #172a63;
+}
+
+/* --- TARJETA DEL HORARIO --- */
+.schedule-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
+}
+
+.schedule-card h3 {
+    color: #1e3a8a;
+    font-size: 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.schedule-card h3 i {
+    color: #94a3b8;
+}
+
+/* Tabla */
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.schedule-table th, .schedule-table td {
+    border: 1px solid #e2e8f0;
+    padding: 10px;
+    vertical-align: top;
+}
+
+.schedule-table th {
+    background-color: #f8fafc;
+    color: #111827;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 15px 10px;
+    text-align: center;
+}
+
+.schedule-table td {
+    border: 1px solid #e2e8f0;
+    padding: 10px;
+    vertical-align: top;
+    height: 80px; 
+}
+
+.time-col {
+    width: 80px;
+    text-align: center;
+    font-weight: 600;
+    color: #4b5563;
+    vertical-align: middle !important;
+    font-size: 14px;
+}
+
+.class-block {
+    background: #eff6ff; 
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    padding: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cb-title {
+    color: #1e3a8a;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.cb-detail {
+    color: #4b5563;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.cb-detail i.fa-thumbtack { color: #ef4444; } 
+.cb-detail i.fa-chalkboard-user { color: #eab308; }
+
+/* LISTA DE MATERIAS INSCRITAS */
+.subjects-list-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-top: 25px; 
+}
+
+.subjects-list-card h3 {
+    color: #4b5563;
+    font-size: 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.subjects-list-card h3 i {
+    color: #3b82f6; 
+}
+
+.enrolled-subjects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.subject-list-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 15px 20px;
+    background-color: #ffffff;
+    transition: box-shadow 0.2s;
+}
+
+.subject-list-item:hover {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.sli-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.sli-number {
+    background-color: #1e3a8a;
+    color: white;
+    font-weight: bold;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.sli-code {
+    background-color: #f97316;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.sli-name {
+    font-size: 16px;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.sli-credits {
+    background-color: #ecfdf5;
+    color: #10b981;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: auto; 
+}
+
+.sli-details {
+    display: flex;
+    gap: 40px;
+    font-size: 13px;
+    color: #64748b;
+    padding-left: 40px; 
+}
+
+.sli-details-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sli-details-item i.fa-chalkboard-user { color: #eab308; }
+.sli-details-item i.fa-thumbtack { color: #ef4444; }
+.sli-details-item i.fa-clock { color: #94a3b8; }
+
+.sli-footer {
+    display: flex;
+    justify-content: space-between;
+    border-top: 2px solid #e2e8f0;
+    margin-top: 20px;
+    padding-top: 15px;
+    font-weight: 600;
+    color: #4b5563;
+    font-size: 14px;
+}
+
+/* ESTILOS PARA EL MODAL DE VISTA PREVIA */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    border-radius: 8px;
+    padding: 30px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+/* Estilo de la hoja de impresión */
+.print-preview-paper {
+    background: white;
+    padding: 40px;
+    color: black;
+    font-family: 'Arial', sans-serif;
+}
+
+.print-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.print-header h1 { font-size: 22px; margin: 0; font-weight: bold; }
+.print-header h2 { font-size: 18px; margin: 5px 0; font-weight: normal; }
+
+.print-details {
+    text-align: center;
+    font-size: 13px;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+/* Tabla Estilo Impresión */
+.table-print {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.table-print th, .table-print td {
+    border: 2px solid black;
+    padding: 6px;
+    font-size: 11px;
+    vertical-align: top;
+}
+
+.table-print th { font-weight: bold; background: #f3f4f6; text-align: center; }
+.table-print .time-col { width: 60px; text-align: center; font-weight: bold; vertical-align: middle; }
+
+/* Botones del Modal */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-outline-gray {
+    background: white;
+    border: 1px solid #cbd5e0;
+    color: #4b5563;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.btn-outline-gray:hover { background: #f8fafc; }

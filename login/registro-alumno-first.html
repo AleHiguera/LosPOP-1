@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Alumnos</title>
+    <link rel="stylesheet" href="../estilos/login-alumnos.css">
+    <link rel="stylesheet" href="../estilos/registro-first.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="login-wrapper">
+        <p class="page-title">REGISTRO DE ALUMNOS</p>
+        
+        <div class="login-card">
+            <div class="icon-circle">
+                <i class="fa-solid fa-user-plus"></i>
+            </div>
+            
+            <h2 class="main-title">REGISTRO DE ALUMNO<br><span style="font-size: 14px; font-weight: 400; color: #64748b;">Primera vez en el sistema</span></h2>
+            
+            <div class="progress-bar">
+                <div class="step active" id="step1-indicator">1</div>
+                <div class="progress-line" id="progress-line"></div>
+                <div class="step" id="step2-indicator">2</div>
+            </div>
+
+            <div id="paso-1" style="display: block;">
+                <div class="info-box-blue">
+                    <strong>Paso 1:</strong> Ingresa tu número de control y CURP para verificar tu identidad en el sistema.
+                </div>
+                
+                <form id="formVerificar" onsubmit="verificarMatricula(event)">
+                    <div class="input-container">
+                        <label>Número de Control</label>
+                        <input type="text" id="ncontrol-registro" placeholder="Ejemplo: 19400123" required maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    </div>
+
+                    <div class="input-container">
+                        <label>CURP</label>
+                        <input type="text" id="curp-registro" placeholder="Ingresa tus 18 caracteres" required maxlength="18" style="text-transform: uppercase;">
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Verificar Datos</button>
+                </form>
+            </div>
+
+            <div id="paso-2" style="display: none;">
+                
+                <div class="success-box">
+                    <div class="success-title"><i class="fa-solid fa-check"></i> Alumno verificado:</div>
+                    <div class="student-name-success">Juan Carlos Pérez García</div>
+                    <div class="student-details-success">Ingeniería en Sistemas Computacionales - Semestre 4</div>
+                </div>
+
+                <div class="info-box-blue" style="margin-top: 15px;">
+                    <strong>Paso 2:</strong> Crea una contraseña segura para tu cuenta.
+                </div>
+                
+                <form id="formPassword" onsubmit="completarRegistro(event)">
+                    <div class="input-container">
+                        <label>Contraseña</label>
+                        <input type="password" id="new-password" placeholder="Mínimo 8 caracteres" required minlength="8">
+                        <span class="input-hint">Debe tener al menos 8 caracteres</span>
+                    </div>
+
+                    <div class="input-container">
+                        <label>Confirmar Contraseña</label>
+                        <input type="password" id="confirm-password" placeholder="Repite tu contraseña" required>
+                    </div>
+                    
+                    <div class="dual-buttons">
+                        <button type="button" class="btn-gray" onclick="volverPaso1()">Atrás</button>
+                        <button type="submit" class="btn-green">Completar Registro</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        
+        <div class="footer-info">
+            Servicios Estudiantiles | Alumnos © 2026
+        </div>
+        
+        <a href="../login/alumnos.html" class="btn-back">Regresar al Login</a>
+    </div>
+
+    <script>
+        function verificarMatricula(event) {
+            event.preventDefault(); 
+            
+            document.getElementById('paso-1').style.display = 'none';
+            document.getElementById('paso-2').style.display = 'block';
+
+            document.getElementById('step2-indicator').classList.add('active');
+            document.getElementById('progress-line').classList.add('active-line');
+        }
+
+        function volverPaso1() {
+            document.getElementById('paso-2').style.display = 'none';
+            document.getElementById('paso-1').style.display = 'block';
+
+            document.getElementById('step2-indicator').classList.remove('active');
+            document.getElementById('progress-line').classList.remove('active-line');
+        }
+
+        function completarRegistro(event) {
+            event.preventDefault();
+            
+            const pass1 = document.getElementById('new-password').value;
+            const pass2 = document.getElementById('confirm-password').value;
+
+            if(pass1 !== pass2) {
+                alert("Las contraseñas no coinciden. Por favor, inténtalo de nuevo.");
+                return;
+            }
+
+            alert("¡Registro completado con éxito! Ahora puedes iniciar sesión.");
+            window.location.href = "../login/portal-alumno.html";
+        }
+    </script>
+</body>
+</html>

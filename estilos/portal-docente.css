@@ -1,0 +1,41 @@
+.portal-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* --- TARJETA DE BIENVENIDA DOCENTE --- */
+.welcome-card-teacher {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex; 
+    overflow: hidden; 
+    margin-bottom: 30px;
+}
+
+.welcome-indicator {
+    width: 6px;
+    background-color: #3b82f6; 
+}
+
+.welcome-text {
+    padding: 25px 30px;
+}
+
+.welcome-text h2 {
+    color: #111827;
+    font-size: 20px;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.welcome-text p {
+    color: #64748b;
+    font-size: 15px;
+}
+
+.icon-teal {
+    background-color: #f0fdfa; 
+    color: #0d9488; 
+}
