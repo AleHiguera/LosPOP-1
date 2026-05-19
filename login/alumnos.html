@@ -29,8 +29,13 @@
                     <input type="password" id="password" required>
                 </div>
                 
-                <button type="submit" class="btn-primary">Acceder al Portal</button>
+                <button type="submit" id="btnSubmit" class="btn-primary">Acceder al Portal</button>
             </form>
+
+            <div class="login-footer-actions">
+                <div class="separator">o</div>
+                <a href="registro-alumno-first.html" class="btn-secondary">Primera vez - Registrarme</a>
+            </div>
         </div>
         
         <div class="footer-info">
@@ -39,5 +44,79 @@
         
         <a href="../index.html" class="btn-back">Regresar</a>
     </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000';
+
+        document.getElementById('loginAlumnosForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const numero_control = document.getElementById('ncontrol').value.trim();
+            const password = document.getElementById('password').value;
+            const btnSubmit = document.getElementById('btnSubmit');
+
+            // Deshabilitar el botón mientras se procesa la solicitud
+            btnSubmit.disabled = true;
+            btnSubmit.textContent = 'Iniciando sesión...';
+
+            try {
+                // Hacer la petición POST a la ruta de login de tu server.js
+                const response = await fetch(`${API_URL}/api/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ numero_control, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Guardar los datos básicos del alumno en el navegador para usarlos en el portal
+                    localStorage.setItem('alumnoLogueado', JSON.stringify(data.usuario));
+                    
+                    mostrarMensaje('Acceso autorizado. Redirigiendo...', 'success');
+                    
+                    // Redirigir al portal después de 1 segundo para que vea el mensaje
+                    setTimeout(() => {
+                        window.location.href = "portal-alumno.html";
+                    }, 1000);
+                } else {
+                    // Mostrar error si las credenciales son incorrectas
+                    mostrarMensaje(data.error || 'Credenciales incorrectas.', 'error');
+                    btnSubmit.disabled = false;
+                    btnSubmit.textContent = 'Acceder al Portal';
+                }
+            } catch (error) {
+                console.error('Error al iniciar sesión:', error);
+                mostrarMensaje('Error de conexión con el servidor. Verifica que esté en ejecución.', 'error');
+                btnSubmit.disabled = false;
+                btnSubmit.textContent = 'Acceder al Portal';
+            }
+        });
+
+        // Función para mostrar la notificación flotante de éxito/error
+        function mostrarMensaje(texto, tipo) {
+            let alerta = document.getElementById('login-alerta');
+            if (!alerta) {
+                alerta = document.createElement('div');
+                alerta.id = 'login-alerta';
+                alerta.style.cssText = `
+                    position: fixed; top: 20px; right: 20px; z-index: 9999;
+                    padding: 14px 22px; border-radius: 8px; font-weight: 600;
+                    font-size: .9rem; box-shadow: 0 4px 16px rgba(0,0,0,.15);
+                    transition: opacity .3s;
+                `;
+                document.body.appendChild(alerta);
+            }
+            alerta.textContent = texto;
+            alerta.style.background = tipo === 'error' ? '#c0392b' : '#27ae60';
+            alerta.style.color = '#fff';
+            alerta.style.opacity = '1';
+            
+            // Ocultar la alerta después de 3 segundos
+            setTimeout(() => { alerta.style.opacity = '0'; }, 3000);
+        }
+    </script>
 </body>
 </html>
