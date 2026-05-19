@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Calificaciones - ITLM</title>
+    <link rel="stylesheet" href="../estilos/panel-personal-estilos.css">
+    <link rel="stylesheet" href="../estilos/subir-calificaciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <div class="header-titles">
+            <h1>Subir Calificaciones</h1>
+            <h2>Instituto Tecnológico de Los Mochis</h2>
+        </div>
+        <button class="btn-logout-admin" onclick="window.location.href='portal-docente.html'">
+            Regresar
+        </button>
+    </header>
+
+    <main class="portal-container">
+        
+        <div class="subject-selection-card">
+            <h3 class="section-title">Seleccionar Materia</h3>
+            
+            <div class="subjects-grid">
+                <div class="subject-card" onclick="seleccionarMateria(this, 'isc401')">
+                    <div class="subject-badges">
+                        <span class="badge-orange">ISC-401</span>
+                        <span class="badge-gray">Grupo A</span>
+                    </div>
+                    <h4 class="subject-name">Programación Web</h4>
+                    <p class="subject-students">8 alumnos</p>
+                </div>
+                
+                <div class="subject-card" onclick="seleccionarMateria(this, 'isc402')">
+                    <div class="subject-badges">
+                        <span class="badge-orange">ISC-402</span>
+                        <span class="badge-gray">Grupo B</span>
+                    </div>
+                    <h4 class="subject-name">Base de Datos Avanzadas</h4>
+                    <p class="subject-students">2 alumnos</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="area-vacia" class="empty-state-grades">
+            <i class="fa-solid fa-clipboard-list"></i>
+            <p>Selecciona una materia para comenzar a capturar calificaciones</p>
+        </div>
+        
+        <div id="area-captura" style="display: none;">
+            </div>
+
+    </main>
+
+    <script>
+        function seleccionarMateria(elementoTarjeta, idMateria) {
+            // 1. Quitar el color azul (clase 'selected') de todas las tarjetas
+            const tarjetas = document.querySelectorAll('.subject-card');
+            tarjetas.forEach(t => t.classList.remove('selected'));
+            
+            // 2. Agregar el color azul solo a la tarjeta que recibió el clic
+            elementoTarjeta.classList.add('selected');
+            
+            // Nota: Por ahora el panel de abajo no cambia, en el próximo paso
+            // ocultaremos el "#area-vacia" y mostraremos la tabla de alumnos.
+            console.log("Materia seleccionada:", idMateria);
+        }
+    </script>
+</body>
+</html>
