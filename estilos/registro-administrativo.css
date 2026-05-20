@@ -1,0 +1,265 @@
+.portal-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.selection-container {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 35px 40px;
+    margin-top: 20px;
+}
+
+.selection-header {
+    margin-bottom: 35px;
+}
+
+.selection-header h2 {
+    color: #111827;
+    font-size: 20px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.selection-header p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.option-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 40px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+.option-card:hover {
+    border-color: #cbd5e0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transform: translateY(-2px);
+}
+
+.option-title {
+    color: #111827;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.option-desc {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.option-subtext {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.subtext-blue { color: #3b82f6; }
+.subtext-orange { color: #f97316; }
+
+/* FORMULARIO DE REGISTRO MANUAL */
+
+.form-container {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 30px 40px;
+    margin-top: 20px;
+}
+
+.form-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.btn-change-type {
+    background-color: #cbd5e0;
+    color: #475569;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-change-type:hover { background-color: #94a3b8; color: white; }
+
+.form-header h2 {
+    color: #111827;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.form-section {
+    margin-bottom: 25px;
+}
+
+.section-title {
+    color: #4b5563;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title i.fa-id-card { color: #f87171; } 
+.section-title i.fa-address-card { color: #8b5cf6; } 
+.section-title i.fa-phone { color: #ec4899; } 
+.section-title i.fa-briefcase { color: #8b1c1c; } 
+
+.input-row-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.input-row-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-group label {
+    font-size: 13px;
+    color: #4b5563;
+    font-weight: 500;
+}
+
+.input-group input, .input-group select {
+    padding: 10px 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background-color: #ffffff;
+}
+
+.input-group input:focus, .input-group select:focus {
+    border-color: #3b82f6;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 35px;
+    border-top: 2px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+.btn-cancel {
+    flex: 1;
+    background-color: #e2e8f0;
+    color: #475569;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-cancel:hover { background-color: #cbd5e0; }
+
+.btn-submit {
+    flex: 2;
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-submit:hover { background-color: #059669; }
+
+/* ESTILOS PARA VISTA DE SELECCIONAR DOCENTE */
+
+.teacher-info-box {
+    background-color: #eff6ff; 
+    border-left: 4px solid #1e3a8a; 
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 25px;
+}
+
+.teacher-info-box h4 {
+    color: #1f2937;
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.info-grid p {
+    color: #4b5563;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.info-grid p strong {
+    color: #111827;
+    font-weight: 600;
+}
+
+.warning-box {
+    background-color: #fefce8; 
+    border-left: 4px solid #eab308; 
+    padding: 15px 20px;
+    border-radius: 4px;
+    margin-top: 30px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.warning-box i {
+    color: #eab308;
+    font-size: 16px;
+    margin-top: 2px;
+}
+
+.warning-box p {
+    color: #713f12;
+    font-size: 13px;
+    margin: 0;
+    line-height: 1.5;
+}

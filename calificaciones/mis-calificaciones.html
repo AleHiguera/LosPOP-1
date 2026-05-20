@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Calificaciones - ITLM</title>
+    <link rel="stylesheet" href="../estilos/panel-personal-estilos.css">
+    <link rel="stylesheet" href="../estilos/mis-calificaciones.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <div class="header-titles">
+            <h1>Mis Calificaciones</h1>
+            <h2>Instituto Tecnológico de Los Mochis</h2>
+        </div>
+        <button class="btn-logout-admin" onclick="window.location.href='portal-alumno.html'">
+            Regresar
+        </button>
+    </header>
+
+    <main class="portal-container">
+        
+        <div class="student-stats-card">
+            <div class="stats-header">
+                <div class="stats-info">
+                    <h2>Juan Carlos Pérez García</h2>
+                    <div class="stats-meta">
+                        <strong>No. Control:</strong> 19400123 &nbsp;&nbsp;&nbsp;&nbsp; <strong>Semestre:</strong> 4
+                    </div>
+                    <div class="stats-meta" style="margin-top: 5px;">
+                        <strong>Carrera:</strong> Ingeniería en Sistemas Computacionales
+                    </div>
+                </div>
+                <div class="general-average">
+                    <span>Promedio General</span>
+                    <span class="avg-number">86.1</span>
+                </div>
+            </div>
+
+            <div class="stats-numbers-row">
+                <div class="stat-box">
+                    <span class="stat-num num-green">2</span>
+                    <span class="stat-label">Aprobadas</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-num num-blue">2</span>
+                    <span class="stat-label">Cursando</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-num num-red">1</span>
+                    <span class="stat-label">Reprobadas</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-num num-dark">10</span>
+                    <span class="stat-label">Créditos</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-tabs">
+            <button class="tab-btn active-dark" id="tab-todas" onclick="filtrarMaterias('Todas', this, 'active-dark')">Todas (5)</button>
+            <button class="tab-btn" id="tab-cursando" onclick="filtrarMaterias('Cursando', this, 'active-blue')">Cursando (2)</button>
+            <button class="tab-btn" id="tab-aprobadas" onclick="filtrarMaterias('Aprobada', this, 'active-green')">Aprobadas (2)</button>
+            <button class="tab-btn" id="tab-reprobadas" onclick="filtrarMaterias('Reprobada', this, 'active-red')">Reprobadas (1)</button>
+        </div>
+
+        <div id="contenedor-calificaciones">
+            </div>
+
+    </main>
+
+    <script>
+        const materiasDB = [
+            { id: 'ISC-401', nombre: 'Programación Web', docente: 'Dr. Juan Carlos Pérez López', creditos: 5, p1: 85, p2: 90, p3: 88, prom: 87.7, final: 88, estado: 'Cursando' },
+            { id: 'ISC-402', nombre: 'Base de Datos Avanzadas', docente: 'Mtro. Luis Fernando Torres Cruz', creditos: 5, p1: 92, p2: 88, p3: 95, prom: 91.7, final: 92, estado: 'Cursando' },
+            { id: 'ISC-301', nombre: 'Redes de Computadoras', docente: 'Mtra. María Elena Rodríguez García', creditos: 5, p1: 95, p2: 92, p3: 98, prom: 95.0, final: 95, estado: 'Aprobada' },
+            { id: 'ISC-201', nombre: 'Estructura de Datos', docente: 'Dr. Roberto Sánchez Mendoza', creditos: 5, p1: 88, p2: 85, p3: 90, prom: 87.7, final: 88, estado: 'Aprobada' },
+            { id: 'ISC-101', nombre: 'Fundamentos de Programación', docente: 'Mtro. Carlos Jiménez Vargas', creditos: 5, p1: 65, p2: 68, p3: 72, prom: 68.3, final: 68, estado: 'Reprobada' }
+        ];
+
+        function filtrarMaterias(filtro, botonPresionado, claseActiva) {
+            const botones = document.querySelectorAll('.tab-btn');
+            botones.forEach(btn => {
+                btn.className = 'tab-btn'; 
+            });
+            botonPresionado.classList.add(claseActiva); 
+            let materiasAMostrar = [];
+            if(filtro === 'Todas') {
+                materiasAMostrar = materiasDB;
+            } else {
+                materiasAMostrar = materiasDB.filter(m => m.estado === filtro);
+            }
+
+            const contenedor = document.getElementById('contenedor-calificaciones');
+            contenedor.innerHTML = ''; 
+
+            materiasAMostrar.forEach(mat => {
+                let colorClase = '';
+                let badgeClase = '';
+                
+                if(mat.estado === 'Cursando') { colorClase = 'text-blue'; badgeClase = 'badge-status-blue'; }
+                if(mat.estado === 'Aprobada') { colorClase = 'text-green'; badgeClase = 'badge-status-green'; }
+                if(mat.estado === 'Reprobada') { colorClase = 'text-red'; badgeClase = 'badge-status-red'; }
+
+                const tarjetaHTML = `
+                    <div class="subject-grade-card">
+                        <div class="sgc-header">
+                            <div class="sgc-badges">
+                                <span class="badge-orange">${mat.id}</span>
+                                <span class="${badgeClase}">${mat.estado}</span>
+                                <span class="badge-gray">${mat.creditos} créditos</span>
+                            </div>
+                            <button class="btn-details">Ver Detalles</button>
+                        </div>
+                        
+                        <div class="sgc-title">
+                            <h3>${mat.nombre}</h3>
+                            <p>Docente: ${mat.docente}</p>
+                        </div>
+
+                        <div class="grades-row">
+                            <div class="grade-block">
+                                <span>Parcial 1</span>
+                                <strong class="${colorClase}">${mat.p1}</strong>
+                            </div>
+                            <div class="grade-block">
+                                <span>Parcial 2</span>
+                                <strong class="${colorClase}">${mat.p2}</strong>
+                            </div>
+                            <div class="grade-block">
+                                <span>Parcial 3</span>
+                                <strong class="${colorClase}">${mat.p3}</strong>
+                            </div>
+                            <div class="grade-block">
+                                <span>Promedio</span>
+                                <strong class="${colorClase}">${mat.prom}</strong>
+                            </div>
+                            <div class="grade-block final-grade-box">
+                                <span>Calificación Final</span>
+                                <strong class="${colorClase}" style="font-size: 26px; margin-top: 5px;">${mat.final}</strong>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                contenedor.innerHTML += tarjetaHTML;
+            });
+        }
+
+        window.onload = function() {
+            const btnTodas = document.getElementById('tab-todas');
+            filtrarMaterias('Todas', btnTodas, 'active-dark');
+        };
+    </script>
+</body>
+</html>
