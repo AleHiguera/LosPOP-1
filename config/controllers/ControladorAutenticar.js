@@ -12,7 +12,6 @@ exports.login = async (req, res) => {
             return res.status(401).json({ error: "Credenciales incorrectas" });
         }
 
-        // Aquí podrías enviar datos adicionales del perfil dependiendo del tipo
         res.json({ 
             mensaje: "Acceso autorizado", 
             usuario: { identificador: user.identificador, tipo: user.tipo } 
@@ -42,13 +41,10 @@ exports.registrarAlumno = async (req, res) => {
     try {
         const hash = await bcrypt.hash(password, saltRounds);
 
-        // Iniciamos una transacción manual o ejecución secuencial
         db.serialize(() => {
-            // Insertar en tabla alumnos
             db.run(`INSERT INTO alumnos (numero_control, nombre, correo, password) VALUES (?,?,?,?)`, 
             [numero_control, nombre, correo, hash]);
 
-            // Insertar en tabla usuarios para permitir el login
             db.run(`INSERT INTO usuarios (identificador, password_hash, tipo) VALUES (?,?,?)`, 
             [numero_control, hash, 'alumno'], (err) => {
                 if (err) return res.status(400).json({ error: "El alumno ya existe o error en credenciales" });
@@ -106,3 +102,26 @@ exports.registrarGrupo = (req, res) => {
         res.json({ mensaje: "Grupo creado con éxito" });
     });
 };   
+
+// ─── 7. REGISTRO DE PERSONAL ADMINISTRATIVO ─────────────────────────────────
+exports.registrarAdministrativo = async (req, res) => {
+    const { num_empleado, nombre, correo, password } = req.body;
+    const saltRounds = 10;
+
+    try {
+        const hash = await bcrypt.hash(password, saltRounds);
+
+        db.serialize(() => {
+            db.run(`INSERT INTO administrativos (num_empleado, nombre, correo) VALUES (?,?,?)`,
+            [num_empleado, nombre, correo]);
+
+            db.run(`INSERT INTO usuarios (identificador, password_hash, tipo) VALUES (?,?,?)`,
+            [num_empleado, hash, 'administrativo'], (err) => {
+                if (err) return res.status(400).json({ error: "Error al crear credenciales. El empleado ya existe." });
+                res.status(201).json({ mensaje: "Personal administrativo registrado con éxito" });
+            });
+        });
+    } catch (error) {
+        res.status(500).json({ error: "Error interno al registrar personal administrativo" });
+    }
+};

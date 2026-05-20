@@ -4,17 +4,23 @@ const bcrypt  = require('bcrypt');
 const sqlite3 = require('sqlite3').verbose();
 const { body, validationResult } = require('express-validator');
 
+// Importar Controladores
+const controladorAutenticar = require('./config/controllers/ControladorAutenticar');
+const rutasHorarios = require('./config/controllers/ControladorHorarios');
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static('.'));
+
+// Inicializar la ruta del router de horarios
+app.use('/api/horarios', rutasHorarios);
 
 // ─── Conexión a la base de datos ────────────────────────────────────────────
 const db = new sqlite3.Database('./instituto.db', (err) => {
     if (err) console.error('Error al conectar DB:', err.message);
     else {
         console.log('✅ Conectado a instituto.db');
-        // Crear la tabla para la asignación directa Alumno-Materia si no existe
         db.run(`CREATE TABLE IF NOT EXISTS alumno_materia (
             numero_control TEXT NOT NULL,
             id_materia INTEGER NOT NULL,
@@ -38,16 +44,12 @@ const revisarErrores = (req, res, next) => {
 // GENERACIÓN DE MATRÍCULA Y ACTIVACIÓN DE ASPIRANTES
 // ════════════════════════════════════════════════════════════════════════════
 
-// Algoritmo automatizado para generar Número de Control (Matrícula)
 const generarNumeroControl = (anioIngreso, totalAlumnosAnio) => {
     const añoStr = anioIngreso.toString().slice(-2);
-    // Crea un consecutivo de 4 dígitos, ej: 0001, 0002
     const consecutivo = (totalAlumnosAnio + 1).toString().padStart(4, '0');
-    // Formato: Año (2) + Clave de Institución (ej. 44) + Consecutivo (4)
     return `${añoStr}44${consecutivo}`; 
 };
 
-// Endpoint lógico para activar un aspirante y generarle su matrícula
 app.post('/api/activar-aspirante', async (req, res) => {
     const { id_aspirante } = req.body;
 
@@ -97,7 +99,6 @@ app.post('/api/activar-aspirante', async (req, res) => {
 // ════════════════════════════════════════════════════════════════════════════
 
 app.post('/api/alumnos', [
-    // El número de control es opcional desde el cliente
     body('numero_control').optional({ checkFalsy: true }).trim().escape(),
     body('nombre').notEmpty().withMessage('El nombre es obligatorio.').trim().escape(),
     body('apellido_paterno').notEmpty().withMessage('El apellido paterno es obligatorio.').trim().escape(),
@@ -119,12 +120,10 @@ app.post('/api/alumnos', [
     } = req.body;
 
     try {
-        // ─── LÓGICA DE GENERACIÓN AUTOMÁTICA DE MATRÍCULA ───
         if (!numero_control || numero_control.trim() === "") {
             const anioActual = new Date().getFullYear();
             const prefijoAnio = anioActual.toString().slice(-2) + '%';
             
-            // Consultar BD para saber el consecutivo
             const row = await new Promise((resolve, reject) => {
                 db.get(`SELECT COUNT(*) as total FROM alumnos WHERE numero_control LIKE ?`, [prefijoAnio], (err, result) => {
                     if (err) reject(err);
@@ -134,11 +133,8 @@ app.post('/api/alumnos', [
             
             const totalAlumnosAnio = row.total || 0;
             numero_control = generarNumeroControl(anioActual, totalAlumnosAnio);
-            
-            // Forzamos que la contraseña inicial sea el nuevo numero de control generado
             password = numero_control;
         } else if (password === 'AUTOGENERAR') {
-            // Si mandaron un numero_control manual pero el password venia como 'AUTOGENERAR'
             password = numero_control;
         }
 
@@ -194,7 +190,6 @@ app.post('/api/alumnos', [
                 
                 const lastId = this.lastID;
 
-                // Sincronizar en la tabla de usuarios para login global
                 db.run(`INSERT INTO usuarios (identificador, password_hash, tipo) VALUES (?, ?, 'alumno')`, 
                 [numero_control, password_hash], (err) => {
                     if (err) console.error("Error al registrar en tabla usuarios:", err.message);
@@ -269,7 +264,7 @@ app.get('/api/alumnos/:numero_control', (req, res) => {
 });
 
 // ════════════════════════════════════════════════════════════════════════════
-// GRUPOS (Mantenido para historial, aunque la asignación ahora sea directa)
+// GRUPOS
 // ════════════════════════════════════════════════════════════════════════════
 
 app.post('/api/grupos', [
@@ -411,6 +406,45 @@ app.delete('/api/desasignar-materia', (req, res) => {
 });
 
 // ════════════════════════════════════════════════════════════════════════════
+// CALIFICACIONES
+// ════════════════════════════════════════════════════════════════════════════
+
+app.get('/api/alumnos/:numero_control/calificaciones', (req, res) => {
+    const sql = `
+        SELECT c.id, c.calificacion, c.unidad, m.mat_nombre, m.mat_clave 
+        FROM calificaciones c
+        JOIN materias m ON c.id_materia = m.id
+        WHERE c.numero_control = ?
+        ORDER BY m.mat_nombre, c.unidad`;
+
+    db.all(sql, [req.params.numero_control], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
+
+app.post('/api/calificaciones', [
+    body('numero_control').notEmpty().trim().escape(),
+    body('id_materia').isInt(),
+    body('calificacion').isFloat({ min: 0, max: 100 }),
+    body('unidad').isInt()
+], revisarErrores, (req, res) => {
+    const { numero_control, id_materia, calificacion, unidad } = req.body;
+    const sql = `INSERT INTO calificaciones (numero_control, id_materia, calificacion, unidad) VALUES (?, ?, ?, ?)`;
+    
+    db.run(sql, [numero_control, id_materia, calificacion, unidad], function(err) {
+        if (err) return res.status(500).json({ error: 'Error al registrar calificación', detalle: err.message });
+        res.status(201).json({ mensaje: 'Calificación registrada exitosamente', id_calificacion: this.lastID });
+    });
+});
+
+// ════════════════════════════════════════════════════════════════════════════
+// PERSONAL ADMINISTRATIVO
+// ════════════════════════════════════════════════════════════════════════════
+
+app.post('/api/registrar-administrativo', controladorAutenticar.registrarAdministrativo);
+
+// ════════════════════════════════════════════════════════════════════════════
 // LOGIN
 // ════════════════════════════════════════════════════════════════════════════
 
@@ -433,7 +467,8 @@ app.post('/api/login', [
                 id_alumno: usuario.id_alumno, 
                 nombre: usuario.nombre,
                 apellido_paterno: usuario.apellido_paterno,
-                carrera: usuario.carrera 
+                carrera: usuario.carrera,
+                numero_control: usuario.numero_control // <-- DATO CLAVE AÑADIDO PARA LA SESIÓN
             } 
         });
     });

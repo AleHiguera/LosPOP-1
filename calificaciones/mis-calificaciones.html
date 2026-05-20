@@ -15,8 +15,8 @@
             <h1>Mis Calificaciones</h1>
             <h2>Instituto Tecnológico de Los Mochis</h2>
         </div>
-        <button class="btn-logout-admin" onclick="window.location.href='portal-alumno.html'">
-            Regresar
+        <button class="btn-logout-admin" onclick="cerrarSesion()">
+            Cerrar Sesión / Regresar
         </button>
     </header>
 
@@ -25,45 +25,45 @@
         <div class="student-stats-card">
             <div class="stats-header">
                 <div class="stats-info">
-                    <h2>Juan Carlos Pérez García</h2>
+                    <h2 id="nombreAlumnoUI">Cargando datos...</h2>
                     <div class="stats-meta">
-                        <strong>No. Control:</strong> 19400123 &nbsp;&nbsp;&nbsp;&nbsp; <strong>Semestre:</strong> 4
+                        <strong>No. Control:</strong> <span id="numControlUI">---</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>Semestre:</strong> <span id="semestreUI">1</span>
                     </div>
                     <div class="stats-meta" style="margin-top: 5px;">
-                        <strong>Carrera:</strong> Ingeniería en Sistemas Computacionales
+                        <strong>Carrera:</strong> <span id="carreraUI">---</span>
                     </div>
                 </div>
                 <div class="general-average">
                     <span>Promedio General</span>
-                    <span class="avg-number">86.1</span>
+                    <span class="avg-number" id="promedioGeneralUI">0.0</span>
                 </div>
             </div>
 
             <div class="stats-numbers-row">
                 <div class="stat-box">
-                    <span class="stat-num num-green">2</span>
+                    <span class="stat-num num-green" id="conteoAprobadas">0</span>
                     <span class="stat-label">Aprobadas</span>
                 </div>
                 <div class="stat-box">
-                    <span class="stat-num num-blue">2</span>
+                    <span class="stat-num num-blue" id="conteoCursando">0</span>
                     <span class="stat-label">Cursando</span>
                 </div>
                 <div class="stat-box">
-                    <span class="stat-num num-red">1</span>
+                    <span class="stat-num num-red" id="conteoReprobadas">0</span>
                     <span class="stat-label">Reprobadas</span>
                 </div>
                 <div class="stat-box">
-                    <span class="stat-num num-dark">10</span>
-                    <span class="stat-label">Créditos</span>
+                    <span class="stat-num num-dark" id="conteoCreditos">0</span>
+                    <span class="stat-label">Créditos Totales</span>
                 </div>
             </div>
         </div>
 
         <div class="filter-tabs">
-            <button class="tab-btn active-dark" id="tab-todas" onclick="filtrarMaterias('Todas', this, 'active-dark')">Todas (5)</button>
-            <button class="tab-btn" id="tab-cursando" onclick="filtrarMaterias('Cursando', this, 'active-blue')">Cursando (2)</button>
-            <button class="tab-btn" id="tab-aprobadas" onclick="filtrarMaterias('Aprobada', this, 'active-green')">Aprobadas (2)</button>
-            <button class="tab-btn" id="tab-reprobadas" onclick="filtrarMaterias('Reprobada', this, 'active-red')">Reprobadas (1)</button>
+            <button class="tab-btn active-dark" id="tab-todas" onclick="filtrarMaterias('Todas', this, 'active-dark')">Todas (0)</button>
+            <button class="tab-btn" id="tab-cursando" onclick="filtrarMaterias('Cursando', this, 'active-blue')">Cursando (0)</button>
+            <button class="tab-btn" id="tab-aprobadas" onclick="filtrarMaterias('Aprobada', this, 'active-green')">Aprobadas (0)</button>
+            <button class="tab-btn" id="tab-reprobadas" onclick="filtrarMaterias('Reprobada', this, 'active-red')">Reprobadas (0)</button>
         </div>
 
         <div id="contenedor-calificaciones">
@@ -72,13 +72,121 @@
     </main>
 
     <script>
-        const materiasDB = [
-            { id: 'ISC-401', nombre: 'Programación Web', docente: 'Dr. Juan Carlos Pérez López', creditos: 5, p1: 85, p2: 90, p3: 88, prom: 87.7, final: 88, estado: 'Cursando' },
-            { id: 'ISC-402', nombre: 'Base de Datos Avanzadas', docente: 'Mtro. Luis Fernando Torres Cruz', creditos: 5, p1: 92, p2: 88, p3: 95, prom: 91.7, final: 92, estado: 'Cursando' },
-            { id: 'ISC-301', nombre: 'Redes de Computadoras', docente: 'Mtra. María Elena Rodríguez García', creditos: 5, p1: 95, p2: 92, p3: 98, prom: 95.0, final: 95, estado: 'Aprobada' },
-            { id: 'ISC-201', nombre: 'Estructura de Datos', docente: 'Dr. Roberto Sánchez Mendoza', creditos: 5, p1: 88, p2: 85, p3: 90, prom: 87.7, final: 88, estado: 'Aprobada' },
-            { id: 'ISC-101', nombre: 'Fundamentos de Programación', docente: 'Mtro. Carlos Jiménez Vargas', creditos: 5, p1: 65, p2: 68, p3: 72, prom: 68.3, final: 68, estado: 'Reprobada' }
-        ];
+        let materiasGlobales = [];
+
+        async function cargarDatos() {
+            // 1. Leer quién inició sesión dinámicamente
+            const numeroControl = localStorage.getItem('numeroControlAlumno');
+
+            if (!numeroControl) {
+                alert("No hay sesión activa. Por favor, inicia sesión.");
+                window.location.href = '../login/alumnos.html';
+                return;
+            }
+
+            try {
+                // 2. Cargar perfil del alumno
+                const resPerfil = await fetch(`http://localhost:3000/api/alumnos/${numeroControl}`);
+                if (resPerfil.ok) {
+                    const perfil = await resPerfil.json();
+                    document.getElementById('nombreAlumnoUI').textContent = `${perfil.nombre} ${perfil.apellido_paterno} ${perfil.apellido_materno || ''}`;
+                    document.getElementById('numControlUI').textContent = perfil.numero_control;
+                    document.getElementById('carreraUI').textContent = perfil.carrera || 'No especificada';
+                    document.getElementById('semestreUI').textContent = perfil.semestre || '1';
+                }
+
+                // 3. Cargar calificaciones del alumno
+                const response = await fetch(`http://localhost:3000/api/alumnos/${numeroControl}/calificaciones`);
+                if (!response.ok) throw new Error('Error al obtener las calificaciones');
+                
+                const datosBrutos = await response.json();
+                
+                if(datosBrutos.length === 0) {
+                    document.getElementById('contenedor-calificaciones').innerHTML = `
+                        <div style="text-align: center; padding: 40px; background: white; border-radius: 8px; margin-top: 20px;">
+                            <i class="fa-solid fa-folder-open" style="font-size: 40px; color: #ccc; margin-bottom: 15px;"></i>
+                            <h3>Aún no tienes calificaciones registradas en el sistema.</h3>
+                        </div>`;
+                    return;
+                }
+
+                const mapaMaterias = {};
+                
+                datosBrutos.forEach(reg => {
+                    if (!mapaMaterias[reg.mat_clave]) {
+                        mapaMaterias[reg.mat_clave] = {
+                            id: reg.mat_clave,
+                            nombre: reg.mat_nombre,
+                            docente: 'Asignado', 
+                            creditos: 5,         
+                            p1: '-', p2: '-', p3: '-',
+                            prom: 0, final: 0,
+                            estado: 'Cursando'
+                        };
+                    }
+                    if (reg.unidad === 1) mapaMaterias[reg.mat_clave].p1 = reg.calificacion;
+                    if (reg.unidad === 2) mapaMaterias[reg.mat_clave].p2 = reg.calificacion;
+                    if (reg.unidad === 3) mapaMaterias[reg.mat_clave].p3 = reg.calificacion;
+                });
+
+                materiasGlobales = Object.values(mapaMaterias).map(m => {
+                    let suma = 0;
+                    let conteo = 0;
+                    
+                    if (m.p1 !== '-') { suma += m.p1; conteo++; }
+                    if (m.p2 !== '-') { suma += m.p2; conteo++; }
+                    if (m.p3 !== '-') { suma += m.p3; conteo++; }
+
+                    if (conteo > 0) {
+                        m.prom = (suma / conteo).toFixed(1);
+                        m.final = Math.round(suma / conteo);
+                        if (conteo === 3) {
+                            m.estado = m.final >= 70 ? 'Aprobada' : 'Reprobada';
+                        }
+                    }
+                    return m;
+                });
+
+                actualizarEstadisticas();
+
+                const btnTodas = document.getElementById('tab-todas');
+                filtrarMaterias('Todas', btnTodas, 'active-dark');
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('contenedor-calificaciones').innerHTML = `<p style="text-align:center; color:red;">No se pudieron cargar las calificaciones del servidor.</p>`;
+            }
+        }
+
+        function actualizarEstadisticas() {
+            let aprobadas = 0, cursando = 0, reprobadas = 0, sumaFinales = 0, materiasConCalif = 0, creditosTotales = 0;
+
+            materiasGlobales.forEach(m => {
+                if (m.estado === 'Aprobada') aprobadas++;
+                if (m.estado === 'Cursando') cursando++;
+                if (m.estado === 'Reprobada') reprobadas++;
+                
+                if (m.final > 0) {
+                    sumaFinales += m.final;
+                    materiasConCalif++;
+                }
+                creditosTotales += m.creditos;
+            });
+
+            document.getElementById('conteoAprobadas').innerText = aprobadas;
+            document.getElementById('conteoCursando').innerText = cursando;
+            document.getElementById('conteoReprobadas').innerText = reprobadas;
+            document.getElementById('conteoCreditos').innerText = creditosTotales;
+
+            if (materiasConCalif > 0) {
+                document.getElementById('promedioGeneralUI').innerText = (sumaFinales / materiasConCalif).toFixed(1);
+            }
+
+            document.getElementById('tab-todas').innerText = `Todas (${materiasGlobales.length})`;
+            document.getElementById('tab-cursando').innerText = `Cursando (${cursando})`;
+            document.getElementById('tab-aprobadas').innerText = `Aprobadas (${aprobadas})`;
+            document.getElementById('tab-reprobadas').innerText = `Reprobadas (${reprobadas})`;
+        }
 
         function filtrarMaterias(filtro, botonPresionado, claseActiva) {
             const botones = document.querySelectorAll('.tab-btn');
@@ -86,15 +194,21 @@
                 btn.className = 'tab-btn'; 
             });
             botonPresionado.classList.add(claseActiva); 
+            
             let materiasAMostrar = [];
             if(filtro === 'Todas') {
-                materiasAMostrar = materiasDB;
+                materiasAMostrar = materiasGlobales;
             } else {
-                materiasAMostrar = materiasDB.filter(m => m.estado === filtro);
+                materiasAMostrar = materiasGlobales.filter(m => m.estado === filtro);
             }
 
             const contenedor = document.getElementById('contenedor-calificaciones');
             contenedor.innerHTML = ''; 
+
+            if(materiasAMostrar.length === 0) {
+                contenedor.innerHTML = '<p style="text-align:center; margin-top: 20px;">No hay materias en esta categoría.</p>';
+                return;
+            }
 
             materiasAMostrar.forEach(mat => {
                 let colorClase = '';
@@ -139,7 +253,7 @@
                             </div>
                             <div class="grade-block final-grade-box">
                                 <span>Calificación Final</span>
-                                <strong class="${colorClase}" style="font-size: 26px; margin-top: 5px;">${mat.final}</strong>
+                                <strong class="${colorClase}" style="font-size: 26px; margin-top: 5px;">${mat.final > 0 ? mat.final : '-'}</strong>
                             </div>
                         </div>
                     </div>
@@ -148,9 +262,12 @@
             });
         }
 
+        function cerrarSesion() {
+            window.location.href = '../login/portal-alumno.html';
+        }
+
         window.onload = function() {
-            const btnTodas = document.getElementById('tab-todas');
-            filtrarMaterias('Todas', btnTodas, 'active-dark');
+            cargarDatos();
         };
     </script>
 </body>

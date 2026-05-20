@@ -25,17 +25,17 @@
         
         <div class="student-header-card">
             <div class="student-info">
-                <h2>Juan Carlos Pérez García</h2>
+                <h2 id="nombreAlumnoHeader">Cargando datos...</h2>
                 <div class="student-meta">
-                    <strong>No. Control:</strong> 19400123 &nbsp;&nbsp;&nbsp;&nbsp; <strong>Semestre:</strong> 4
+                    <strong>No. Control:</strong> <span id="numControlHeader">---</span> &nbsp;&nbsp;&nbsp;&nbsp; <strong>Semestre:</strong> <span id="semestreHeader">1</span>
                 </div>
                 <div class="student-meta">
-                    <strong>Carrera:</strong> Ingeniería en Sistemas Computacionales
+                    <strong>Carrera:</strong> <span id="carreraHeader">---</span>
                 </div>
                 
                 <div class="badges-row">
-                    <span class="badge-blue">5 materias inscritas</span>
-                    <span class="badge-green">24 créditos totales</span>
+                    <span class="badge-blue" id="badgeMaterias">0 materias inscritas</span>
+                    <span class="badge-green" id="badgeCreditos">0 créditos totales</span>
                 </div>
             </div>
             
@@ -61,314 +61,217 @@
                         <th>Sábado</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td class="time-col">07:00</td>
-                        <td>
-                            <div class="class-block">
-                                <span class="cb-title">ISC-401<br>Programación Web</span>
-                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-301</span>
-                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Dr. Juan</span>
-                            </div>
-                        </td>
-                        <td></td>
-                        <td>
-                            <div class="class-block">
-                                <span class="cb-title">ISC-401<br>Programación Web</span>
-                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-301</span>
-                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Dr. Juan</span>
-                            </div>
-                        </td>
-                        <td></td>
-                        <td>
-                            <div class="class-block">
-                                <span class="cb-title">ISC-501<br>Seguridad Informática</span>
-                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-401</span>
-                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Mtra. María</span>
-                            </div>
-                        </td>
-                        <td></td>
-                    </tr>
-
-                    <tr>
-                        <td class="time-col">08:00</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
-
-                    <tr>
-                        <td class="time-col">09:00</td>
-                        <td></td>
-                        <td>
-                            <div class="class-block">
-                                <span class="cb-title">ISC-402<br>Base de Datos Avanzadas</span>
-                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-302</span>
-                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Mtro. Luis</span>
-                            </div>
-                        </td>
-                        <td></td>
-                        <td>
-                            <div class="class-block">
-                                <span class="cb-title">ISC-402<br>Base de Datos Avanzadas</span>
-                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-302</span>
-                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Mtro. Luis</span>
-                            </div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-
-                    <tr>
-                        <td class="time-col">10:00</td>
-                        <td>
-                            <div class="class-block">
-                                <span class="cb-title">ISC-301<br>Redes de Computadoras</span>
-                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> AULA-201</span>
-                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Mtra. Elena</span>
-                            </div>
-                        </td>
-                        <td></td>
-                        <td>
-                            <div class="class-block">
-                                <span class="cb-title">ISC-301<br>Redes de Computadoras</span>
-                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> AULA-201</span>
-                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Mtra. Elena</span>
-                            </div>
-                        </td>
-                        <td></td><td></td><td></td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="time-col">11:00</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
-
-                    <tr>
-                        <td class="time-col">11:00</td>
-                        <td>
-                            <div class="class-block">
-                                <span class="cb-title">ISC-403<br>Desarrollo Móvil</span>
-                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-303</span>
-                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Dr. Roberto</span>
-                            </div>
-                        </td>
-                        <td></td>
-                        <td>
-                            <div class="class-block">
-                                <span class="cb-title">ISC-403<br>Desarrollo Móvil</span>
-                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-303</span>
-                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Dr. Roberto</span>
-                            </div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="time-col">12:00</td>
-                        <td></td>
-                        <td>
-                            <div class="class-block">
-                                <span class="cb-title">ISC-501<br>Seguridad Informática</span>
-                                <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> LAB-401</span>
-                                <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> Mtra. María</span>
-                            </div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-
-                    <tr>
-                        <td class="time-col">13:00</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">14:00</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">15:00</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
-                </tbody>
+                <tbody id="tablaHorarioBody">
+                    </tbody>
             </table>
         </div>
 
-        </div> <div class="subjects-list-card">
+        <div class="subjects-list-card">
             <h3><i class="fa-solid fa-layer-group"></i> Materias Inscritas</h3>
             
-            <div class="enrolled-subjects-list">
-                
-                <div class="subject-list-item">
-                    <div class="sli-header">
-                        <span class="sli-number">1</span>
-                        <span class="sli-code">ISC-401</span>
-                        <span class="sli-name">Programación Web</span>
-                        <span class="sli-credits">5 créditos</span>
-                    </div>
-                    <div class="sli-details">
-                        <span class="sli-details-item"><i class="fa-solid fa-chalkboard-user"></i> Docente: Dr. Juan Carlos Pérez López</span>
-                        <span class="sli-details-item"><i class="fa-solid fa-thumbtack"></i> Salón: LAB-301</span>
-                        <span class="sli-details-item"><i class="fa-solid fa-clock"></i> Horarios: Lunes 07:00-08:00, Miércoles 07:00-08:00</span>
-                    </div>
+            <div class="enrolled-subjects-list" id="contenedorMateriasInscritas">
                 </div>
-
-                <div class="subject-list-item">
-                    <div class="sli-header">
-                        <span class="sli-number">2</span>
-                        <span class="sli-code">ISC-301</span>
-                        <span class="sli-name">Redes de Computadoras</span>
-                        <span class="sli-credits">5 créditos</span>
-                    </div>
-                    <div class="sli-details">
-                        <span class="sli-details-item"><i class="fa-solid fa-chalkboard-user"></i> Docente: Mtra. María Elena Rodríguez García</span>
-                        <span class="sli-details-item"><i class="fa-solid fa-thumbtack"></i> Salón: AULA-201</span>
-                        <span class="sli-details-item"><i class="fa-solid fa-clock"></i> Horarios: Lunes 10:00-11:00, Miércoles 10:00-11:00</span>
-                    </div>
-                </div>
-
-                <div class="subject-list-item">
-                    <div class="sli-header">
-                        <span class="sli-number">3</span>
-                        <span class="sli-code">ISC-403</span>
-                        <span class="sli-name">Desarrollo Móvil</span>
-                        <span class="sli-credits">5 créditos</span>
-                    </div>
-                    <div class="sli-details">
-                        <span class="sli-details-item"><i class="fa-solid fa-chalkboard-user"></i> Docente: Dr. Roberto Sánchez Mendoza</span>
-                        <span class="sli-details-item"><i class="fa-solid fa-thumbtack"></i> Salón: LAB-303</span>
-                        <span class="sli-details-item"><i class="fa-solid fa-clock"></i> Horarios: Lunes 11:00-12:00, Miércoles 11:00-12:00</span>
-                    </div>
-                </div>
-
-                <div class="subject-list-item">
-                    <div class="sli-header">
-                        <span class="sli-number">4</span>
-                        <span class="sli-code">ISC-402</span>
-                        <span class="sli-name">Base de Datos Avanzadas</span>
-                        <span class="sli-credits">5 créditos</span>
-                    </div>
-                    <div class="sli-details">
-                        <span class="sli-details-item"><i class="fa-solid fa-chalkboard-user"></i> Docente: Mtro. Luis Fernando Torres Cruz</span>
-                        <span class="sli-details-item"><i class="fa-solid fa-thumbtack"></i> Salón: LAB-302</span>
-                        <span class="sli-details-item"><i class="fa-solid fa-clock"></i> Horarios: Martes 09:00-10:00, Jueves 09:00-10:00</span>
-                    </div>
-                </div>
-
-                <div class="subject-list-item">
-                    <div class="sli-header">
-                        <span class="sli-number">5</span>
-                        <span class="sli-code">ISC-501</span>
-                        <span class="sli-name">Seguridad Informática</span>
-                        <span class="sli-credits">4 créditos</span>
-                    </div>
-                    <div class="sli-details">
-                        <span class="sli-details-item"><i class="fa-solid fa-chalkboard-user"></i> Docente: Mtra. María Elena Rodríguez García</span>
-                        <span class="sli-details-item"><i class="fa-solid fa-thumbtack"></i> Salón: LAB-401</span>
-                        <span class="sli-details-item"><i class="fa-solid fa-clock"></i> Horarios: Martes 12:00-13:00, Viernes 07:00-08:00</span>
-                    </div>
-                </div>
-
-            </div>
 
             <div class="sli-footer">
-                <span>Total de materias: 5</span>
-                <span>Total de créditos: 24</span>
+                <span id="footerTotalMaterias">Total de materias: 0</span>
+                <span id="footerTotalCreditos">Total de créditos: 0</span>
             </div>
 
         </div>
 
         <div id="modalPreview" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 style="color: #1e3a8a;">Vista Previa de Impresión</h3>
-                <button onclick="cerrarModal()" style="border: none; background: none; font-size: 20px; cursor: pointer;">&times;</button>
-            </div>
-
-            <div id="hoja-oficial" class="print-preview-paper">
-                <div class="print-header">
-                    <h1>Instituto Tecnológico de Los Mochis</h1>
-                    <h2>Horario del Alumno</h2>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 style="color: #1e3a8a;">Vista Previa de Impresión</h3>
+                    <button onclick="cerrarModal()" style="border: none; background: none; font-size: 20px; cursor: pointer;">&times;</button>
                 </div>
-                <div class="print-details">
-                    <strong>Alumno:</strong> Juan Carlos Pérez García<br>
-                    <strong>No. Control:</strong> 19400123 &nbsp;&nbsp;&nbsp; <strong>Semestre:</strong> 4<br>
-                    <strong>Carrera:</strong> Ingeniería en Sistemas Computacionales
-                </div>
-                
-                <table class="table-print">
-                    <thead>
-                        <tr>
-                            <th>Hora</th>
-                            <th>Lunes</th>
-                            <th>Martes</th>
-                            <th>Miércoles</th>
-                            <th>Jueves</th>
-                            <th>Viernes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="time-col">07:00</td>
-                            <td><strong>ISC-401</strong><br>Programación Web<br>LAB-301</td>
-                            <td></td>
-                            <td><strong>ISC-401</strong><br>Programación Web<br>LAB-301</td>
-                            <td></td>
-                            <td><strong>ISC-501</strong><br>Seguridad Info.<br>LAB-401</td>
-                        </tr>
-                        <tr>
-                            <td class="time-col">08:00</td><td></td><td></td><td></td><td></td><td></td>
-                        </tr>
-                        <tr>
-                            <td class="time-col">09:00</td>
-                            <td></td>
-                            <td><strong>ISC-402</strong><br>Base de Datos<br>LAB-302</td>
-                            <td></td>
-                            <td><strong>ISC-402</strong><br>Base de Datos<br>LAB-302</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="time-col">10:00</td>
-                            <td><strong>ISC-301</strong><br>Redes de Comp.<br>AULA-201</td>
-                            <td></td>
-                            <td><strong>ISC-301</strong><br>Redes de Comp.<br>AULA-201</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="time-col">11:00</td>
-                            <td><strong>ISC-403</strong><br>Desarrollo Móvil<br>LAB-303</td>
-                            <td></td>
-                            <td><strong>ISC-403</strong><br>Desarrollo Móvil<br>LAB-303</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="time-col">12:00</td>
-                            <td></td>
-                            <td><strong>ISC-501</strong><br>Seguridad Info.<br>LAB-401</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
 
-            <div class="modal-actions">
-                <button class="btn-outline-gray" onclick="cerrarModal()">Cancelar</button>
-                <button class="btn-download" onclick="ejecutarDescargaReal()">
-                    <i class="fa-solid fa-download"></i> Confirmar y Descargar PDF
-                </button>
+                <div id="hoja-oficial" class="print-preview-paper">
+                    <div class="print-header">
+                        <h1>Instituto Tecnológico de Los Mochis</h1>
+                        <h2>Horario del Alumno</h2>
+                    </div>
+                    <div class="print-details">
+                        <strong>Alumno:</strong> <span id="impresionNombre">---</span><br>
+                        <strong>No. Control:</strong> <span id="impresionNumControl">---</span> &nbsp;&nbsp;&nbsp; <strong>Semestre:</strong> <span id="impresionSemestre">1</span><br>
+                        <strong>Carrera:</strong> <span id="impresionCarrera">---</span>
+                    </div>
+                    
+                    <table class="table-print">
+                        <thead>
+                            <tr>
+                                <th>Hora</th>
+                                <th>Lunes</th>
+                                <th>Martes</th>
+                                <th>Miércoles</th>
+                                <th>Jueves</th>
+                                <th>Viernes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaImpresionBody">
+                            </tbody>
+                    </table>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-outline-gray" onclick="cerrarModal()">Cancelar</button>
+                    <button class="btn-download" onclick="ejecutarDescargaReal()">
+                        <i class="fa-solid fa-download"></i> Confirmar y Descargar PDF
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
     </main>
 
     <script>
+        const indiceDias = { "Lunes": 0, "Martes": 1, "Miércoles": 2, "Jueves": 3, "Viernes": 4, "Sábado": 5 };
+        const horasBase = ["07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"];
+
+        async function cargarHorarioAPI() {
+            // Leer el ID de sesión dinámico guardado durante el login
+            const numeroControl = localStorage.getItem('numeroControlAlumno');
+            
+            if (!numeroControl) {
+                alert("No hay sesión activa. Por favor, inicia sesión.");
+                window.location.href = '../login/alumnos.html';
+                return;
+            }
+
+            try {
+                // Cargar perfil del alumno
+                const resPerfil = await fetch(`http://localhost:3000/api/alumnos/${numeroControl}`);
+                if (resPerfil.ok) {
+                    const perfil = await resPerfil.json();
+                    const nombreCompleto = `${perfil.nombre} ${perfil.apellido_paterno} ${perfil.apellido_materno || ''}`;
+                    
+                    // Llenar interfaz principal
+                    document.getElementById('nombreAlumnoHeader').textContent = nombreCompleto;
+                    document.getElementById('numControlHeader').textContent = perfil.numero_control;
+                    document.getElementById('carreraHeader').textContent = perfil.carrera || 'No especificada';
+                    document.getElementById('semestreHeader').textContent = perfil.semestre || '1';
+
+                    // Llenar hoja de impresión
+                    document.getElementById('impresionNombre').textContent = nombreCompleto;
+                    document.getElementById('impresionNumControl').textContent = perfil.numero_control;
+                    document.getElementById('impresionCarrera').textContent = perfil.carrera || 'No especificada';
+                    document.getElementById('impresionSemestre').textContent = perfil.semestre || '1';
+                }
+
+                // Cargar Horario
+                const response = await fetch(`http://localhost:3000/api/horarios/alumno/${numeroControl}`);
+                if (!response.ok) throw new Error('Fallo al obtener el horario');
+                
+                const datosHorario = await response.json();
+                
+                if (datosHorario.length === 0) {
+                    document.getElementById('tablaHorarioBody').innerHTML = "<tr><td colspan='7' style='text-align:center; padding: 20px;'>Aún no tienes un horario asignado.</td></tr>";
+                    document.getElementById('contenedorMateriasInscritas').innerHTML = "<p style='text-align:center;'>No hay materias inscritas</p>";
+                    return;
+                }
+
+                generarMatriz(datosHorario);
+                generarListaMaterias(datosHorario);
+
+            } catch (error) {
+                console.error("Error al cargar horario:", error);
+                document.getElementById('tablaHorarioBody').innerHTML = "<tr><td colspan='7' style='text-align:center;'>Error de conexión con el servidor.</td></tr>";
+            }
+        }
+
+        function generarMatriz(datosHorario) {
+            const tbodyWeb = document.getElementById('tablaHorarioBody');
+            const tbodyImp = document.getElementById('tablaImpresionBody');
+            
+            tbodyWeb.innerHTML = '';
+            tbodyImp.innerHTML = '';
+
+            horasBase.forEach(horaStr => {
+                const trWeb = document.createElement('tr');
+                trWeb.innerHTML = `<td class="time-col">${horaStr}</td>`;
+                
+                const trImp = document.createElement('tr');
+                trImp.innerHTML = `<td class="time-col">${horaStr}</td>`;
+
+                for (let i = 0; i < 6; i++) {
+                    const diaActual = Object.keys(indiceDias).find(key => indiceDias[key] === i);
+                    const clase = datosHorario.find(h => h.dia_semana === diaActual && h.hora_inicio === horaStr);
+                    
+                    if (clase) {
+                        trWeb.innerHTML += `
+                            <td>
+                                <div class="class-block">
+                                    <span class="cb-title">${clase.mat_clave}<br>${clase.mat_nombre}</span>
+                                    <span class="cb-detail"><i class="fa-solid fa-thumbtack"></i> ${clase.aula}</span>
+                                    <span class="cb-detail"><i class="fa-solid fa-chalkboard-user"></i> ${clase.doc_nombre.split(' ')[0]}</span>
+                                </div>
+                            </td>
+                        `;
+                        
+                        if(i < 5) {
+                            trImp.innerHTML += `<td><strong>${clase.mat_clave}</strong><br>${clase.mat_nombre}<br>${clase.aula}</td>`;
+                        }
+                    } else {
+                        trWeb.innerHTML += `<td></td>`;
+                        if(i < 5) trImp.innerHTML += `<td></td>`;
+                    }
+                }
+                
+                tbodyWeb.appendChild(trWeb);
+                tbodyImp.appendChild(trImp);
+            });
+        }
+
+        function generarListaMaterias(datosHorario) {
+            const contenedorMaterias = document.getElementById('contenedorMateriasInscritas');
+            contenedorMaterias.innerHTML = '';
+
+            const mapaMaterias = {};
+            datosHorario.forEach(h => {
+                if (!mapaMaterias[h.mat_clave]) {
+                    mapaMaterias[h.mat_clave] = {
+                        clave: h.mat_clave,
+                        nombre: h.mat_nombre,
+                        docente: h.doc_nombre,
+                        aula: h.aula,
+                        horarios: [],
+                        creditos: 5 // Valor por defecto
+                    };
+                }
+                mapaMaterias[h.mat_clave].horarios.push(`${h.dia_semana} ${h.hora_inicio}-${h.hora_fin}`);
+            });
+
+            const arregloUnicas = Object.values(mapaMaterias);
+            let totalCreditos = 0;
+
+            arregloUnicas.forEach((materia, index) => {
+                totalCreditos += materia.creditos;
+                const horariosStr = materia.horarios.join(', ');
+
+                const divHTML = `
+                    <div class="subject-list-item">
+                        <div class="sli-header">
+                            <span class="sli-number">${index + 1}</span>
+                            <span class="sli-code">${materia.clave}</span>
+                            <span class="sli-name">${materia.nombre}</span>
+                            <span class="sli-credits">${materia.creditos} créditos</span>
+                        </div>
+                        <div class="sli-details">
+                            <span class="sli-details-item"><i class="fa-solid fa-chalkboard-user"></i> Docente: ${materia.docente}</span>
+                            <span class="sli-details-item"><i class="fa-solid fa-thumbtack"></i> Salón: ${materia.aula}</span>
+                            <span class="sli-details-item"><i class="fa-solid fa-clock"></i> Horarios: ${horariosStr}</span>
+                        </div>
+                    </div>
+                `;
+                contenedorMaterias.innerHTML += divHTML;
+            });
+
+            document.getElementById('badgeMaterias').innerText = `${arregloUnicas.length} materias inscritas`;
+            document.getElementById('badgeCreditos').innerText = `${totalCreditos} créditos totales`;
+            document.getElementById('footerTotalMaterias').innerText = `Total de materias: ${arregloUnicas.length}`;
+            document.getElementById('footerTotalCreditos').innerText = `Total de créditos: ${totalCreditos}`;
+        }
+
         function abrirVistaPrevia() {
             document.getElementById('modalPreview').style.display = 'flex';
         }
@@ -379,9 +282,10 @@
 
         function ejecutarDescargaReal() {
             const elemento = document.getElementById('hoja-oficial');
+            const numControl = document.getElementById('numControlHeader').innerText;
             const opciones = {
                 margin: 10,
-                filename: 'Mi_Horario_19400123.pdf',
+                filename: `Mi_Horario_${numControl}.pdf`,
                 html2canvas: { scale: 3 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
@@ -390,6 +294,9 @@
                 cerrarModal(); 
             });
         }
+
+        // Ejecutar al cargar la página
+        window.onload = cargarHorarioAPI;
     </script>
 
 </body>
