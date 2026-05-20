@@ -103,7 +103,7 @@ exports.registrarGrupo = (req, res) => {
     });
 };   
 
-// ─── 7. REGISTRO DE PERSONAL ADMINISTRATIVO ─────────────────────────────────
+// ─── 7. REGISTRO DE PERSONAL ADMINISTRATIVO (MANUAL) ─────────────────────────
 exports.registrarAdministrativo = async (req, res) => {
     const { num_empleado, nombre, correo, password } = req.body;
     const saltRounds = 10;
@@ -124,4 +124,25 @@ exports.registrarAdministrativo = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Error interno al registrar personal administrativo" });
     }
+};
+
+// ─── 8. ASIGNAR ROL ADMINISTRATIVO A DOCENTE EXISTENTE ───────────────────────
+exports.asignarRolDocenteAdministrativo = (req, res) => {
+    const { doc_num } = req.body;
+
+    db.get(`SELECT * FROM docentes WHERE doc_num = ?`, [doc_num], (err, docente) => {
+        if (err) return res.status(500).json({ error: "Error de conexión con la base de datos." });
+        if (!docente) return res.status(404).json({ error: "El docente no fue encontrado." });
+
+        db.run(`INSERT INTO administrativos (num_empleado, nombre, correo) VALUES (?, ?, ?)`,
+        [docente.doc_num, docente.doc_nombre, docente.doc_correo], function(err) {
+            if (err) {
+                if (err.message.includes('UNIQUE')) {
+                    return res.status(400).json({ error: "Este docente ya cuenta con el rol administrativo." });
+                }
+                return res.status(500).json({ error: "Error al asignar el rol administrativo en la base de datos." });
+            }
+            res.status(201).json({ mensaje: "Rol administrativo agregado al docente exitosamente." });
+        });
+    });
 };

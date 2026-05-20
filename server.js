@@ -332,6 +332,15 @@ app.get('/api/docentes', (req, res) => {
     });
 });
 
+app.get('/api/docentes/:doc_num', (req, res) => {
+    const sql = `SELECT * FROM docentes WHERE doc_num = ?`;
+    db.get(sql, [req.params.doc_num], (err, row) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (!row) return res.status(404).json({ error: 'Docente no encontrado.' });
+        res.json(row);
+    });
+});
+
 app.get('/api/materias', (req, res) => {
     db.all('SELECT * FROM materias ORDER BY mat_nombre', [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -443,6 +452,7 @@ app.post('/api/calificaciones', [
 // ════════════════════════════════════════════════════════════════════════════
 
 app.post('/api/registrar-administrativo', controladorAutenticar.registrarAdministrativo);
+app.post('/api/asignar-rol-administrativo', controladorAutenticar.asignarRolDocenteAdministrativo);
 
 // ════════════════════════════════════════════════════════════════════════════
 // LOGIN
@@ -468,7 +478,7 @@ app.post('/api/login', [
                 nombre: usuario.nombre,
                 apellido_paterno: usuario.apellido_paterno,
                 carrera: usuario.carrera,
-                numero_control: usuario.numero_control // <-- DATO CLAVE AÑADIDO PARA LA SESIÓN
+                numero_control: usuario.numero_control // DATO PARA LA SESIÓN DINÁMICA
             } 
         });
     });

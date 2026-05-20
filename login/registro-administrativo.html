@@ -59,35 +59,35 @@
                 <div class="form-section">
                     <h3 class="section-title"><i class="fa-regular fa-id-card"></i> Información Personal</h3>
                     <div class="input-row-3">
-                        <div class="input-group"><label>Nombre(s) *</label><input type="text" required></div>
-                        <div class="input-group"><label>Apellido Paterno *</label><input type="text" required></div>
-                        <div class="input-group"><label>Apellido Materno *</label><input type="text" required></div>
+                        <div class="input-group"><label>Nombre(s) *</label><input type="text" id="adminNombre" required></div>
+                        <div class="input-group"><label>Apellido Paterno *</label><input type="text" id="adminApePat" required></div>
+                        <div class="input-group"><label>Apellido Materno *</label><input type="text" id="adminApeMat" required></div>
                     </div>
                 </div>
 
                 <div class="form-section">
                     <h3 class="section-title"><i class="fa-solid fa-address-card"></i> Datos de Identificación</h3>
                     <div class="input-row-2">
-                        <div class="input-group"><label>RFC *</label><input type="text" required style="text-transform: uppercase;"></div>
-                        <div class="input-group"><label>CURP *</label><input type="text" required maxlength="18" style="text-transform: uppercase;"></div>
+                        <div class="input-group"><label>RFC *</label><input type="text" id="adminRFC" required style="text-transform: uppercase;"></div>
+                        <div class="input-group"><label>CURP *</label><input type="text" id="adminCURP" required maxlength="18" style="text-transform: uppercase;"></div>
                     </div>
                 </div>
 
                 <div class="form-section">
                     <h3 class="section-title"><i class="fa-solid fa-phone"></i> Datos de Contacto</h3>
                     <div class="input-row-2">
-                        <div class="input-group"><label>Teléfono *</label><input type="tel" required></div>
-                        <div class="input-group"><label>Correo Electrónico *</label><input type="email" required></div>
+                        <div class="input-group"><label>Teléfono *</label><input type="tel" id="adminTelefono" required></div>
+                        <div class="input-group"><label>Correo Electrónico *</label><input type="email" id="adminCorreo" required></div>
                     </div>
                 </div>
 
                 <div class="form-section">
                     <h3 class="section-title"><i class="fa-solid fa-briefcase"></i> Información Laboral</h3>
                     <div class="input-row-2" style="margin-bottom: 20px;">
-                        <div class="input-group"><label>No. Empleado *</label><input type="text" placeholder="Ejemplo: ADM-001" required></div>
+                        <div class="input-group"><label>No. Empleado *</label><input type="text" id="adminNumEmpleado" placeholder="Ejemplo: ADM-001" required></div>
                         <div class="input-group">
                             <label>Puesto *</label>
-                            <select required>
+                            <select id="adminPuesto" required>
                                 <option value="" disabled selected>Seleccionar...</option>
                                 <option value="1">Secretaria</option>
                                 <option value="2">Jefe de Departamento</option>
@@ -98,13 +98,13 @@
                     <div class="input-row-2">
                         <div class="input-group">
                             <label>Departamento *</label>
-                            <select required>
+                            <select id="adminDepto" required>
                                 <option value="" disabled selected>Seleccionar...</option>
                                 <option value="1">Servicios Escolares</option>
                                 <option value="2">Sistemas y Computación</option>
                             </select>
                         </div>
-                        <div class="input-group"><label>Fecha de Ingreso *</label><input type="date" required></div>
+                        <div class="input-group"><label>Contraseña Provisional *</label><input type="password" id="adminPassword" required></div>
                     </div>
                 </div>
 
@@ -126,9 +126,7 @@
                 <div class="input-group" style="margin-bottom: 25px;">
                     <label>Seleccionar Docente de la base de datos *</label>
                     <select id="selectDocenteDB" onchange="cargarDatosDocente()" required>
-                        <option value="" disabled selected>Busca y selecciona un docente...</option>
-                        <option value="1">Juan Carlos Pérez López (DOC-001)</option>
-                        <option value="2">María Elena Rodríguez García (DOC-002)</option>
+                        <option value="" disabled selected>Cargando docentes...</option>
                     </select>
                 </div>
 
@@ -204,6 +202,10 @@
             document.getElementById('vista-docente').style.display = 'none';
             
             document.getElementById(idVistaMostrar).style.display = 'block';
+
+            if (idVistaMostrar === 'vista-docente') {
+                cargarListaDocentes();
+            }
         }
 
         function volverASeleccion() {
@@ -213,40 +215,113 @@
             document.getElementById('cajaInfoDocente').style.display = 'none'; 
         }
 
-        function procesarRegistro(event) {
+        // ─── PROCESAR FORMULARIO MANUAL ─────────────────────────────────────────
+        async function procesarRegistro(event) {
             event.preventDefault();
-            alert("¡Registro Manual completado con éxito!");
-            volverASeleccion();
+            
+            const payload = {
+                num_empleado: document.getElementById('adminNumEmpleado').value,
+                nombre: `${document.getElementById('adminNombre').value} ${document.getElementById('adminApePat').value} ${document.getElementById('adminApeMat').value}`,
+                correo: document.getElementById('adminCorreo').value,
+                password: document.getElementById('adminPassword').value
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/api/registrar-administrativo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("¡Registro Manual completado con éxito!");
+                    volverASeleccion();
+                } else {
+                    alert(`Error: ${data.error}`);
+                }
+            } catch (error) {
+                console.error("Error al registrar:", error);
+                alert("Ocurrió un error al contactar al servidor.");
+            }
         }
 
-        function procesarRol(event) {
+        // ─── PROCESAR FORMULARIO DOCENTE ────────────────────────────────────────
+        async function procesarRol(event) {
             event.preventDefault();
-            alert("¡Rol administrativo agregado al docente exitosamente!");
-            volverASeleccion();
+            
+            const doc_num = document.getElementById('selectDocenteDB').value;
+
+            if (!doc_num) {
+                alert("Por favor selecciona un docente válido.");
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:3000/api/asignar-rol-administrativo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ doc_num })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("¡Rol administrativo agregado al docente exitosamente!");
+                    volverASeleccion();
+                } else {
+                    alert(`Error: ${data.error}`);
+                }
+            } catch (error) {
+                console.error("Error al asignar rol:", error);
+                alert("Ocurrió un error de conexión con el servidor.");
+            }
         }
 
-        // --- SIMULADOR DE BASE DE DATOS ---
-        function cargarDatosDocente() {
+        // ─── LECTURA DINÁMICA DE BASE DE DATOS PARA DOCENTES ──────────────────
+        async function cargarListaDocentes() {
             const select = document.getElementById('selectDocenteDB');
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/docentes');
+                const docentes = await response.json();
+
+                select.innerHTML = '<option value="" disabled selected>Busca y selecciona un docente...</option>';
+                
+                docentes.forEach(docente => {
+                    select.innerHTML += `<option value="${docente.doc_num}">${docente.doc_nombre} (${docente.doc_num})</option>`;
+                });
+            } catch (error) {
+                select.innerHTML = '<option value="" disabled selected>Error al cargar docentes</option>';
+            }
+        }
+
+        async function cargarDatosDocente() {
+            const select = document.getElementById('selectDocenteDB');
+            const doc_num = select.value;
             const cajaAzul = document.getElementById('cajaInfoDocente');
-            if (select.value === "1") {
-                document.getElementById('lblNombre').innerText = "Juan Carlos Pérez López";
-                document.getElementById('lblRfc').innerText = "PELJ850315ABC";
-                document.getElementById('lblTel').innerText = "6681234567";
-                document.getElementById('lblNum').innerText = "DOC-001";
-                document.getElementById('lblCurp').innerText = "PELJ850315HDFRZN01";
-                document.getElementById('lblEmail').innerText = "juan.perez@tecnm.mx";
-                
-                cajaAzul.style.display = 'block'; 
-            } else if(select.value === "2") {
-                document.getElementById('lblNombre').innerText = "María Elena Rodríguez García";
-                document.getElementById('lblRfc').innerText = "ROGM801210XYZ";
-                document.getElementById('lblTel').innerText = "6689876543";
-                document.getElementById('lblNum').innerText = "DOC-002";
-                document.getElementById('lblCurp').innerText = "ROGM801210MDFRZN05";
-                document.getElementById('lblEmail').innerText = "maria.rodriguez@tecnm.mx";
-                
-                cajaAzul.style.display = 'block';
+
+            if (!doc_num) return;
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/docentes/${doc_num}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('lblNombre').innerText = data.doc_nombre || "---";
+                    document.getElementById('lblRfc').innerText = data.doc_rfc || "---";
+                    document.getElementById('lblTel').innerText = "No registrado";
+                    document.getElementById('lblNum').innerText = data.doc_num || "---";
+                    document.getElementById('lblCurp').innerText = "No registrado";
+                    document.getElementById('lblEmail').innerText = data.doc_correo || "---";
+                    
+                    cajaAzul.style.display = 'block';
+                }
+            } catch(error) {
+                console.error("Error al obtener detalle del docente", error);
             }
         }
     </script>
+</body>
+</html>
