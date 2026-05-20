@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Personal Administrativo - ITLM</title>
+    <link rel="stylesheet" href="../estilos/panel-personal-estilos.css">
+    <link rel="stylesheet" href="../estilos/registro-administrativo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <div class="header-titles">
+            <h1>Registrar Personal Administrativo</h1>
+            <h2>Instituto Tecnológico de Los Mochis</h2>
+        </div>
+        <button class="btn-logout-admin" onclick="window.location.href='../login/panel-personal.html'">
+            Regresar
+        </button>
+    </header>
+
+    <main class="portal-container">
+        
+        <div class="selection-container">
+            <div class="selection-header">
+                <h2>Selecciona el tipo de registro</h2>
+                <p>Elige cómo deseas registrar al personal administrativo</p>
+            </div>
+
+            <div class="options-grid">
+                
+                <div class="option-card" onclick="alert('Te llevará a un formulario en blanco')">
+                    <div class="icon-circle icon-blue">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <h3 class="option-title">Registro Manual</h3>
+                    <p class="option-desc">Registrar un nuevo empleado que solo será personal administrativo</p>
+                    <span class="option-subtext subtext-blue">(No imparte clases)</span>
+                </div>
+
+                <div class="option-card" onclick="alert('Te abrirá una lista de docentes actuales')">
+                    <div class="icon-circle icon-orange">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <h3 class="option-title">Seleccionar Docente</h3>
+                    <p class="option-desc">Agregar rol administrativo a un docente ya registrado</p>
+                    <span class="option-subtext subtext-orange">(Docente + Administrativo)</span>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+</body>
+</html>

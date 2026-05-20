@@ -146,3 +146,8 @@ body {
 .icon-purple { background-color: #f5f3ff; color: #a855f7; }
 .icon-yellow { background-color: #fefce8; color: #eab308; }
 .icon-pink { background-color: #fdf2f8; color: #ec4899; }
+
+.icon-slate { 
+    background-color: #f8fafc; 
+    color: #475569; 
+}
