@@ -75,3 +75,133 @@
 
 .subtext-blue { color: #3b82f6; }
 .subtext-orange { color: #f97316; }
+
+/* FORMULARIO DE REGISTRO MANUAL */
+
+.form-container {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 30px 40px;
+    margin-top: 20px;
+}
+
+.form-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.btn-change-type {
+    background-color: #cbd5e0;
+    color: #475569;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-change-type:hover { background-color: #94a3b8; color: white; }
+
+.form-header h2 {
+    color: #111827;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.form-section {
+    margin-bottom: 25px;
+}
+
+.section-title {
+    color: #4b5563;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title i.fa-id-card { color: #f87171; } 
+.section-title i.fa-address-card { color: #8b5cf6; } 
+.section-title i.fa-phone { color: #ec4899; } 
+.section-title i.fa-briefcase { color: #8b1c1c; } 
+
+.input-row-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.input-row-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-group label {
+    font-size: 13px;
+    color: #4b5563;
+    font-weight: 500;
+}
+
+.input-group input, .input-group select {
+    padding: 10px 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background-color: #ffffff;
+}
+
+.input-group input:focus, .input-group select:focus {
+    border-color: #3b82f6;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 35px;
+    border-top: 2px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+.btn-cancel {
+    flex: 1;
+    background-color: #e2e8f0;
+    color: #475569;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-cancel:hover { background-color: #cbd5e0; }
+
+.btn-submit {
+    flex: 2;
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-submit:hover { background-color: #059669; }

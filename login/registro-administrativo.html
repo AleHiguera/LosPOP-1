@@ -22,15 +22,14 @@
 
     <main class="portal-container">
         
-        <div class="selection-container">
+        <div id="vista-seleccion" class="selection-container" style="display: block;">
             <div class="selection-header">
                 <h2>Selecciona el tipo de registro</h2>
                 <p>Elige cómo deseas registrar al personal administrativo</p>
             </div>
 
             <div class="options-grid">
-                
-                <div class="option-card" onclick="alert('Te llevará a un formulario en blanco')">
+                <div class="option-card" onclick="mostrarFormularioManual()">
                     <div class="icon-circle icon-blue">
                         <i class="fa-solid fa-user-plus"></i>
                     </div>
@@ -39,7 +38,7 @@
                     <span class="option-subtext subtext-blue">(No imparte clases)</span>
                 </div>
 
-                <div class="option-card" onclick="alert('Te abrirá una lista de docentes actuales')">
+                <div class="option-card" onclick="alert('Funcionalidad de Seleccionar Docente en desarrollo')">
                     <div class="icon-circle icon-orange">
                         <i class="fa-solid fa-users"></i>
                     </div>
@@ -47,11 +46,129 @@
                     <p class="option-desc">Agregar rol administrativo a un docente ya registrado</p>
                     <span class="option-subtext subtext-orange">(Docente + Administrativo)</span>
                 </div>
-
             </div>
         </div>
 
+        <div id="vista-formulario" class="form-container" style="display: none;">
+            
+            <div class="form-header">
+                <button class="btn-change-type" onclick="volverASeleccion()">← Cambiar tipo</button>
+                <h2>Registro Manual - Nuevo Personal Administrativo</h2>
+            </div>
+
+            <form id="formRegistroAdministrativo" onsubmit="procesarRegistro(event)">
+                
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fa-regular fa-id-card"></i> Información Personal</h3>
+                    <div class="input-row-3">
+                        <div class="input-group">
+                            <label>Nombre(s) *</label>
+                            <input type="text" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Apellido Paterno *</label>
+                            <input type="text" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Apellido Materno *</label>
+                            <input type="text" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fa-solid fa-address-card"></i> Datos de Identificación</h3>
+                    <div class="input-row-2">
+                        <div class="input-group">
+                            <label>RFC *</label>
+                            <input type="text" required style="text-transform: uppercase;">
+                        </div>
+                        <div class="input-group">
+                            <label>CURP *</label>
+                            <input type="text" required maxlength="18" style="text-transform: uppercase;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fa-solid fa-phone"></i> Datos de Contacto</h3>
+                    <div class="input-row-2">
+                        <div class="input-group">
+                            <label>Teléfono *</label>
+                            <input type="tel" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Correo Electrónico *</label>
+                            <input type="email" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fa-solid fa-briefcase"></i> Información Laboral</h3>
+                    <div class="input-row-2" style="margin-bottom: 20px;">
+                        <div class="input-group">
+                            <label>No. Empleado *</label>
+                            <input type="text" placeholder="Ejemplo: ADM-001" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Puesto *</label>
+                            <select required>
+                                <option value="" disabled selected>Seleccionar...</option>
+                                <option value="1">Secretaria</option>
+                                <option value="2">Coordinador</option>
+                                <option value="3">Jefe de Departamento</option>
+                                <option value="4">Auxiliar Administrativo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-row-2">
+                        <div class="input-group">
+                            <label>Departamento *</label>
+                            <select required>
+                                <option value="" disabled selected>Seleccionar...</option>
+                                <option value="1">Servicios Escolares</option>
+                                <option value="2">Recursos Humanos</option>
+                                <option value="3">Dirección General</option>
+                                <option value="4">Sistemas</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Fecha de Ingreso *</label>
+                            <input type="date" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="volverASeleccion()">Cancelar</button>
+                    <button type="submit" class="btn-submit">Registrar Personal Administrativo</button>
+                </div>
+
+            </form>
+
+        </div>
+
     </main>
+
+    <script>
+        function mostrarFormularioManual() {
+            document.getElementById('vista-seleccion').style.display = 'none';
+            document.getElementById('vista-formulario').style.display = 'block';
+        }
+
+        function volverASeleccion() {
+            document.getElementById('vista-formulario').style.display = 'none';
+            document.getElementById('vista-seleccion').style.display = 'block';
+            document.getElementById('formRegistroAdministrativo').reset();
+        }
+
+        function procesarRegistro(event) {
+            event.preventDefault(); 
+            alert("¡Personal Administrativo registrado con éxito en el sistema!");
+            volverASeleccion();
+        }
+    </script>
 
 </body>
 </html>
