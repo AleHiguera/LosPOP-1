@@ -205,3 +205,61 @@
 }
 
 .btn-submit:hover { background-color: #059669; }
+
+/* ESTILOS PARA VISTA DE SELECCIONAR DOCENTE */
+
+.teacher-info-box {
+    background-color: #eff6ff; 
+    border-left: 4px solid #1e3a8a; 
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 25px;
+}
+
+.teacher-info-box h4 {
+    color: #1f2937;
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.info-grid p {
+    color: #4b5563;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.info-grid p strong {
+    color: #111827;
+    font-weight: 600;
+}
+
+.warning-box {
+    background-color: #fefce8; 
+    border-left: 4px solid #eab308; 
+    padding: 15px 20px;
+    border-radius: 4px;
+    margin-top: 30px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.warning-box i {
+    color: #eab308;
+    font-size: 16px;
+    margin-top: 2px;
+}
+
+.warning-box p {
+    color: #713f12;
+    font-size: 13px;
+    margin: 0;
+    line-height: 1.5;
+}
