@@ -35,18 +35,77 @@ const revisarErrores = (req, res, next) => {
 };
 
 // ════════════════════════════════════════════════════════════════════════════
+// GENERACIÓN DE MATRÍCULA Y ACTIVACIÓN DE ASPIRANTES
+// ════════════════════════════════════════════════════════════════════════════
+
+// Algoritmo automatizado para generar Número de Control (Matrícula)
+const generarNumeroControl = (anioIngreso, totalAlumnosAnio) => {
+    const añoStr = anioIngreso.toString().slice(-2);
+    // Crea un consecutivo de 4 dígitos, ej: 0001, 0002
+    const consecutivo = (totalAlumnosAnio + 1).toString().padStart(4, '0');
+    // Formato: Año (2) + Clave de Institución (ej. 44) + Consecutivo (4)
+    return `${añoStr}44${consecutivo}`; 
+};
+
+// Endpoint lógico para activar un aspirante y generarle su matrícula
+app.post('/api/activar-aspirante', async (req, res) => {
+    const { id_aspirante } = req.body;
+
+    db.get(`SELECT * FROM registros_aspirantes WHERE id_aspirante = ?`, [id_aspirante], (err, aspirante) => {
+        if (err) return res.status(500).json({ error: 'Error al buscar aspirante en la base de datos.' });
+        if (!aspirante) return res.status(404).json({ error: 'Aspirante no encontrado.' });
+
+        const anioActual = new Date().getFullYear();
+        const prefijoAnio = anioActual.toString().slice(-2) + '%';
+
+        db.get(`SELECT COUNT(*) as total FROM alumnos WHERE numero_control LIKE ?`, [prefijoAnio], (err, row) => {
+            if (err) return res.status(500).json({ error: 'Error al calcular la nueva matrícula.' });
+
+            const totalAlumnosAnio = row.total || 0;
+            const nuevoNumeroControl = generarNumeroControl(anioActual, totalAlumnosAnio);
+
+            const sqlInsert = `
+                INSERT INTO alumnos (
+                    numero_control, curp, nombre, apellido_paterno, correo, carrera, estado, password_hash
+                ) VALUES (?, ?, ?, ?, ?, ?, 'Inactivo', '')
+            `;
+
+            db.run(sqlInsert, [
+                nuevoNumeroControl, 
+                aspirante.curp, 
+                aspirante.nombre_completo, 
+                '', 
+                aspirante.email, 
+                aspirante.carrera_interes
+            ], function(err) {
+                if (err) return res.status(500).json({ error: 'Error al crear el perfil del alumno.', detalle: err.message });
+                
+                db.run(`DELETE FROM registros_aspirantes WHERE id_aspirante = ?`, [id_aspirante]);
+
+                res.status(201).json({
+                    mensaje: 'Aspirante activado exitosamente.',
+                    numero_control: nuevoNumeroControl,
+                    correo: aspirante.email
+                });
+            });
+        });
+    });
+});
+
+// ════════════════════════════════════════════════════════════════════════════
 // ALUMNOS
 // ════════════════════════════════════════════════════════════════════════════
 
 app.post('/api/alumnos', [
-    body('numero_control').isLength({ min: 8 }).withMessage('El número de control debe tener al menos 8 caracteres.').trim().escape(),
+    // El número de control es opcional desde el cliente
+    body('numero_control').optional({ checkFalsy: true }).trim().escape(),
     body('nombre').notEmpty().withMessage('El nombre es obligatorio.').trim().escape(),
     body('apellido_paterno').notEmpty().withMessage('El apellido paterno es obligatorio.').trim().escape(),
     body('carrera').notEmpty().withMessage('La carrera es obligatoria.').trim().escape(),
     body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres.')
 ], revisarErrores, async (req, res) => {
     
-    const {
+    let {
         numero_control, curp, nombre, apellido_paterno, apellido_materno,
         fecha_nacimiento, sexo, estado_civil,
         telefono_casa, telefono_celular, correo,
@@ -60,6 +119,29 @@ app.post('/api/alumnos', [
     } = req.body;
 
     try {
+        // ─── LÓGICA DE GENERACIÓN AUTOMÁTICA DE MATRÍCULA ───
+        if (!numero_control || numero_control.trim() === "") {
+            const anioActual = new Date().getFullYear();
+            const prefijoAnio = anioActual.toString().slice(-2) + '%';
+            
+            // Consultar BD para saber el consecutivo
+            const row = await new Promise((resolve, reject) => {
+                db.get(`SELECT COUNT(*) as total FROM alumnos WHERE numero_control LIKE ?`, [prefijoAnio], (err, result) => {
+                    if (err) reject(err);
+                    else resolve(result);
+                });
+            });
+            
+            const totalAlumnosAnio = row.total || 0;
+            numero_control = generarNumeroControl(anioActual, totalAlumnosAnio);
+            
+            // Forzamos que la contraseña inicial sea el nuevo numero de control generado
+            password = numero_control;
+        } else if (password === 'AUTOGENERAR') {
+            // Si mandaron un numero_control manual pero el password venia como 'AUTOGENERAR'
+            password = numero_control;
+        }
+
         const password_hash = await bcrypt.hash(password, 10);
 
         const sql = `
@@ -97,25 +179,70 @@ app.post('/api/alumnos', [
             estado || 'A', credencial_vigente || 'S', password_hash
         ];
 
-        db.run(sql, params, function (err) {
-            if (err) {
-                if (err.message.includes('UNIQUE constraint failed')) {
-                    const campo = err.message.includes('numero_control') ? 'Número de control'
-                                : err.message.includes('curp')           ? 'CURP'
-                                : err.message.includes('correo')         ? 'Correo electrónico'
-                                : 'Un campo único';
-                    return res.status(409).json({ error: `${campo} ya está registrado.` });
+        db.serialize(() => {
+            db.run(sql, params, function (err) {
+                if (err) {
+                    if (err.message.includes('UNIQUE constraint failed')) {
+                        const campo = err.message.includes('numero_control') ? 'Número de control'
+                                    : err.message.includes('curp')           ? 'CURP'
+                                    : err.message.includes('correo')         ? 'Correo electrónico'
+                                    : 'Un campo único';
+                        return res.status(409).json({ error: `${campo} ya está registrado.` });
+                    }
+                    return res.status(500).json({ error: 'Error en la base de datos.', detalle: err.message });
                 }
-                return res.status(500).json({ error: 'Error en la base de datos.', detalle: err.message });
-            }
-            res.status(201).json({
-                mensaje: 'Alumno registrado con éxito',
-                id_alumno: this.lastID,
-                numero_control
+                
+                const lastId = this.lastID;
+
+                // Sincronizar en la tabla de usuarios para login global
+                db.run(`INSERT INTO usuarios (identificador, password_hash, tipo) VALUES (?, ?, 'alumno')`, 
+                [numero_control, password_hash], (err) => {
+                    if (err) console.error("Error al registrar en tabla usuarios:", err.message);
+                    
+                    res.status(201).json({
+                        mensaje: 'Alumno registrado con éxito',
+                        id_alumno: lastId,
+                        numero_control: numero_control
+                    });
+                });
             });
         });
     } catch (error) {
-        res.status(500).json({ error: 'Error al procesar la contraseña.' });
+        res.status(500).json({ error: 'Error al procesar el registro.' });
+    }
+});
+
+app.put('/api/alumnos/asignar-password', [
+    body('numero_control').notEmpty().withMessage('El número de control es obligatorio.').trim().escape(),
+    body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres.')
+], revisarErrores, async (req, res) => {
+    
+    const { numero_control, password } = req.body;
+
+    try {
+        db.get('SELECT * FROM alumnos WHERE numero_control = ?', [numero_control], async (err, alumno) => {
+            if (err) return res.status(500).json({ error: 'Error en la base de datos.' });
+            if (!alumno) return res.status(404).json({ error: 'Alumno no encontrado.' });
+
+            const password_hash = await bcrypt.hash(password, 10);
+            const sqlUpdateAlumno = `UPDATE alumnos SET password_hash = ?, estado = 'Activo' WHERE numero_control = ?`;
+            
+            db.run(sqlUpdateAlumno, [password_hash, numero_control], function(err) {
+                if (err) return res.status(500).json({ error: 'Error al guardar la contraseña.' });
+
+                db.get(`SELECT * FROM usuarios WHERE identificador = ? AND tipo = 'alumno'`, [numero_control], (err, usuarioExistente) => {
+                    if (usuarioExistente) {
+                        db.run(`UPDATE usuarios SET password_hash = ? WHERE identificador = ? AND tipo = 'alumno'`, [password_hash, numero_control]);
+                    } else {
+                        db.run(`INSERT INTO usuarios (identificador, password_hash, tipo) VALUES (?, ?, 'alumno')`, [numero_control, password_hash]);
+                    }
+                    
+                    res.json({ mensaje: 'Contraseña asignada correctamente. Cuenta activada.' });
+                });
+            });
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Error interno al procesar la contraseña.' });
     }
 });
 
@@ -247,20 +374,17 @@ app.post('/api/registrar-materia', [
 });
 
 // ════════════════════════════════════════════════════════════════════════════
-// ASIGNACIÓN DIRECTA ALUMNO-MATERIA (NUEVO)
+// ASIGNACIÓN DIRECTA ALUMNO-MATERIA
 // ════════════════════════════════════════════════════════════════════════════
 
-// Obtener los IDs de las materias que tiene un alumno específico
 app.get('/api/alumnos/:numero_control/materias', (req, res) => {
     const sql = `SELECT id_materia FROM alumno_materia WHERE numero_control = ?`;
     db.all(sql, [req.params.numero_control], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
-        // Retornamos un arreglo simple de IDs para facilitar el frontend: [1, 5, 8]
         res.json(rows.map(row => row.id_materia));
     });
 });
 
-// Asignar una materia a un alumno
 app.post('/api/asignar-materia', (req, res) => {
     const { numero_control, id_materia } = req.body;
     const sql = `INSERT INTO alumno_materia (numero_control, id_materia) VALUES (?, ?)`;
@@ -276,7 +400,6 @@ app.post('/api/asignar-materia', (req, res) => {
     });
 });
 
-// Desasignar una materia de un alumno
 app.delete('/api/desasignar-materia', (req, res) => {
     const { numero_control, id_materia } = req.body;
     const sql = `DELETE FROM alumno_materia WHERE numero_control = ? AND id_materia = ?`;
